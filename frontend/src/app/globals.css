@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --bg-primary: #0B0F19;
+  --bg-surface: #111827;
+  --bg-surface-raised: #1F2937;
+  --border-subtle: #1E293B;
+  --border-strong: #334155;
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-teal: #0D9488;
+  --color-amber: #D97706;
+  --color-ai: #7C3AED;
+  --color-danger: #DC2626;
+  --color-success: #059669;
+}
+
+body {
+  background-color: #0B0F19;
+  color: #F8FAFC;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Crisp solid selection */
+::selection {
+  background-color: #2563EB;
+  color: #FFFFFF;
+}
+
+/* Custom modern solid scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0F19;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Focus outline helpers */
+:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: 2px;
+}
+
+/* Strict No-Gradient enforcement utility classes */
+.bg-solid-navy { background-color: #0F172A; }
+.bg-solid-card { background-color: #111827; }
+.bg-solid-surface { background-color: #1E293B; }
+.border-solid-subtle { border-color: #1E293B; }
+.border-solid-strong { border-color: #334155; }

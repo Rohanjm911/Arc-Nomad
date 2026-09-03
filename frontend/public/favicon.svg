@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none">
+  <defs>
+    <linearGradient id="favBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="favJet" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#e0f2fe" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Squircle -->
+  <rect width="32" height="32" rx="8" fill="url(#favBg)" />
+
+  <!-- Orbiting Flight Arc -->
+  <path d="M5 21 C9 12, 18 8, 26 8" stroke="#7dd3fc" stroke-width="1.8" stroke-dasharray="2 2" stroke-linecap="round" opacity="0.9" />
+
+  <!-- Destination Waypoint Pin -->
+  <circle cx="26" cy="8" r="2" fill="#ffffff" />
+
+  <!-- Travel Airplane -->
+  <path d="M21.5 7.5 C22.4 6.6, 23.8 7.1, 23.8 8.3 C23.8 9.0, 23.3 9.7, 22.8 10.2 L19 14 L21.2 22.5 C21.4 23.1, 20.8 23.6, 20.3 23.2 L17.3 19.8 L13.8 23.3 L14 25.5 C14.1 25.9, 13.6 26.3, 13.1 26 L11.4 24.3 L9.7 22.6 C9.4 22.1, 9.8 21.6, 10.2 21.7 L12.4 21.9 L15.9 18.4 L12.5 15.4 C12.1 14.9, 12.6 14.3, 13.2 14.5 L21.7 16.7 L21.5 7.5 Z" fill="url(#favJet)" />
+</svg>

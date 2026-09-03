@@ -51,7 +51,13 @@ For instant exploration and testing, the following accounts are pre-seeded:
 
 ## 🛠️ Getting Started
 
-### 1. Backend Setup & Run
+> 📖 **Full Guide**: See [HOW_TO_START.md](file:///d:/projects%20and%20certificates/projects/web/Arc-Nomad/HOW_TO_START.md) for detailed prerequisites, step-by-step setup instructions, troubleshooting, and 1-click launcher scripts (`start_dev.bat` / `start_dev.ps1`).
+
+### Quick Start (Windows)
+Double-click `start_dev.bat` or run `.\start_dev.ps1` in PowerShell to launch both servers.
+
+### Manual Setup
+
 
 ```bash
 # In project root

@@ -24,13 +24,13 @@ export const UpcomingFlightsWidget: React.FC<UpcomingFlightsWidgetProps> = ({ fl
   };
 
   return (
-    <Card className="p-4 border-slate-800 bg-slate-900/90">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+    <Card className="p-4 sm:p-5 rounded-3xl bg-theme-surface border border-theme-subtle shadow-xl">
+      <div className="flex items-center justify-between pb-3 border-b border-theme-subtle mb-3">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-indigo-600/20 text-indigo-400">
+          <div className="p-1.5 rounded-lg bg-theme-surface-raised text-theme-accent border border-theme-subtle">
             <Plane className="w-4 h-4" />
           </div>
-          <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wider">
+          <h3 className="text-xs font-bold text-white uppercase tracking-wider">
             Flight Status Monitor
           </h3>
         </div>
@@ -49,7 +49,7 @@ export const UpcomingFlightsWidget: React.FC<UpcomingFlightsWidgetProps> = ({ fl
             <Link
               key={flight.id}
               href={`/trips/${flight.trip_id}?tab=flights`}
-              className="block p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-indigo-500/40 transition-colors"
+              className="block p-3.5 rounded-2xl bg-theme-surface-raised border border-theme-subtle hover:border-theme-strong transition-colors"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">

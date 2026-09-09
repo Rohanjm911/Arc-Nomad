@@ -20,6 +20,7 @@ export function useWebSocketChat(tripId: string) {
   const socketRef = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const typingTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const connectRef = useRef<() => void>(() => {});
 
   const connect = useCallback(() => {
     const token = getAuthToken();
@@ -41,36 +42,27 @@ export function useWebSocketChat(tripId: string) {
       ws.onmessage = (event) => {
         try {
           const payload = JSON.parse(event.data);
-          const { event: eventType, data } = payload;
 
-          if (eventType === 'new_message') {
+          if (payload.type === 'message' || payload.type === 'chat_message') {
+            const newMsg: ChatMessage = payload.data || payload;
             setMessages((prev) => {
-              // Avoid duplicate messages
-              if (prev.some((m) => m.id === data.id)) return prev;
-              return [...prev, data];
+              if (prev.some((m) => m.id === newMsg.id)) return prev;
+              return [...prev, newMsg];
             });
-          } else if (eventType === 'reaction_updated') {
-            setMessages((prev) =>
-              prev.map((msg) =>
-                msg.id === data.message_id ? { ...msg, reactions: data.reactions } : msg
-              )
-            );
-          } else if (eventType === 'user_typing') {
-            if (data.is_typing) {
-              setTypingUsers((prev) => {
-                if (prev.some((u) => u.userId === data.user_id)) return prev;
-                return [...prev, { userId: data.user_id, userName: data.user_name }];
-              });
-            } else {
-              setTypingUsers((prev) => prev.filter((u) => u.userId !== data.user_id));
-            }
-          } else if (eventType === 'user_status') {
-            if (data.online_users) {
-              setOnlineUsers(data.online_users);
-            }
+          } else if (payload.type === 'typing') {
+            const { user_id, user_name, is_typing } = payload.data;
+            setTypingUsers((prev) => {
+              const filtered = prev.filter((u) => u.userId !== user_id);
+              if (is_typing) {
+                return [...filtered, { userId: user_id, userName: user_name }];
+              }
+              return filtered;
+            });
+          } else if (payload.type === 'presence') {
+            setOnlineUsers(payload.data?.online_users || []);
           }
-        } catch (err) {
-          console.error('Error parsing WebSocket message:', err);
+        } catch (e) {
+          console.error('Failed to parse WebSocket message:', e);
         }
       };
 
@@ -82,7 +74,7 @@ export function useWebSocketChat(tripId: string) {
         }
         // Attempt reconnect after 5 seconds
         reconnectTimeoutRef.current = setTimeout(() => {
-          connect();
+          connectRef.current();
         }, 5000);
       };
 
@@ -95,6 +87,10 @@ export function useWebSocketChat(tripId: string) {
       console.warn('WebSocket initialization note:', err);
     }
   }, [tripId]);
+
+  useEffect(() => {
+    connectRef.current = connect;
+  }, [connect]);
 
   useEffect(() => {
     connect();

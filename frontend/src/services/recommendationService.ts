@@ -52,4 +52,10 @@ export const recommendationService = {
       body: JSON.stringify(data),
     });
   },
+
+  async deleteRecommendation(recId: string): Promise<{ message: string; id: string }> {
+    return apiClient<{ message: string; id: string }>(`/recommendations/${recId}`, {
+      method: 'DELETE',
+    });
+  },
 };

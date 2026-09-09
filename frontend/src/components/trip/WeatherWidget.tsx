@@ -107,7 +107,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ tripId }) => {
           {weather.forecast.map((day, idx) => (
             <div
               key={idx}
-              className="p-2 rounded-xl bg-slate-950/40 border border-slate-800/80 flex flex-col items-center text-center"
+              className="p-2 rounded-xl bg-theme-surface-raised border border-theme-subtle flex flex-col items-center text-center"
             >
               <span className="text-[10px] font-semibold text-slate-400">
                 {day.date ? new Date(day.date).toLocaleDateString([], { weekday: 'short' }) : `Day ${idx + 1}`}

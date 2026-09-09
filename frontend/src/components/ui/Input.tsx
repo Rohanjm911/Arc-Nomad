@@ -16,13 +16,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={inputId} className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+          <label htmlFor={inputId} className="block text-xs font-bold uppercase tracking-wider text-theme-muted mb-1.5">
             {label}
           </label>
         )}
         <div className="relative flex items-center">
           {icon && (
-            <div className="absolute left-3 text-slate-400 pointer-events-none flex items-center justify-center">
+            <div className="absolute left-3.5 text-theme-muted pointer-events-none flex items-center justify-center">
               {icon}
             </div>
           )}
@@ -31,8 +31,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             className={twMerge(
               clsx(
-                'w-full rounded-xl bg-slate-950 border border-slate-700 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 transition-colors duration-150 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:bg-slate-900',
-                icon && 'pl-10',
+                'w-full rounded-2xl bg-theme-surface-raised border border-theme-subtle px-4 py-2.5 text-sm text-theme-primary placeholder:text-theme-muted transition-colors duration-150 focus:outline-none focus:border-theme-strong focus:ring-1 focus:ring-theme-accent/50 disabled:opacity-50 disabled:bg-theme-surface',
+                icon && 'pl-11',
                 error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
                 className
               )
@@ -41,7 +41,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           />
         </div>
         {error && <p className="mt-1.5 text-xs text-red-400 font-medium">{error}</p>}
-        {helperText && !error && <p className="mt-1 text-xs text-slate-400">{helperText}</p>}
+        {helperText && !error && <p className="mt-1 text-xs text-theme-muted">{helperText}</p>}
       </div>
     );
   }

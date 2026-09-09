@@ -108,16 +108,16 @@ export default function FriendsPage() {
 
       {/* Friends Grid */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="flex items-center justify-between border-b border-theme-subtle pb-3">
           <h2 className="text-lg font-bold text-white tracking-tight">
             Your Friends ({friends.length})
           </h2>
         </div>
 
         {friends.length === 0 ? (
-          <div className="text-center py-20 rounded-3xl border border-dashed border-slate-800 bg-slate-950/40 p-8 space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mx-auto">
-              <Users className="w-8 h-8 animate-pulse" />
+          <div className="text-center py-20 rounded-3xl border border-dashed border-theme-subtle bg-theme-surface/50 p-8 space-y-4">
+            <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mx-auto">
+              <Users className="w-8 h-8" />
             </div>
             <h3 className="text-base font-bold text-slate-200">No friends added yet</h3>
             <p className="text-xs text-slate-400 max-w-sm mx-auto">

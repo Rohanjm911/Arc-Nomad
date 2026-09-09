@@ -210,12 +210,12 @@ function CreateTripForm() {
           <div key={s.num} className="space-y-1.5 text-center">
             <div
               className={`h-1.5 rounded-full transition-colors ${
-                currentStep >= s.num ? 'bg-blue-600' : 'bg-slate-800'
+                currentStep >= s.num ? 'bg-theme-accent' : 'bg-theme-surface-raised'
               }`}
             />
             <span
               className={`text-[11px] font-bold block truncate ${
-                currentStep === s.num ? 'text-blue-400' : currentStep > s.num ? 'text-slate-300' : 'text-slate-500'
+                currentStep === s.num ? 'text-theme-accent' : currentStep > s.num ? 'text-slate-300' : 'text-slate-500'
               }`}
             >
               {s.num}. {s.title}
@@ -232,7 +232,7 @@ function CreateTripForm() {
       )}
 
       {/* Wizard Form Card */}
-      <Card className="p-6 bg-slate-900 border-slate-800 space-y-6">
+      <Card className="p-6 bg-theme-surface border border-theme-subtle space-y-6 shadow-2xl rounded-3xl">
         <form onSubmit={handleSubmit}>
           {/* STEP 1: Destination & Title */}
           {currentStep === 1 && (
@@ -268,8 +268,8 @@ function CreateTripForm() {
                       onClick={() => handleSelectPreset(preset)}
                       className={`p-3 rounded-xl text-left border transition-colors cursor-pointer ${
                         destination === preset.name
-                          ? 'bg-blue-950 border-blue-500 text-white'
-                          : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'
+                          ? 'bg-theme-raised border-theme-strong text-white font-semibold'
+                          : 'bg-theme-surface-raised border-theme-subtle text-slate-300 hover:border-theme-strong'
                       }`}
                     >
                       <p className="text-xs font-bold truncate">{preset.name.split(',')[0]}</p>
@@ -280,7 +280,7 @@ function CreateTripForm() {
               </div>
 
               {/* Dynamic Map Location Synchronization for the trip being planned */}
-              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-3 space-y-2.5">
+              <div className="rounded-2xl border border-theme-subtle bg-theme-surface-raised p-3 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-slate-200">
                     <Navigation className="w-3.5 h-3.5 text-cyan-400" />
@@ -302,6 +302,7 @@ function CreateTripForm() {
                     centerLat={destinationLat || 35.6762}
                     centerLng={destinationLng || 139.6503}
                     selectedLocation={selectedMapLocation}
+                    compact
                   />
                 </div>
                 <p className="text-[11px] text-slate-400">
@@ -334,7 +335,7 @@ function CreateTripForm() {
               </div>
 
               {startDate && endDate && (
-                <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs">
+                <div className="p-4 rounded-xl bg-theme-surface-raised border border-theme-subtle flex items-center justify-between text-xs">
                   <span className="text-slate-400">Calculated Trip Duration:</span>
                   <span className="font-bold text-white">
                     {Math.max(1, Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)))} Days
@@ -376,7 +377,7 @@ function CreateTripForm() {
               </div>
 
               {/* AI Itinerary Architect Toggle */}
-              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+              <div className="p-4 rounded-xl bg-theme-surface-raised border border-theme-subtle space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-purple-400" />
@@ -394,7 +395,7 @@ function CreateTripForm() {
                 </p>
 
                 {enableAI && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-theme-subtle">
                     <Select
                       label="Travel Persona"
                       value={aiTravelStyle}
@@ -424,8 +425,8 @@ function CreateTripForm() {
           {/* STEP 4: Review & Launch */}
           {currentStep === 4 && (
             <div className="space-y-4">
-              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
-                <h3 className="text-sm font-bold text-white pb-2 border-b border-slate-800">
+              <div className="p-4 rounded-xl bg-theme-surface-raised border border-theme-subtle space-y-3">
+                <h3 className="text-sm font-bold text-white pb-2 border-b border-theme-subtle">
                   Journey Summary
                 </h3>
 
@@ -462,7 +463,7 @@ function CreateTripForm() {
                 </div>
 
                 {enableAI && (
-                  <div className="pt-2 border-t border-slate-800 text-xs flex items-center gap-2 text-purple-300">
+                  <div className="pt-2 border-t border-theme-subtle text-xs flex items-center gap-2 text-purple-300">
                     <Sparkles className="w-3.5 h-3.5 text-purple-400" />
                     <span>The AI Travel Architect will build a custom {aiTravelStyle} plan on launch.</span>
                   </div>
@@ -472,7 +473,7 @@ function CreateTripForm() {
           )}
 
           {/* Navigation Actions */}
-          <div className="flex items-center justify-between pt-6 border-t border-slate-800 mt-6">
+          <div className="flex items-center justify-between pt-6 border-t border-theme-subtle mt-6">
             {currentStep > 1 ? (
               <Button type="button" variant="secondary" size="md" onClick={handleBack} disabled={loading} className="gap-1.5">
                 <ArrowLeft className="w-4 h-4" />

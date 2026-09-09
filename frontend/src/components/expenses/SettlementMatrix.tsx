@@ -30,8 +30,8 @@ export const SettlementMatrix: React.FC<SettlementMatrixProps> = ({
   return (
     <div className="space-y-6">
       {/* Balances Ledger Strip */}
-      <Card className="p-5 bg-slate-900 border-slate-800">
-        <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-4">
+      <Card className="p-5 bg-theme-surface border border-theme-subtle shadow-xl rounded-3xl">
+        <h3 className="text-xs font-bold text-theme-muted uppercase tracking-wider mb-4">
           Individual Net Balances
         </h3>
 
@@ -43,13 +43,13 @@ export const SettlementMatrix: React.FC<SettlementMatrixProps> = ({
             return (
               <div
                 key={mb.user_id}
-                className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between"
+                className="p-3.5 rounded-2xl bg-theme-surface-raised border border-theme-subtle flex items-center justify-between transition-colors hover:border-theme-strong"
               >
                 <div className="flex items-center gap-2.5">
                   <Avatar src={mb.avatar_url} name={mb.user_name} size="sm" />
                   <div>
-                    <span className="text-xs font-bold text-slate-200">{mb.user_name}</span>
-                    <p className="text-[10px] text-slate-400">
+                    <span className="text-xs font-bold text-theme-primary">{mb.user_name}</span>
+                    <p className="text-[10px] text-theme-muted">
                       Paid: {currency} {Number(mb.total_paid).toFixed(2)}
                     </p>
                   </div>
@@ -61,8 +61,8 @@ export const SettlementMatrix: React.FC<SettlementMatrixProps> = ({
                       isOwed
                         ? 'text-emerald-400'
                         : owes
-                        ? 'text-red-400'
-                        : 'text-slate-400'
+                        ? 'text-rose-400'
+                        : 'text-theme-muted'
                     }`}
                   >
                     {isOwed
@@ -71,7 +71,7 @@ export const SettlementMatrix: React.FC<SettlementMatrixProps> = ({
                       ? `-${currency} ${Math.abs(Number(mb.net_balance)).toFixed(2)}`
                       : 'Settled'}
                   </span>
-                  <p className="text-[10px] text-slate-400">
+                  <p className="text-[10px] text-theme-muted">
                     {isOwed ? 'Receivable' : owes ? 'Owes group' : 'All square'}
                   </p>
                 </div>
@@ -82,17 +82,17 @@ export const SettlementMatrix: React.FC<SettlementMatrixProps> = ({
       </Card>
 
       {/* Optimized Debt Reduction Settlement Plan */}
-      <Card className="p-5 bg-slate-900 border-slate-800">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+      <Card className="p-5 bg-theme-surface border border-theme-subtle shadow-xl rounded-3xl">
+        <div className="flex items-center justify-between pb-3 border-b border-theme-subtle mb-4">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-blue-950 border border-blue-600/30 text-blue-400">
+            <div className="p-1.5 rounded-xl bg-theme-surface-raised border border-theme-subtle text-theme-accent">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-theme-primary uppercase tracking-wider">
                 Optimized Settlement Transactions
               </h3>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-theme-muted">
                 Greedy minimum cash flow algorithm eliminates circular debt between members.
               </p>
             </div>
@@ -109,27 +109,27 @@ export const SettlementMatrix: React.FC<SettlementMatrixProps> = ({
             {suggestedSettlements.map((s, idx) => (
               <div
                 key={idx}
-                className="p-4 rounded-xl bg-slate-950 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                className="p-4 rounded-2xl bg-theme-surface-raised border border-theme-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:border-theme-strong"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
                     <Avatar src={s.payer_avatar} name={s.payer_name} size="sm" />
-                    <span className="text-xs font-bold text-slate-200">{s.payer_name}</span>
+                    <span className="text-xs font-bold text-theme-primary">{s.payer_name}</span>
                   </div>
 
-                  <div className="flex items-center gap-1 text-slate-500 text-xs font-medium">
+                  <div className="flex items-center gap-1 text-theme-muted text-xs font-medium">
                     <span className="hidden sm:inline">pays</span>
-                    <ArrowRight className="w-4 h-4 text-blue-400" />
+                    <ArrowRight className="w-4 h-4 text-theme-accent" />
                   </div>
 
                   <div className="flex items-center gap-2">
                     <Avatar src={s.receiver_avatar} name={s.receiver_name} size="sm" />
-                    <span className="text-xs font-bold text-slate-200">{s.receiver_name}</span>
+                    <span className="text-xs font-bold text-theme-primary">{s.receiver_name}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between sm:justify-end gap-3">
-                  <span className="text-sm font-extrabold text-white">
+                  <span className="text-sm font-extrabold text-theme-primary">
                     {s.currency} {Number(s.amount).toFixed(2)}
                   </span>
 

@@ -88,22 +88,22 @@ export default function NotificationsPage() {
         )}
       </div>
 
-      <Card className="p-0 bg-slate-900 border-slate-800 overflow-hidden shadow-2xl">
+      <Card className="p-0 bg-theme-surface border-theme-subtle overflow-hidden shadow-xl">
         {notifications.length === 0 ? (
           <div className="py-20 text-center text-xs text-slate-400">
             No activity notifications logged yet.
           </div>
         ) : (
-          <div className="divide-y divide-slate-800/80">
+          <div className="divide-y divide-theme-subtle">
             {notifications.map((notif) => (
               <div
                 key={notif.id}
-                className={`p-4 sm:p-5 flex items-start justify-between gap-4 transition-colors hover:bg-slate-800/40 ${
-                  !notif.is_read ? 'bg-indigo-950/20' : ''
+                className={`p-4 sm:p-5 flex items-start justify-between gap-4 transition-colors hover:bg-theme-surface-raised/50 ${
+                  !notif.is_read ? 'bg-blue-950/20' : ''
                 }`}
               >
                 <div className="flex items-start gap-3.5 flex-1">
-                  <div className="p-2 rounded-xl bg-slate-800 border border-slate-700/60 text-indigo-400 shrink-0 mt-0.5">
+                  <div className="p-2 rounded-xl bg-theme-surface-raised border border-theme-subtle text-blue-400 shrink-0 mt-0.5">
                     <Bell className="w-4 h-4" />
                   </div>
                   <div className="flex-1">

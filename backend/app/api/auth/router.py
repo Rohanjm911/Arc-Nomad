@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -62,15 +63,28 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
 @router.post("/demo-login", response_model=Token)
 def demo_login(username: str = "alex_nomad", db: Session = Depends(get_db)):
     """Convenience endpoint for 1-click testing with seeded demo accounts."""
-    user = db.query(User).filter(User.username == username.lower()).first()
+    target = username.lower().strip()
+    # Exact match first
+    user = db.query(User).filter(User.username == target).first()
     if not user:
-        # Fallback to any user
+        # Partial match on username (e.g. "alex", "sarah", "marco", "elena")
+        user = db.query(User).filter(User.username.like(f"%{target}%")).first()
+    if not user:
+        # Match by email prefix
+        user = db.query(User).filter(User.email.like(f"{target}%")).first()
+    if not user:
+        # Fallback to first user
         user = db.query(User).first()
         if not user:
             raise HTTPException(status_code=404, detail="No users found. Please seed the database first.")
 
     token = create_access_token(subject=user.id)
     return Token(access_token=token, token_type="bearer", user=UserOut.model_validate(user))
+
+@router.get("/demo-users", response_model=List[UserOut])
+def get_demo_users(db: Session = Depends(get_db)):
+    """Get all seeded demo accounts for instant persona switching."""
+    return db.query(User).order_by(User.full_name.asc()).all()
 
 @router.get("/me", response_model=UserOut)
 def get_me(current_user: User = Depends(get_current_user)):

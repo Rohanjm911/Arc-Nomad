@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import {
   Calendar,
@@ -12,14 +12,19 @@ import {
   AlertCircle,
   Compass,
   Globe,
+  Hotel as HotelIcon,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { TravelLogo } from '../../../components/ui/TravelLogo';
 import { useAuth } from '../../../store/AuthContext';
+import { useTheme } from '../../../store/ThemeContext';
 import { tripService } from '../../../services/tripService';
 import { itineraryService } from '../../../services/itineraryService';
 import { recommendationService } from '../../../services/recommendationService';
 import { flightService } from '../../../services/flightService';
 import { expenseService } from '../../../services/expenseService';
+import { bookingService } from '../../../services/bookingService';
 import {
   Trip,
   ItineraryDay,
@@ -27,6 +32,7 @@ import {
   Flight,
   Expense,
   ExpenseAnalyticsSummary,
+  Booking,
 } from '../../../types';
 import { TripHeader } from '../../../components/trip/TripHeader';
 import { WeatherWidget } from '../../../components/trip/WeatherWidget';
@@ -38,15 +44,17 @@ import { AddFlightModal } from '../../../components/flights/AddFlightModal';
 import { ExpenseList } from '../../../components/expenses/ExpenseList';
 import { GroupChatRoom } from '../../../components/chat/GroupChatRoom';
 import { AIGeneratorModal } from '../../../components/itinerary/AIGeneratorModal';
+import { StaysAndDiningHub } from '../../../components/bookings/StaysAndDiningHub';
 import { Button } from '../../../components/ui/Button';
 
-type TabKey = 'itinerary' | 'map' | 'recommendations' | 'flights' | 'expenses' | 'chat';
+type TabKey = 'itinerary' | 'map' | 'bookings' | 'recommendations' | 'flights' | 'expenses' | 'chat';
 
 function TripDetailContent() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
+  const { setTripDestination } = useTheme();
   const tripId = params.tripId as string;
 
   const initialTab = (searchParams.get('tab') as TabKey) || 'itinerary';
@@ -58,6 +66,7 @@ function TripDetailContent() {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [flights, setFlights] = useState<Flight[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [analytics, setAnalytics] = useState<ExpenseAnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -71,13 +80,78 @@ function TripDetailContent() {
     title: string;
   } | null>(null);
 
+  // Auto-scroll the active tab into view within the tab bar container
+  const tabRefs = useRef<Map<TabKey, HTMLButtonElement>>(new Map());
+  const tabContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScrollability = useCallback(() => {
+    const el = tabContainerRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  const scrollToTab = useCallback((key: TabKey, smooth = true) => {
+    const container = tabContainerRef.current;
+    const button = tabRefs.current.get(key);
+    if (!container || !button) return;
+
+    const containerWidth = container.clientWidth;
+    const buttonOffsetLeft = button.offsetLeft;
+    const buttonWidth = button.offsetWidth;
+
+    // Calculate target scroll position to center the active button nicely in container
+    const targetScrollLeft = buttonOffsetLeft - (containerWidth / 2) + (buttonWidth / 2);
+
+    container.scrollTo({
+      left: Math.max(0, targetScrollLeft),
+      behavior: smooth ? 'smooth' : 'auto',
+    });
+  }, []);
+
+  useEffect(() => {
+    scrollToTab(activeTab, true);
+    // Recheck scroll state after smooth scroll completes
+    const timer = setTimeout(checkScrollability, 350);
+    return () => clearTimeout(timer);
+  }, [activeTab, scrollToTab, checkScrollability]);
+
+  useEffect(() => {
+    const container = tabContainerRef.current;
+    if (!container) return;
+
+    checkScrollability();
+    const handleScroll = () => checkScrollability();
+    container.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Enable horizontal mouse wheel / trackpad shift
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // Already horizontal
+      if (container.scrollWidth <= container.clientWidth) return; // No overflow
+      e.preventDefault();
+      container.scrollLeft += e.deltaY;
+    };
+    container.addEventListener('wheel', handleWheel, { passive: false });
+
+    const handleResize = () => checkScrollability();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      container.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [checkScrollability]);
+
   const fetchTripData = useCallback(async () => {
     if (!tripId) return;
     try {
       setLoading(true);
       setError(null);
 
-      const [tripData, daysData, recsData, flightsData, expensesData, analyticsData] =
+      const [tripData, daysData, recsData, flightsData, expensesData, analyticsData, bookingsData] =
         await Promise.all([
           tripService.getTrip(tripId),
           itineraryService.getItineraryDays(tripId).catch(() => []),
@@ -85,21 +159,26 @@ function TripDetailContent() {
           flightService.getFlights(tripId).catch(() => []),
           expenseService.getExpenses(tripId).catch(() => []),
           expenseService.getAnalytics(tripId).catch(() => null),
+          bookingService.getBookings(tripId).catch(() => []),
         ]);
 
       setTrip(tripData);
+      if (tripData?.destination) {
+        setTripDestination(tripData.destination);
+      }
       setDays(daysData);
       setRecommendations(recsData);
       setFlights(flightsData);
       setExpenses(expensesData);
       setAnalytics(analyticsData);
+      setBookings(bookingsData);
     } catch (err: any) {
       console.error('Failed to load trip details:', err);
       setError(err.message || 'Failed to load trip details. Verify you have access.');
     } finally {
       setLoading(false);
     }
-  }, [tripId]);
+  }, [tripId, setTripDestination]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -123,13 +202,13 @@ function TripDetailContent() {
     }
     try {
       await recommendationService.addToItinerary({
-        recommendation_id: recId,
         day_id: days[0].id,
+        recommendation_id: recId,
       });
       fetchTripData();
-      alert('Added recommendation to Day 1 of your itinerary!');
-    } catch (err: any) {
-      alert(err.message || 'Failed to add recommendation.');
+      setActiveTab('itinerary');
+    } catch (err) {
+      console.error('Failed to add recommendation to itinerary:', err);
     }
   };
 
@@ -145,7 +224,7 @@ function TripDetailContent() {
 
   if (loading && !trip) {
     return (
-      <div className="space-y-6 animate-pulse py-6">
+      <div className="space-y-6 py-6 animate-pulse">
         <div className="h-64 bg-slate-900 rounded-3xl" />
         <div className="h-12 bg-slate-900 rounded-2xl w-3/4" />
         <div className="h-96 bg-slate-900 rounded-3xl" />
@@ -176,11 +255,17 @@ function TripDetailContent() {
   const tabs: { key: TabKey; label: string; icon: React.ReactNode; badge?: number }[] = [
     { key: 'itinerary', label: 'Day Planner', icon: <Compass className="w-4 h-4 text-cyan-400" />, badge: allItineraryItems.length },
     { key: 'map', label: 'Interactive Map', icon: <Globe className="w-4 h-4 text-blue-400" /> },
+    { key: 'bookings', label: 'Stays & Dining', icon: <HotelIcon className="w-4 h-4 text-blue-400" />, badge: bookings.length },
     { key: 'recommendations', label: 'AI Discoveries', icon: <Sparkles className="w-4 h-4 text-purple-400" />, badge: recommendations.length },
     { key: 'flights', label: 'Flights & Tracking', icon: <Plane className="w-4 h-4 text-sky-400" />, badge: flights.length },
     { key: 'expenses', label: 'Expenses & Splits', icon: <Receipt className="w-4 h-4 text-emerald-400" />, badge: expenses.length },
     { key: 'chat', label: 'Real-Time Chat', icon: <MessageSquare className="w-4 h-4 text-amber-400" /> },
   ];
+
+  const scrollByAmount = (offset: number) => {
+    if (!tabContainerRef.current) return;
+    tabContainerRef.current.scrollBy({ left: offset, behavior: 'smooth' });
+  };
 
   return (
     <div className="space-y-6 pb-12">
@@ -194,38 +279,76 @@ function TripDetailContent() {
       {/* Destination Weather Bar */}
       <WeatherWidget tripId={trip.id} />
 
-      {/* Navigation Tab Bar with Travel Logo Emblem */}
-      <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-slate-900 border border-slate-800 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-800">
-        <div className="hidden md:flex items-center gap-2 pl-2 pr-3 border-r border-slate-800 shrink-0">
-          <TravelLogo size="xs" />
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Trip Hub</span>
+      {/* Navigation Tab Bar with Travel Logo Emblem & Side Auto-Scroll */}
+      <div className="relative group/tabbar">
+        {/* Left Side Scroll Indicator / Shifter */}
+        {canScrollLeft && (
+          <button
+            type="button"
+            onClick={() => scrollByAmount(-200)}
+            className="absolute left-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-xl bg-theme-surface/90 backdrop-blur-md border border-theme-strong shadow-lg flex items-center justify-center text-white hover:bg-theme-accent transition-all cursor-pointer"
+            title="Scroll left"
+            aria-label="Scroll tabs left"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+        )}
+
+        {/* Right Side Scroll Indicator / Shifter */}
+        {canScrollRight && (
+          <button
+            type="button"
+            onClick={() => scrollByAmount(200)}
+            className="absolute right-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-xl bg-theme-surface/90 backdrop-blur-md border border-theme-strong shadow-lg flex items-center justify-center text-white hover:bg-theme-accent transition-all cursor-pointer"
+            title="Scroll right"
+            aria-label="Scroll tabs right"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        )}
+
+        <div
+          ref={tabContainerRef}
+          className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-theme-surface border border-theme-subtle overflow-x-auto scrollbar-none scroll-smooth"
+        >
+          <div className="hidden md:flex items-center gap-2 pl-2 pr-3 border-r border-theme-subtle shrink-0">
+            <TravelLogo size="xs" />
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-theme-muted">Trip Hub</span>
+          </div>
+          {tabs.map((tab) => {
+            const isActive = activeTab === tab.key;
+            return (
+              <button
+                key={tab.key}
+                ref={(node) => {
+                  if (node) {
+                    tabRefs.current.set(tab.key, node);
+                  } else {
+                    tabRefs.current.delete(tab.key);
+                  }
+                }}
+                onClick={() => setActiveTab(tab.key)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
+                  isActive
+                    ? 'bg-theme-accent text-white border border-theme-strong shadow-sm'
+                    : 'text-slate-400 hover:text-white hover:bg-theme-raised'
+                }`}
+              >
+                {tab.icon}
+                <span>{tab.label}</span>
+                {tab.badge != null && tab.badge > 0 && (
+                  <span
+                    className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
+                      isActive ? 'bg-white/20 text-white' : 'bg-theme-raised text-slate-300'
+                    }`}
+                  >
+                    {tab.badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
-        {tabs.map((tab) => {
-          const isActive = activeTab === tab.key;
-          return (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
-                isActive
-                  ? 'bg-blue-600 text-white border border-blue-500'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
-              }`}
-            >
-              {tab.icon}
-              <span>{tab.label}</span>
-              {tab.badge != null && tab.badge > 0 && (
-                <span
-                  className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
-                    isActive ? 'bg-white/20 text-white' : 'bg-slate-800 text-slate-300'
-                  }`}
-                >
-                  {tab.badge}
-                </span>
-              )}
-            </button>
-          );
-        })}
       </div>
 
       {/* Tab 1: Day Planner & Itinerary */}
@@ -244,10 +367,21 @@ function TripDetailContent() {
           destination={trip.destination}
           centerLat={trip.destination_lat || 35.6762}
           centerLng={trip.destination_lng || 139.6503}
+          days={days}
           itineraryItems={allItineraryItems}
           recommendations={recommendations}
           selectedLocation={selectedMapLocation}
           onAddRecommendationToItinerary={handleAddRecommendationToItinerary}
+        />
+      )}
+
+      {/* Tab 3: Stays & Dining Hub */}
+      {activeTab === 'bookings' && (
+        <StaysAndDiningHub
+          trip={trip}
+          days={days}
+          bookings={bookings}
+          onBookingsUpdated={fetchTripData}
         />
       )}
 

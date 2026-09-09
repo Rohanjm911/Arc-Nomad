@@ -11,16 +11,19 @@ import {
   Plane,
   Sparkles,
   Users,
+  User,
   ArrowRight,
   Filter,
 } from 'lucide-react';
 import { useAuth } from '../../store/AuthContext';
+import { useTheme } from '../../store/ThemeContext';
 import { tripService } from '../../services/tripService';
 import { flightService } from '../../services/flightService';
 import { TripSummary, Flight } from '../../types';
 import { TripCard } from '../../components/dashboard/TripCard';
 import { QuickActions } from '../../components/dashboard/QuickActions';
 import { UpcomingFlightsWidget } from '../../components/dashboard/UpcomingFlightsWidget';
+import { UpcomingBriefingWidget } from '../../components/dashboard/UpcomingBriefingWidget';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { Card } from '../../components/ui/Card';
@@ -28,6 +31,7 @@ import { Card } from '../../components/ui/Card';
 export default function DashboardPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
+  const { setTripDestination } = useTheme();
   const [trips, setTrips] = useState<TripSummary[]>([]);
   const [flights, setFlights] = useState<Flight[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
@@ -47,6 +51,8 @@ export default function DashboardPage() {
         } catch (e) {
           // Flights optional
         }
+      } else {
+        setFlights([]);
       }
     } catch (err) {
       console.error('Failed to load dashboard data:', err);
@@ -64,6 +70,16 @@ export default function DashboardPage() {
       fetchDashboardData();
     }
   }, [user, authLoading, router]);
+
+  // Sync atmospheric theme with the current user's active expedition
+  useEffect(() => {
+    if (trips.length > 0) {
+      const activeOrUpcoming = trips.find((t) => t.status === 'ACTIVE') || trips[0];
+      if (activeOrUpcoming?.destination) {
+        setTripDestination(activeOrUpcoming.destination);
+      }
+    }
+  }, [trips, setTripDestination]);
 
   if (authLoading || (loading && trips.length === 0)) {
     return (
@@ -93,17 +109,25 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8 py-4">
       {/* 1. Top Greeting & Quick Actions Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-theme-subtle">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
               Welcome back, {user?.full_name.split(' ')[0]} 👋
             </h1>
             {user?.travel_style && (
-              <Badge variant="purple" size="sm">
+              <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-950 border border-blue-800/40 text-blue-300">
                 {user.travel_style}
-              </Badge>
+              </span>
             )}
+            <Link
+              href="/profile"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-theme-surface border border-theme-subtle text-xs font-semibold text-slate-300 hover:text-white hover:border-theme-strong hover:bg-theme-surface-raised transition-colors"
+              title="View your private explorer passport"
+            >
+              <User className="w-3.5 h-3.5 text-blue-400" />
+              <span>View Profile</span>
+            </Link>
           </div>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
             You have <strong className="text-blue-400">{trips.length} journeys</strong> mapped in your collective.
@@ -118,47 +142,8 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      {/* 2. Active Trip Spotlight (If trips exist) */}
-      {activeTrip && (
-        <Card className="p-6 bg-slate-900 border-slate-800">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Badge variant={activeTrip.status === 'ACTIVE' ? 'success' : 'primary'} size="sm">
-                  {activeTrip.status === 'ACTIVE' ? 'CURRENT ACTIVE EXPEDITION' : 'NEXT UPCOMING EXPEDITION'}
-                </Badge>
-                <Badge variant="teal" size="sm">
-                  <MapPin className="w-3 h-3" />
-                  {activeTrip.destination}
-                </Badge>
-              </div>
-
-              <h2 className="text-xl sm:text-2xl font-extrabold text-white">
-                {activeTrip.title}
-              </h2>
-
-              <p className="text-xs text-slate-400 flex flex-wrap items-center gap-4">
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-slate-500" />
-                  {new Date(activeTrip.start_date).toLocaleDateString([], { month: 'short', day: 'numeric' })} –{' '}
-                  {new Date(activeTrip.end_date).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}
-                </span>
-                <span>Budget: <strong className="text-white">{activeTrip.currency} {Number(activeTrip.budget).toLocaleString()}</strong></span>
-                <span>Crew: <strong className="text-white">{activeTrip.member_count} Members</strong></span>
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2 shrink-0">
-              <Link href={`/trips/${activeTrip.id}`}>
-                <Button variant="primary" size="md" className="gap-2 font-bold text-xs sm:text-sm">
-                  Open Trip Workspace
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </Card>
-      )}
+      {/* 2. Upcoming Expeditions & Destination Intelligence Briefing */}
+      <UpcomingBriefingWidget trips={trips} />
 
       {/* 3. Quick Action Tiles */}
       <QuickActions />
@@ -172,7 +157,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Filter Pills */}
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-slate-800 overflow-x-auto">
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-theme-surface border border-theme-subtle overflow-x-auto">
             {filterOptions.map((f) => (
               <button
                 key={f.value}
@@ -180,12 +165,12 @@ export default function DashboardPage() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer shrink-0 flex items-center gap-1.5 ${
                   statusFilter === f.value
                     ? 'bg-blue-600 text-white'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    : 'text-slate-400 hover:text-white hover:bg-theme-surface-raised'
                 }`}
               >
                 <span>{f.label}</span>
                 <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold ${
-                  statusFilter === f.value ? 'bg-blue-800 text-white' : 'bg-slate-800 text-slate-300'
+                  statusFilter === f.value ? 'bg-blue-800 text-white' : 'bg-theme-surface-raised text-slate-300'
                 }`}>
                   {f.count}
                 </span>
@@ -196,7 +181,7 @@ export default function DashboardPage() {
 
         {/* Trips Grid */}
         {filteredTrips.length === 0 ? (
-          <Card className="py-12 text-center space-y-3 bg-slate-900 border-slate-800">
+          <Card className="py-12 text-center space-y-3">
             <Compass className="w-10 h-10 text-slate-500 mx-auto" />
             <h3 className="text-sm font-bold text-white">No journeys found in this view</h3>
             <p className="text-xs text-slate-400 max-w-sm mx-auto">

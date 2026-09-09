@@ -295,3 +295,104 @@ export interface WeatherData {
   icon: string;
   forecast: WeatherForecastItem[];
 }
+
+export type BookingType = 'HOTEL' | 'RESTAURANT';
+
+export interface RoomTypeOption {
+  name: string;
+  price_per_night: number;
+  description: string;
+  capacity: number;
+}
+
+export interface HotelCatalogItem {
+  id: string;
+  name: string;
+  destination: string;
+  tier: string;
+  rating: number;
+  reviews_count: number;
+  price_per_night: number;
+  currency: string;
+  address: string;
+  neighborhood: string;
+  amenities: string[];
+  room_types: RoomTypeOption[];
+  image_url: string;
+  description: string;
+  latitude?: number | null;
+  longitude?: number | null;
+}
+
+export interface NearbyHotelResult {
+  hotel: HotelCatalogItem;
+  distance_km: number;
+  nearest_spot: string;
+}
+
+export interface NearbyRestaurantResult {
+  restaurant: RestaurantCatalogItem;
+  distance_km: number;
+  nearest_spot: string;
+}
+
+export interface RestaurantCatalogItem {
+  id: string;
+  name: string;
+  destination: string;
+  cuisine: string;
+  price_tier: string;
+  rating: number;
+  reviews_count: number;
+  address: string;
+  neighborhood: string;
+  vibe: string;
+  signature_dishes: string[];
+  dietary_options: string[];
+  available_times: string[];
+  image_url: string;
+  description: string;
+  latitude?: number | null;
+  longitude?: number | null;
+}
+
+export interface Booking {
+  id: string;
+  trip_id: string;
+  user_id: string;
+  booking_type: BookingType;
+  title: string;
+  confirmation_code: string;
+  status: string;
+  start_date: string;
+  end_date?: string | null;
+  time_slot?: string | null;
+  party_size: number;
+  total_price?: number | null;
+  currency: string;
+  address?: string | null;
+  phone_or_contact?: string | null;
+  special_requests?: string | null;
+  details?: Record<string, any> | null;
+  created_at: string;
+  updated_at?: string | null;
+}
+
+export interface BookingCreateInput {
+  trip_id: string;
+  booking_type: BookingType;
+  title: string;
+  start_date: string;
+  end_date?: string;
+  time_slot?: string;
+  party_size: number;
+  total_price?: number;
+  currency?: string;
+  address?: string;
+  phone_or_contact?: string;
+  special_requests?: string;
+  details?: Record<string, any>;
+  add_to_itinerary?: boolean;
+  itinerary_day_id?: string;
+}
+

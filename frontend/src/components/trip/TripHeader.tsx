@@ -48,7 +48,7 @@ export const TripHeader: React.FC<TripHeaderProps> = ({
 
   return (
     <>
-      <div className="relative rounded-3xl overflow-hidden border border-slate-800 bg-slate-900 shadow-2xl">
+      <div className="relative rounded-3xl overflow-hidden border border-theme-subtle bg-theme-surface shadow-2xl">
         {/* Cover Image Banner */}
         <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-slate-950">
           <img
@@ -56,7 +56,8 @@ export const TripHeader: React.FC<TripHeaderProps> = ({
             alt={trip.title}
             className="w-full h-full object-cover opacity-80"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-slate-950/20" />
+          {/* Solid architectural matte overlay - strictly no gradient */}
+          <div className="absolute inset-0 bg-slate-950/65 backdrop-blur-[1px]" />
 
           {/* Top Floating Controls */}
           <div className="absolute top-4 right-4 flex items-center gap-2">
@@ -64,7 +65,7 @@ export const TripHeader: React.FC<TripHeaderProps> = ({
               variant="outline"
               size="sm"
               onClick={handleShare}
-              className="bg-slate-900/80 backdrop-blur border-slate-700/80 text-xs gap-1.5"
+              className="bg-theme-surface/90 backdrop-blur border-theme-subtle hover:border-theme-strong text-xs gap-1.5"
             >
               <Share2 className="w-3.5 h-3.5" />
               {copied ? 'Copied Link!' : 'Share'}
@@ -74,7 +75,7 @@ export const TripHeader: React.FC<TripHeaderProps> = ({
               variant="outline"
               size="sm"
               onClick={handlePdfExport}
-              className="bg-slate-900/80 backdrop-blur border-slate-700/80 text-xs gap-1.5 hover:border-indigo-500/50"
+              className="bg-theme-surface/90 backdrop-blur border-theme-subtle hover:border-theme-strong text-xs gap-1.5 hover:text-indigo-300"
             >
               <FileDown className="w-3.5 h-3.5 text-indigo-400" />
               PDF Dossier
@@ -84,7 +85,7 @@ export const TripHeader: React.FC<TripHeaderProps> = ({
               variant="outline"
               size="sm"
               onClick={handleExcelExport}
-              className="bg-slate-900/80 backdrop-blur border-slate-700/80 text-xs gap-1.5 hover:border-emerald-500/50"
+              className="bg-theme-surface/90 backdrop-blur border-theme-subtle hover:border-theme-strong text-xs gap-1.5 hover:text-emerald-300"
             >
               <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
               Excel Dossier
@@ -95,7 +96,7 @@ export const TripHeader: React.FC<TripHeaderProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={() => setSettingsModalOpen(true)}
-                className="bg-slate-900/80 backdrop-blur border-slate-700/80 text-xs p-2"
+                className="bg-theme-surface/90 backdrop-blur border-theme-subtle hover:border-theme-strong text-xs p-2"
                 aria-label="Trip Settings"
               >
                 <Settings className="w-4 h-4 text-slate-300" />
@@ -161,18 +162,18 @@ export const TripHeader: React.FC<TripHeaderProps> = ({
                 variant="secondary"
                 size="sm"
                 onClick={() => setMembersModalOpen(true)}
-                className="gap-1.5 text-xs bg-slate-900/90"
+                className="gap-1.5 text-xs bg-theme-surface/90 border border-theme-subtle hover:border-theme-strong"
               >
-                <UserPlus className="w-3.5 h-3.5 text-indigo-400" />
+                <UserPlus className="w-3.5 h-3.5 text-theme-accent" />
                 Invite
               </Button>
 
               {canEdit && onOpenAIGenerator && (
                 <Button
-                  variant="gradient"
+                  variant="ai"
                   size="sm"
                   onClick={onOpenAIGenerator}
-                  className="gap-1.5 text-xs"
+                  className="gap-1.5 text-xs font-bold shadow-sm"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   AI Architect

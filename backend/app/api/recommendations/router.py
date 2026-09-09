@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from backend.app.core.database import get_db
 from backend.app.models.user import User
-from backend.app.models.trip import TripRole
+from backend.app.models.trip import Trip, TripRole
 from backend.app.models.recommendation import Recommendation
 from backend.app.models.itinerary import ItineraryDay, ItineraryItem
 from backend.app.schemas.recommendation import (
@@ -44,6 +44,17 @@ def save_recommendation(
         trip_id=rec_in.trip_id, db=db, current_user=current_user
     )
 
+    # Check for existing duplicate recommendation by name & trip_id
+    existing = db.query(Recommendation).filter(
+        Recommendation.trip_id == rec_in.trip_id,
+        Recommendation.name == rec_in.name
+    ).first()
+    if existing:
+        existing.is_saved = True
+        db.commit()
+        db.refresh(existing)
+        return existing
+
     rec = Recommendation(
         trip_id=rec_in.trip_id,
         name=rec_in.name,
@@ -82,12 +93,17 @@ def add_recommendation_to_itinerary(
         trip_id=day.trip_id, db=db, current_user=current_user
     )
 
+    trip = db.query(Trip).filter(Trip.id == day.trip_id).first()
+    trip_currency = trip.currency if trip and trip.currency else "USD"
+
     count = db.query(ItineraryItem).filter(ItineraryItem.day_id == day.id).count()
 
     cat_map = {
         "Attractions": "SIGHTSEEING",
+        "Sightseeing": "SIGHTSEEING",
         "Restaurants": "FOOD",
         "Cafes": "FOOD",
+        "Nightlife": "FOOD",
         "Activities": "ACTIVITY",
         "Hotels": "HOTEL",
         "Hidden Gems": "SIGHTSEEING"
@@ -107,7 +123,7 @@ def add_recommendation_to_itinerary(
         end_time=req.end_time or "12:00",
         category=mapped_cat,
         estimated_cost=req.estimated_cost or 0.0,
-        currency="USD",
+        currency=trip_currency,
         order_index=count,
         notes=f"Added from recommendations. {rec.reason or ''}".strip()
     )
@@ -116,3 +132,21 @@ def add_recommendation_to_itinerary(
     db.commit()
 
     return {"message": "Recommendation added to itinerary", "item_id": item.id}
+
+@router.delete("/{rec_id}", status_code=status.HTTP_200_OK)
+def delete_recommendation(
+    rec_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    rec = db.query(Recommendation).filter(Recommendation.id == rec_id).first()
+    if not rec:
+        raise HTTPException(status_code=404, detail="Recommendation not found")
+
+    require_trip_roles([TripRole.OWNER.value, TripRole.EDITOR.value])(
+        trip_id=rec.trip_id, db=db, current_user=current_user
+    )
+
+    db.delete(rec)
+    db.commit()
+    return {"message": "Recommendation removed from trip", "id": rec_id}

@@ -39,16 +39,16 @@ export const FlightBoardingPass: React.FC<FlightBoardingPassProps> = ({
 
   return (
     <>
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-lg transition-colors hover:border-slate-700">
+      <div className="rounded-3xl bg-theme-surface border border-theme-subtle overflow-hidden shadow-xl transition-all hover:border-theme-strong">
         {/* Top Header Strip (Solid Dark Surface, NO gradients) */}
-        <div className="bg-slate-950 p-4 border-b border-slate-800 flex items-center justify-between">
+        <div className="bg-theme-surface-raised p-4 sm:p-5 border-b border-theme-subtle flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-blue-950 border border-blue-600/30 flex items-center justify-center text-blue-400">
+            <div className="w-8 h-8 rounded-xl bg-theme-surface border border-theme-subtle flex items-center justify-center text-theme-accent">
               <Plane className="w-4 h-4" />
             </div>
             <div>
               <span className="text-xs font-bold text-white">{flight.airline}</span>
-              <p className="text-[11px] font-mono text-blue-400 font-semibold">{flight.flight_number}</p>
+              <p className="text-[11px] font-mono text-theme-accent font-semibold">{flight.flight_number}</p>
             </div>
           </div>
 
@@ -62,7 +62,7 @@ export const FlightBoardingPass: React.FC<FlightBoardingPassProps> = ({
                 variant="secondary"
                 size="sm"
                 onClick={() => setSimulateModalOpen(true)}
-                className="text-xs gap-1 py-1 px-2.5 bg-slate-900 text-amber-300 border-amber-600/30 hover:bg-slate-800"
+                className="text-xs gap-1 py-1 px-2.5 bg-theme-surface text-amber-300 border-amber-600/30 hover:bg-theme-surface-raised"
                 title="Simulate Status Change"
               >
                 <Play className="w-3 h-3 fill-amber-300" />
@@ -73,7 +73,7 @@ export const FlightBoardingPass: React.FC<FlightBoardingPassProps> = ({
             {canEdit && onDeleteFlight && (
               <button
                 onClick={() => onDeleteFlight(flight.id)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800 transition-colors cursor-pointer"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-theme-surface-raised transition-colors cursor-pointer"
                 title="Delete Flight"
               >
                 <Trash2 className="w-4 h-4" />
@@ -106,7 +106,7 @@ export const FlightBoardingPass: React.FC<FlightBoardingPassProps> = ({
             <div className="flex items-center gap-2 w-full max-w-[180px]">
               <div className="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0" />
               <div className="flex-1 border-t-2 border-dashed border-slate-700" />
-              <Plane className="w-4 h-4 text-blue-400 shrink-0 rotate-90" />
+              <Plane className="w-4 h-4 text-theme-accent shrink-0 rotate-90" />
               <div className="flex-1 border-t-2 border-dashed border-slate-700" />
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
             </div>
@@ -134,7 +134,7 @@ export const FlightBoardingPass: React.FC<FlightBoardingPassProps> = ({
         </div>
 
         {/* Boarding Pass Footer Details */}
-        <div className="bg-slate-950/70 p-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-4 text-xs">
+        <div className="bg-theme-surface-raised p-4 border-t border-theme-subtle flex flex-wrap items-center justify-between gap-4 text-xs">
           <div className="flex items-center gap-6">
             <div>
               <span className="text-slate-500 block text-[10px] uppercase font-bold">Terminal</span>

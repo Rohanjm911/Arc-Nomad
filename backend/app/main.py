@@ -17,6 +17,7 @@ from backend.app.api.expenses.router import router as expenses_router
 from backend.app.api.chat.router import router as chat_router
 from backend.app.api.notifications.router import router as notifications_router
 from backend.app.api.exports.router import router as exports_router
+from backend.app.api.bookings.router import router as bookings_router
 from backend.app.workers.flight_worker import start_flight_worker_loop
 
 # Configure structured logging
@@ -79,6 +80,7 @@ app.include_router(expenses_router, prefix=api_v1_prefix)
 app.include_router(chat_router, prefix=api_v1_prefix)
 app.include_router(notifications_router, prefix=api_v1_prefix)
 app.include_router(exports_router, prefix=api_v1_prefix)
+app.include_router(bookings_router, prefix=api_v1_prefix)
 
 @app.get("/")
 def root():

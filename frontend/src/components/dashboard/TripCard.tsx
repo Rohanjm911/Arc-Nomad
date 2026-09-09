@@ -25,7 +25,7 @@ export const TripCard: React.FC<TripCardProps> = ({ trip }) => {
   return (
     <Link
       href={`/trips/${trip.id}`}
-      className="group rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden transition-colors duration-150 hover:border-slate-600 flex flex-col justify-between"
+      className="group rounded-2xl bg-theme-surface border border-theme-subtle overflow-hidden transition-all duration-200 hover:border-theme-strong hover:bg-theme-surface-raised flex flex-col justify-between shadow-lg"
     >
       {/* Cover Image Banner (Solid framing, NO gradients) */}
       <div className="relative h-44 w-full bg-slate-950">
@@ -46,9 +46,9 @@ export const TripCard: React.FC<TripCardProps> = ({ trip }) => {
           </Badge>
         </div>
 
-        {/* Destination Pin on bottom left */}
-        <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg bg-slate-950/90 border border-slate-800 flex items-center gap-1.5 text-slate-200 text-xs font-bold">
-          <MapPin className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+        {/* Destination Pin on bottom left (Tone 2: Secondary Accent) */}
+        <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg bg-theme-surface/90 backdrop-blur border border-theme-subtle flex items-center gap-1.5 text-cyan-200 text-xs font-bold">
+          <MapPin className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
           <span>{trip.destination}</span>
         </div>
       </div>
@@ -70,7 +70,7 @@ export const TripCard: React.FC<TripCardProps> = ({ trip }) => {
         </div>
 
         {/* Bottom Strip: Budget & Crew */}
-        <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+        <div className="pt-3 border-t border-theme-subtle flex items-center justify-between text-xs">
           <div className="flex items-center gap-1.5 text-slate-300 font-semibold">
             <Users className="w-3.5 h-3.5 text-slate-500" />
             <span>{trip.member_count} {trip.member_count === 1 ? 'Traveler' : 'Travelers'}</span>

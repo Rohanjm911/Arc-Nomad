@@ -2,64 +2,744 @@
 
 :root {
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Baseline Atmosphere Tokens (Global / Default) */
   --bg-primary: #0B0F19;
   --bg-surface: #111827;
-  --bg-surface-raised: #1F2937;
+  --bg-surface-raised: #1A2333;
+  --bg-surface-hover: #222E42;
+  
   --border-subtle: #1E293B;
   --border-strong: #334155;
-  --color-primary: #2563EB;
-  --color-primary-hover: #1D4ED8;
-  --color-teal: #0D9488;
-  --color-amber: #D97706;
-  --color-ai: #7C3AED;
-  --color-danger: #DC2626;
-  --color-success: #059669;
+  --border-active: #38BDF8;
+  
+  --accent-primary: #2563EB;
+  --accent-primary-hover: #1D4ED8;
+  --accent-secondary: #38BDF8;
+  --accent-muted: #1E3A8A;
+  
+  /* Dual-Tone Core Tokens (Tone 1: Primary Brand Accent, Tone 2: Contrasting Highlight) */
+  --duotone-primary: var(--accent-primary);
+  --duotone-primary-hover: var(--accent-primary-hover);
+  --duotone-secondary: var(--accent-secondary);
+  --duotone-muted: var(--accent-muted);
+  
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  
+  --tag-bg: #1E293B;
+  --tag-border: #334155;
+  --tag-text: #38BDF8;
 }
 
+/* ==========================================================================
+   LOCATION & TIME-OF-DAY ATMOSPHERIC MATRIX (STRICT ZERO-GRADIENT PALETTES)
+   ========================================================================== */
+
+/* 🗼 TOKYO ATMOSPHERES */
+[data-location="tokyo"][data-time="dawn"] {
+  --bg-primary: #0C1017;
+  --bg-surface: #121824;
+  --bg-surface-raised: #1A2334;
+  --bg-surface-hover: #242F46;
+  --border-subtle: #1E283A;
+  --border-strong: #2F3E57;
+  --border-active: #F472B6;
+  --accent-primary: #DB2777;
+  --accent-primary-hover: #BE185D;
+  --accent-secondary: #F472B6;
+  --accent-muted: #831843;
+  --tag-bg: #1F1724;
+  --tag-border: #3D223B;
+  --tag-text: #F472B6;
+}
+
+[data-location="tokyo"][data-time="day"] {
+  --bg-primary: #0F172A;
+  --bg-surface: #172236;
+  --bg-surface-raised: #202F48;
+  --bg-surface-hover: #2B3D5C;
+  --border-subtle: #25344D;
+  --border-strong: #394E70;
+  --border-active: #06B6D4;
+  --accent-primary: #0891B2;
+  --accent-primary-hover: #0E7490;
+  --accent-secondary: #06B6D4;
+  --accent-muted: #155E75;
+  --tag-bg: #102636;
+  --tag-border: #1C425C;
+  --tag-text: #22D3EE;
+}
+
+[data-location="tokyo"][data-time="sunset"] {
+  --bg-primary: #130F19;
+  --bg-surface: #1C1625;
+  --bg-surface-raised: #261E33;
+  --bg-surface-hover: #322742;
+  --border-subtle: #2D233B;
+  --border-strong: #443558;
+  --border-active: #F43F5E;
+  --accent-primary: #E11D48;
+  --accent-primary-hover: #BE123C;
+  --accent-secondary: #FB7185;
+  --accent-muted: #881337;
+  --tag-bg: #2B1522;
+  --tag-border: #4A1E37;
+  --tag-text: #FB7185;
+}
+
+[data-location="tokyo"][data-time="night"] {
+  --bg-primary: #080A10;
+  --bg-surface: #0E131F;
+  --bg-surface-raised: #151D2D;
+  --bg-surface-hover: #1E293E;
+  --border-subtle: #1A2336;
+  --border-strong: #2B3852;
+  --border-active: #00E5FF;
+  --accent-primary: #0284C7;
+  --accent-primary-hover: #0369A1;
+  --accent-secondary: #00E5FF;
+  --accent-muted: #0C4A6E;
+  --tag-bg: #0C1E2C;
+  --tag-border: #15374E;
+  --tag-text: #00E5FF;
+}
+
+/* 🥐 PARIS ATMOSPHERES */
+[data-location="paris"][data-time="dawn"] {
+  --bg-primary: #101219;
+  --bg-surface: #171A24;
+  --bg-surface-raised: #212534;
+  --bg-surface-hover: #2B3042;
+  --border-subtle: #242938;
+  --border-strong: #383F54;
+  --border-active: #F472B6;
+  --accent-primary: #E11D48;
+  --accent-primary-hover: #BE123C;
+  --accent-secondary: #FB7185;
+  --accent-muted: #881337;
+  --tag-bg: #241A22;
+  --tag-border: #3E2B38;
+  --tag-text: #F472B6;
+}
+
+[data-location="paris"][data-time="day"] {
+  --bg-primary: #0D131F;
+  --bg-surface: #141D2E;
+  --bg-surface-raised: #1C283F;
+  --bg-surface-hover: #263654;
+  --border-subtle: #22314C;
+  --border-strong: #34486E;
+  --border-active: #3B82F6;
+  --accent-primary: #2563EB;
+  --accent-primary-hover: #1D4ED8;
+  --accent-secondary: #60A5FA;
+  --accent-muted: #1E3A8A;
+  --tag-bg: #14213B;
+  --tag-border: #223761;
+  --tag-text: #60A5FA;
+}
+
+[data-location="paris"][data-time="sunset"] {
+  --bg-primary: #161210;
+  --bg-surface: #201A17;
+  --bg-surface-raised: #2D2420;
+  --bg-surface-hover: #3C302B;
+  --border-subtle: #352A24;
+  --border-strong: #524036;
+  --border-active: #F59E0B;
+  --accent-primary: #D97706;
+  --accent-primary-hover: #B45309;
+  --accent-secondary: #FBBF24;
+  --accent-muted: #78350F;
+  --tag-bg: #2B1D14;
+  --tag-border: #4B3220;
+  --tag-text: #FBBF24;
+}
+
+[data-location="paris"][data-time="night"] {
+  --bg-primary: #090C12;
+  --bg-surface: #101622;
+  --bg-surface-raised: #182030;
+  --bg-surface-hover: #222D42;
+  --border-subtle: #1C2537;
+  --border-strong: #2D3A54;
+  --border-active: #EAB308;
+  --accent-primary: #CA8A04;
+  --accent-primary-hover: #A16207;
+  --accent-secondary: #FACC15;
+  --accent-muted: #713F12;
+  --tag-bg: #262211;
+  --tag-border: #423B1B;
+  --tag-text: #FACC15;
+}
+
+/* 🗽 NEW YORK ATMOSPHERES */
+[data-location="new-york"][data-time="dawn"] {
+  --bg-primary: #0E1218;
+  --bg-surface: #151A24;
+  --bg-surface-raised: #1F2633;
+  --bg-surface-hover: #2A3344;
+  --border-subtle: #212937;
+  --border-strong: #333F53;
+  --border-active: #38BDF8;
+  --accent-primary: #0284C7;
+  --accent-primary-hover: #0369A1;
+  --accent-secondary: #38BDF8;
+  --accent-muted: #075985;
+  --tag-bg: #112333;
+  --tag-border: #1C3B54;
+  --tag-text: #38BDF8;
+}
+
+[data-location="new-york"][data-time="day"] {
+  --bg-primary: #0A0E17;
+  --bg-surface: #111724;
+  --bg-surface-raised: #1A2234;
+  --bg-surface-hover: #242F46;
+  --border-subtle: #1D2638;
+  --border-strong: #2E3B54;
+  --border-active: #2563EB;
+  --accent-primary: #1D4ED8;
+  --accent-primary-hover: #1E40AF;
+  --accent-secondary: #3B82F6;
+  --accent-muted: #172554;
+  --tag-bg: #121F38;
+  --tag-border: #1E345D;
+  --tag-text: #60A5FA;
+}
+
+[data-location="new-york"][data-time="sunset"] {
+  --bg-primary: #141111;
+  --bg-surface: #1E1919;
+  --bg-surface-raised: #2A2323;
+  --bg-surface-hover: #372E2E;
+  --border-subtle: #312727;
+  --border-strong: #4B3C3C;
+  --border-active: #EA580C;
+  --accent-primary: #C2410C;
+  --accent-primary-hover: #9A3412;
+  --accent-secondary: #FB923C;
+  --accent-muted: #7C2D12;
+  --tag-bg: #2B1812;
+  --tag-border: #4A271B;
+  --tag-text: #FB923C;
+}
+
+[data-location="new-york"][data-time="night"] {
+  --bg-primary: #06080D;
+  --bg-surface: #0C101A;
+  --bg-surface-raised: #131A29;
+  --bg-surface-hover: #1B2438;
+  --border-subtle: #162033;
+  --border-strong: #26344E;
+  --border-active: #F59E0B;
+  --accent-primary: #D97706;
+  --accent-primary-hover: #B45309;
+  --accent-secondary: #FBBF24;
+  --accent-muted: #78350F;
+  --tag-bg: #291F0E;
+  --tag-border: #483515;
+  --tag-text: #FBBF24;
+}
+
+/* ❄️ REYKJAVIK (NORDIC) ATMOSPHERES */
+[data-location="reykjavik"][data-time="dawn"] {
+  --bg-primary: #0B121A;
+  --bg-surface: #111A26;
+  --bg-surface-raised: #192636;
+  --bg-surface-hover: #223348;
+  --border-subtle: #1C2C3E;
+  --border-strong: #2C425C;
+  --border-active: #67E8F9;
+  --accent-primary: #06B6D4;
+  --accent-primary-hover: #0891B2;
+  --accent-secondary: #67E8F9;
+  --accent-muted: #164E63;
+  --tag-bg: #0F2533;
+  --tag-border: #1A3E54;
+  --tag-text: #67E8F9;
+}
+
+[data-location="reykjavik"][data-time="day"] {
+  --bg-primary: #08101A;
+  --bg-surface: #0E1A29;
+  --bg-surface-raised: #15253A;
+  --bg-surface-hover: #1D314C;
+  --border-subtle: #1A2B42;
+  --border-strong: #294264;
+  --border-active: #14B8A6;
+  --accent-primary: #0D9488;
+  --accent-primary-hover: #0F766E;
+  --accent-secondary: #2DD4BF;
+  --accent-muted: #115E59;
+  --tag-bg: #0D2B29;
+  --tag-border: #164642;
+  --tag-text: #2DD4BF;
+}
+
+[data-location="reykjavik"][data-time="sunset"] {
+  --bg-primary: #110E1A;
+  --bg-surface: #181424;
+  --bg-surface-raised: #231C34;
+  --bg-surface-hover: #2F2645;
+  --border-subtle: #29203C;
+  --border-strong: #40325D;
+  --border-active: #A855F7;
+  --accent-primary: #9333EA;
+  --accent-primary-hover: #7E22CE;
+  --accent-secondary: #C084FC;
+  --accent-muted: #581C87;
+  --tag-bg: #271439;
+  --tag-border: #442161;
+  --tag-text: #C084FC;
+}
+
+[data-location="reykjavik"][data-time="night"] {
+  --bg-primary: #050A10;
+  --bg-surface: #0A131F;
+  --bg-surface-raised: #101E2F;
+  --bg-surface-hover: #172A41;
+  --border-subtle: #132438;
+  --border-strong: #1E3754;
+  --border-active: #10B981;
+  --accent-primary: #059669;
+  --accent-primary-hover: #047857;
+  --accent-secondary: #34D399;
+  --accent-muted: #064E3B;
+  --tag-bg: #0B291D;
+  --tag-border: #144431;
+  --tag-text: #34D399;
+}
+
+/* 🏛️ ROME ATMOSPHERES */
+[data-location="rome"][data-time="dawn"] {
+  --bg-primary: #121010;
+  --bg-surface: #1B1716;
+  --bg-surface-raised: #26201F;
+  --bg-surface-hover: #332B29;
+  --border-subtle: #2B2422;
+  --border-strong: #423734;
+  --border-active: #EAB308;
+  --accent-primary: #CA8A04;
+  --accent-primary-hover: #A16207;
+  --accent-secondary: #FACC15;
+  --accent-muted: #713F12;
+  --tag-bg: #29230F;
+  --tag-border: #453A17;
+  --tag-text: #FACC15;
+}
+
+[data-location="rome"][data-time="day"] {
+  --bg-primary: #0E1117;
+  --bg-surface: #151A24;
+  --bg-surface-raised: #1E2533;
+  --bg-surface-hover: #293144;
+  --border-subtle: #222938;
+  --border-strong: #343E54;
+  --border-active: #0284C7;
+  --accent-primary: #0369A1;
+  --accent-primary-hover: #075985;
+  --accent-secondary: #38BDF8;
+  --accent-muted: #0C4A6E;
+  --tag-bg: #102436;
+  --tag-border: #1B3C57;
+  --tag-text: #38BDF8;
+}
+
+[data-location="rome"][data-time="sunset"] {
+  --bg-primary: #170F0D;
+  --bg-surface: #221714;
+  --bg-surface-raised: #2F201C;
+  --bg-surface-hover: #3F2B26;
+  --border-subtle: #392621;
+  --border-strong: #563932;
+  --border-active: #DC2626;
+  --accent-primary: #B91C1C;
+  --accent-primary-hover: #991B1B;
+  --accent-secondary: #F87171;
+  --accent-muted: #7F1D1D;
+  --tag-bg: #2C1410;
+  --tag-border: #492019;
+  --tag-text: #F87171;
+}
+
+[data-location="rome"][data-time="night"] {
+  --bg-primary: #08090E;
+  --bg-surface: #0E1019;
+  --bg-surface-raised: #151825;
+  --bg-surface-hover: #1D2133;
+  --border-subtle: #191E2C;
+  --border-strong: #283046;
+  --border-active: #F59E0B;
+  --accent-primary: #D97706;
+  --accent-primary-hover: #B45309;
+  --accent-secondary: #FBBF24;
+  --accent-muted: #78350F;
+  --tag-bg: #261E0E;
+  --tag-border: #403215;
+  --tag-text: #FBBF24;
+}
+
+/* Base Body Styling */
 body {
-  background-color: #0B0F19;
-  color: #F8FAFC;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
   font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* Crisp solid selection */
+/* Crisp Solid Selection */
 ::selection {
-  background-color: #2563EB;
+  background-color: var(--accent-primary);
   color: #FFFFFF;
 }
 
-/* Custom modern solid scrollbars */
+/* ==========================================================================
+   REMOVE SCROLLBAR / SCROLL WHEEL ACROSS THE ENTIRE SITE
+   ========================================================================== */
+
+/* Universal Scrollbar Elimination for Chrome, Safari, Edge, Opera, WebKit */
+*::-webkit-scrollbar,
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+  background: transparent !important;
+  -webkit-appearance: none !important;
 }
 
-::-webkit-scrollbar-track {
-  background: #0B0F19;
-}
-
+*::-webkit-scrollbar-track,
+::-webkit-scrollbar-track,
+*::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
-  border-radius: 4px;
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+  background: transparent !important;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+/* Universal Scrollbar Elimination for Firefox and standard modern browsers */
+*,
+*::before,
+*::after,
+html,
+body {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
-/* Focus outline helpers */
+/* Utility classes for zero-scrollbar styling */
+.scrollbar-none,
+.scrollbar-thin {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.scrollbar-none::-webkit-scrollbar,
+.scrollbar-thin::-webkit-scrollbar {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+}
+
+/* Eliminate number input spin wheels / arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield !important;
+}
+
+/* ==========================================================================
+   COMPREHENSIVE DARK MODE UI & FORM CONTROL NORMALIZATION
+   ========================================================================== */
+
+/* Universal Dark Color Scheme on all Native Controls */
+:root,
+html,
+body,
+input,
+select,
+textarea,
+button,
+dialog {
+  color-scheme: dark !important;
+}
+
+/* Native Select & Option Dark Theme Normalization */
+select {
+  color-scheme: dark !important;
+  background-color: var(--bg-surface, #111827);
+  color: var(--text-primary, #f8fafc);
+}
+
+select option,
+select optgroup {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  padding: 10px 14px !important;
+}
+
+select option:hover,
+select option:focus,
+select option:checked {
+  background-color: #1e3a8a !important;
+  color: #38bdf8 !important;
+}
+
+/* Native Date, Time & Datetime Pickers in Dark Mode */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"] {
+  color-scheme: dark !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.9) !important;
+  cursor: pointer !important;
+  opacity: 0.9 !important;
+  padding: 2px !important;
+  border-radius: 4px !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="time"]::-webkit-calendar-picker-indicator:hover,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1 !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Checkboxes & Radios */
+input[type="checkbox"],
+input[type="radio"] {
+  color-scheme: dark !important;
+  accent-color: var(--accent-primary, #2563eb) !important;
+  cursor: pointer;
+}
+
+/* Chrome/Safari/Edge Dark Mode Autofill */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill {
+  -webkit-text-fill-color: #f8fafc !important;
+  -webkit-box-shadow: 0 0 0px 1000px #0f172a inset !important;
+  box-shadow: 0 0 0px 1000px #0f172a inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: #f8fafc !important;
+}
+
+/* Placeholder Contrast Enhancement */
+::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: #64748b !important;
+  opacity: 1;
+}
+
+/* Leaflet Map Controls in Dark Mode */
+.leaflet-bar {
+  border: 1px solid var(--border-strong, #334155) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background-color: var(--bg-surface, #111827) !important;
+  color: var(--text-primary, #f8fafc) !important;
+  border-bottom: 1px solid var(--border-subtle, #1e293b) !important;
+  width: 34px !important;
+  height: 34px !important;
+  line-height: 34px !important;
+  font-size: 16px !important;
+  transition: all 0.15s ease !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: var(--bg-surface-raised, #1a2333) !important;
+  color: var(--accent-secondary, #38bdf8) !important;
+}
+
+.leaflet-bar a.leaflet-disabled {
+  background-color: var(--bg-primary, #0b0f19) !important;
+  color: var(--text-muted, #94a3b8) !important;
+}
+
+.leaflet-control-attribution {
+  background-color: rgba(11, 15, 25, 0.9) !important;
+  color: #64748b !important;
+  backdrop-filter: blur(8px) !important;
+  border-radius: 8px !important;
+  padding: 3px 10px !important;
+  font-size: 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--accent-secondary, #38bdf8) !important;
+  text-decoration: none !important;
+}
+
+.leaflet-control-attribution a:hover {
+  text-decoration: underline !important;
+}
+
+/* Leaflet Popups in Dark Mode */
+.leaflet-popup-content-wrapper {
+  background-color: var(--bg-surface, #111827) !important;
+  color: var(--text-primary, #f8fafc) !important;
+  border: 1px solid var(--border-strong, #334155) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6) !important;
+}
+
+.leaflet-popup-tip {
+  background-color: var(--bg-surface, #111827) !important;
+  border-left: 1px solid var(--border-strong, #334155) !important;
+  border-top: 1px solid var(--border-strong, #334155) !important;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--text-muted, #94a3b8) !important;
+  padding: 6px !important;
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+  color: #ffffff !important;
+}
+
+/* Focus Outline Helpers */
 :focus-visible {
-  outline: 2px solid #2563EB;
-  outline-offset: 2px;
+  outline: 2px solid var(--accent-secondary, #38bdf8) !important;
+  outline-offset: 2px !important;
 }
 
-/* Strict No-Gradient enforcement utility classes */
-.bg-solid-navy { background-color: #0F172A; }
-.bg-solid-card { background-color: #111827; }
-.bg-solid-surface { background-color: #1E293B; }
-.border-solid-subtle { border-color: #1E293B; }
-.border-solid-strong { border-color: #334155; }
+/* STRICT SOLID NO-GRADIENT UTILITIES */
+.bg-theme-primary {
+  background-color: var(--bg-primary);
+  transition: background-color 0.4s ease;
+}
+
+.bg-theme-surface {
+  background-color: var(--bg-surface);
+  transition: background-color 0.4s ease;
+}
+
+.bg-theme-raised {
+  background-color: var(--bg-surface-raised);
+  transition: background-color 0.4s ease;
+}
+
+.border-theme-subtle {
+  border-color: var(--border-subtle);
+  transition: border-color 0.4s ease;
+}
+
+.border-theme-strong {
+  border-color: var(--border-strong);
+  transition: border-color 0.4s ease;
+}
+
+.text-theme-primary {
+  color: var(--text-primary);
+}
+
+.text-theme-secondary {
+  color: var(--text-secondary);
+}
+
+.text-theme-muted {
+  color: var(--text-muted);
+}
+
+.text-theme-accent {
+  color: var(--accent-secondary);
+}
+
+.bg-theme-accent {
+  background-color: var(--accent-primary);
+  color: #FFFFFF;
+  transition: background-color 0.2s ease;
+}
+
+.bg-theme-accent:hover {
+  background-color: var(--accent-primary-hover);
+}
+
+.tag-theme {
+  background-color: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  color: var(--tag-text);
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+/* ==========================================================================
+   DUAL-TONE SYSTEM UTILITIES (STRICT 2-TONE ARCHITECTURE)
+   ========================================================================== */
+.text-duotone-1 {
+  color: var(--accent-primary);
+}
+
+.text-duotone-2 {
+  color: var(--accent-secondary);
+}
+
+.bg-duotone-1 {
+  background-color: var(--accent-primary);
+  color: #FFFFFF;
+}
+
+.bg-duotone-2 {
+  background-color: var(--accent-secondary);
+  color: #0B0F19;
+}
+
+.border-duotone-1 {
+  border-color: var(--accent-primary);
+}
+
+.border-duotone-2 {
+  border-color: var(--accent-secondary);
+}
+
+.chip-duotone-1 {
+  background-color: color-mix(in srgb, var(--accent-primary) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 40%, transparent);
+  color: var(--accent-primary);
+}
+
+.chip-duotone-2 {
+  background-color: color-mix(in srgb, var(--accent-secondary) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-secondary) 40%, transparent);
+  color: var(--accent-secondary);
+}
+
+.duotone-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface-raised);
+}
+

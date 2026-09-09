@@ -46,3 +46,5 @@ desktop.ini
 # Exported test artifacts
 *.tmp
 temp/
+*.pdf
+pdf_charts_temp/

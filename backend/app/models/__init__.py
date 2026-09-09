@@ -8,6 +8,7 @@ from backend.app.models.flight import Flight, FlightStatusHistory, FlightStatus
 from backend.app.models.expense import Expense, ExpenseParticipant, Settlement, ExpenseCategory, SplitType
 from backend.app.models.chat import ChatMessage
 from backend.app.models.notification import Notification, NotificationType
+from backend.app.models.booking import Booking
 
 __all__ = [
     "Base",
@@ -33,4 +34,5 @@ __all__ = [
     "ChatMessage",
     "Notification",
     "NotificationType",
+    "Booking",
 ]

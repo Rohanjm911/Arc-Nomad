@@ -75,7 +75,7 @@ export const DayPlanner: React.FC<DayPlannerProps> = ({
   return (
     <div className="space-y-6">
       {/* Day Selector Tabs Bar (Solid Blue active state, clear borders) */}
-      <div className="flex items-center justify-between gap-4 pb-2 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-800">
+      <div className="flex items-center justify-between gap-4 pb-2 overflow-x-auto scrollbar-none">
         <div className="flex items-center gap-2">
           {days.map((day, idx) => {
             const isActive = idx === activeDayIndex;
@@ -87,8 +87,8 @@ export const DayPlanner: React.FC<DayPlannerProps> = ({
                 onClick={() => setActiveDayIndex(idx)}
                 className={`flex flex-col items-center justify-center px-4 py-2.5 rounded-xl border transition-colors cursor-pointer min-w-[90px] ${
                   isActive
-                    ? 'bg-blue-600 text-white border-blue-500'
-                    : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white hover:bg-slate-800'
+                    ? 'bg-theme-accent text-white border-theme-strong shadow-sm font-semibold'
+                    : 'bg-theme-surface text-slate-400 border-theme-subtle hover:text-white hover:bg-theme-surface-raised'
                 }`}
               >
                 <span className="text-xs font-bold uppercase tracking-wider">
@@ -104,7 +104,7 @@ export const DayPlanner: React.FC<DayPlannerProps> = ({
           {canEdit && (
             <button
               onClick={handleCreateNewDay}
-              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-900 border border-dashed border-slate-700 text-slate-400 hover:text-white hover:border-blue-500 hover:bg-slate-800 text-xs font-semibold transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-theme-surface border border-dashed border-theme-subtle text-slate-400 hover:text-white hover:border-blue-500 hover:bg-theme-surface-raised text-xs font-semibold transition-colors cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               Add Day
@@ -128,7 +128,7 @@ export const DayPlanner: React.FC<DayPlannerProps> = ({
 
       {/* Active Day Header Card */}
       {activeDay && (
-        <Card className="p-4 border-slate-800 bg-slate-900">
+        <Card className="p-4 border-theme-subtle bg-theme-surface">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
@@ -168,8 +168,8 @@ export const DayPlanner: React.FC<DayPlannerProps> = ({
 
       {/* Itinerary Items List */}
       {activeDay && (!activeDay.items || activeDay.items.length === 0) ? (
-        <div className="text-center py-12 rounded-2xl border border-dashed border-slate-800 bg-slate-950 p-6 space-y-3">
-          <div className="w-12 h-12 rounded-2xl bg-blue-950 border border-blue-600/30 flex items-center justify-center mx-auto text-blue-400">
+        <div className="text-center py-12 rounded-2xl border border-dashed border-theme-subtle bg-theme-surface p-6 space-y-3">
+          <div className="w-12 h-12 rounded-2xl bg-blue-950/60 border border-blue-600/30 flex items-center justify-center mx-auto text-blue-400">
             <Compass className="w-6 h-6" />
           </div>
           <h4 className="text-sm font-bold text-slate-200">No activities scheduled for Day {activeDay.day_number}</h4>

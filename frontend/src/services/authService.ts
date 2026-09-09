@@ -40,6 +40,10 @@ export const authService = {
     return apiClient<User>('/auth/me');
   },
 
+  async getDemoUsers(): Promise<User[]> {
+    return apiClient<User[]>('/auth/demo-users');
+  },
+
   logout() {
     removeAuthToken();
   },

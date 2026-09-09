@@ -84,15 +84,15 @@ export const RecommendationList: React.FC<RecommendationListProps> = ({
 
       {/* Filter Tabs & Search Bar */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-        <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto scrollbar-thin scrollbar-thumb-slate-800 pb-1">
+        <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto scrollbar-none pb-1">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer shrink-0 ${
                 activeCategory === cat
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-slate-900 text-slate-400 border border-slate-800 hover:text-slate-200 hover:bg-slate-800'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'bg-theme-surface text-slate-400 border border-theme-subtle hover:text-slate-200 hover:bg-theme-surface-raised'
               }`}
             >
               {cat}

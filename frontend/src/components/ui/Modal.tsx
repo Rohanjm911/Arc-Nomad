@@ -60,27 +60,27 @@ export const Modal: React.FC<ModalProps> = ({
       <div
         className={twMerge(
           clsx(
-            'w-full rounded-2xl bg-slate-900 border border-slate-700/70 p-6 shadow-2xl shadow-indigo-950/40 relative overflow-hidden transition-all transform animate-in zoom-in-95 duration-200 max-h-[90vh] flex flex-col',
+            'w-full rounded-3xl bg-theme-surface border border-theme-strong p-6 shadow-2xl relative overflow-hidden transition-all transform animate-in zoom-in-95 duration-200 max-h-[90vh] flex flex-col',
             maxWidths[maxWidth]
           )
         )}
       >
         {/* Modal Header */}
-        <div className="flex items-start justify-between pb-4 border-b border-slate-800">
+        <div className="flex items-start justify-between pb-4 border-b border-theme-subtle">
           <div>
-            <h2 className="text-xl font-bold text-slate-100 tracking-tight">{title}</h2>
+            <h2 className="text-xl font-bold text-white tracking-tight">{title}</h2>
             {subtitle && <p className="text-xs text-slate-400 mt-0.5">{subtitle}</p>}
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors"
+            className="rounded-xl p-1.5 text-slate-400 hover:text-white hover:bg-theme-raised transition-colors focus:outline-none focus:ring-1 focus:ring-sky-500 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="overflow-y-auto pt-4 pr-1 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+        <div className="overflow-y-auto pt-4 pr-1 scrollbar-none">
           {children}
         </div>
       </div>

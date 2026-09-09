@@ -58,8 +58,8 @@ export const ItineraryCard: React.FC<ItineraryCardProps> = ({
     <div
       className={`group rounded-2xl border transition-all duration-200 p-4 ${
         item.is_completed
-          ? 'bg-slate-950/40 border-slate-800/50 opacity-75'
-          : 'bg-slate-900/80 border-slate-800 hover:border-indigo-500/40 hover:shadow-lg hover:shadow-indigo-950/20'
+          ? 'bg-theme-surface/50 border-theme-subtle opacity-75'
+          : 'bg-theme-surface border-theme-subtle hover:border-theme-strong hover:bg-theme-surface-raised shadow-sm'
       }`}
     >
       <div className="flex items-start justify-between gap-3">
@@ -68,7 +68,7 @@ export const ItineraryCard: React.FC<ItineraryCardProps> = ({
           {canEdit && onToggleComplete && (
             <button
               onClick={() => onToggleComplete(item)}
-              className="mt-0.5 text-slate-500 hover:text-indigo-400 transition-colors focus:outline-none"
+              className="mt-0.5 text-slate-500 hover:text-theme-accent transition-colors focus:outline-none cursor-pointer"
               title={item.is_completed ? 'Mark as incomplete' : 'Mark as completed'}
             >
               {item.is_completed ? (
@@ -88,7 +88,7 @@ export const ItineraryCard: React.FC<ItineraryCardProps> = ({
               </Badge>
 
               {(item.start_time || item.end_time) && (
-                <span className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded-md">
+                <span className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 bg-theme-surface-raised border border-theme-subtle px-2 py-0.5 rounded-md">
                   <Clock className="w-3 h-3 text-slate-500" />
                   {item.start_time || ''} {item.end_time ? `– ${item.end_time}` : ''}
                 </span>
@@ -103,7 +103,7 @@ export const ItineraryCard: React.FC<ItineraryCardProps> = ({
 
             {/* Title & Description */}
             <h4
-              className={`text-sm font-bold text-slate-100 ${
+              className={`text-sm font-bold text-white ${
                 item.is_completed ? 'line-through text-slate-400' : ''
               }`}
             >
@@ -123,7 +123,7 @@ export const ItineraryCard: React.FC<ItineraryCardProps> = ({
                 {hasCoords && onSelectLocation ? (
                   <button
                     onClick={() => onSelectLocation(item.latitude!, item.longitude!, item.title)}
-                    className="hover:underline text-left"
+                    className="hover:underline text-left cursor-pointer"
                     title="View on Map"
                   >
                     {item.location_name} {item.address ? `• ${item.address}` : ''}
@@ -136,7 +136,7 @@ export const ItineraryCard: React.FC<ItineraryCardProps> = ({
 
             {/* Pro Tip Note */}
             {item.notes && (
-              <div className="mt-2.5 p-2 rounded-xl bg-slate-950/60 border border-slate-800/80 text-[11px] text-indigo-300 font-medium italic">
+              <div className="mt-2.5 p-2.5 rounded-xl bg-theme-surface-raised border border-theme-subtle text-[11px] text-theme-secondary font-medium italic">
                 Tip: {item.notes}
               </div>
             )}
@@ -149,7 +149,7 @@ export const ItineraryCard: React.FC<ItineraryCardProps> = ({
             {onEdit && (
               <button
                 onClick={() => onEdit(item)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-theme-surface-raised transition-colors cursor-pointer"
                 title="Edit item"
               >
                 <Edit3 className="w-3.5 h-3.5" />
@@ -158,7 +158,7 @@ export const ItineraryCard: React.FC<ItineraryCardProps> = ({
             {onDelete && (
               <button
                 onClick={() => onDelete(item.id)}
-                className="p-1.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-950/30 transition-colors"
+                className="p-1.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-950/30 transition-colors cursor-pointer"
                 title="Delete item"
               >
                 <Trash2 className="w-3.5 h-3.5" />

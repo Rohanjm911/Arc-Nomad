@@ -69,7 +69,7 @@ export default function LoginPage() {
         </div>
 
         {/* Form Card */}
-        <Card className="p-6 bg-slate-900 border-slate-800 space-y-5">
+        <Card className="p-6 sm:p-8 bg-theme-surface border border-theme-subtle space-y-5 shadow-2xl rounded-3xl">
           {error && (
             <div className="p-3.5 rounded-xl bg-red-950/50 border border-red-800/60 text-red-300 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
@@ -123,30 +123,65 @@ export default function LoginPage() {
           </form>
 
           {/* 1-Click Demo Accounts */}
-          <div className="pt-4 border-t border-slate-800 space-y-2.5">
+          <div className="pt-4 border-t border-theme-subtle space-y-2.5">
             <span className="block text-center text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-              Quick Test Demo Accounts
+              Quick Test Demo Explorer Accounts
             </span>
             <div className="grid grid-cols-2 gap-2">
               <Button
                 type="button"
                 variant="secondary"
                 size="sm"
-                onClick={() => handleDemo('alex_explorer')}
+                onClick={() => handleDemo('alex_nomad')}
                 disabled={loading}
-                className="text-xs"
+                className="text-xs justify-start px-3 py-2 bg-theme-surface-raised border-theme-subtle hover:border-theme-strong text-left"
               >
-                Alex (Trip Owner)
+                <div className="truncate">
+                  <p className="font-bold text-white truncate">🗼 Alex (Owner)</p>
+                  <p className="text-[10px] text-slate-400 truncate">Tokyo &amp; Rome</p>
+                </div>
               </Button>
+
               <Button
                 type="button"
                 variant="secondary"
                 size="sm"
-                onClick={() => handleDemo('chloe_travels')}
+                onClick={() => handleDemo('sarah_voyage')}
                 disabled={loading}
-                className="text-xs"
+                className="text-xs justify-start px-3 py-2 bg-theme-surface-raised border-theme-subtle hover:border-theme-strong text-left"
               >
-                Chloe (Editor)
+                <div className="truncate">
+                  <p className="font-bold text-white truncate">🥾 Sarah (Editor)</p>
+                  <p className="text-[10px] text-slate-400 truncate">Adventure Traveler</p>
+                </div>
+              </Button>
+
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={() => handleDemo('marco_explorer')}
+                disabled={loading}
+                className="text-xs justify-start px-3 py-2 bg-theme-surface-raised border-theme-subtle hover:border-theme-strong text-left"
+              >
+                <div className="truncate">
+                  <p className="font-bold text-white truncate">🏛️ Marco (Explorer)</p>
+                  <p className="text-[10px] text-slate-400 truncate">Rome Renaissance</p>
+                </div>
+              </Button>
+
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={() => handleDemo('elena_wander')}
+                disabled={loading}
+                className="text-xs justify-start px-3 py-2 bg-theme-surface-raised border-theme-subtle hover:border-theme-strong text-left"
+              >
+                <div className="truncate">
+                  <p className="font-bold text-white truncate">🌊 Elena (Nomad)</p>
+                  <p className="text-[10px] text-slate-400 truncate">Tokyo Expense Lead</p>
+                </div>
               </Button>
             </div>
           </div>

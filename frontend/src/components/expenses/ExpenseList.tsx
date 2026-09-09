@@ -70,15 +70,15 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
       {/* Header & Subtabs */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         {/* Tab pills: Ledger, Analytics, Debt Settlements, Currency Converter */}
-        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-900 border border-slate-800 overflow-x-auto">
+        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-theme-surface border border-theme-subtle overflow-x-auto">
           {(['LEDGER', 'ANALYTICS', 'SETTLEMENTS', 'CONVERTER'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
                 activeTab === tab
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-theme-accent text-white shadow-sm font-semibold'
+                  : 'text-slate-400 hover:text-white hover:bg-theme-surface-raised'
               }`}
             >
               {tab === 'LEDGER'
@@ -119,7 +119,7 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
 
       {/* Tab 1: Expense Ledger */}
       {activeTab === 'LEDGER' && (
-        <div className="rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
+        <div className="rounded-3xl bg-theme-surface border border-theme-subtle overflow-hidden shadow-xl">
           {expenses.length === 0 ? (
             <div className="py-16 text-center text-xs text-slate-400 space-y-2">
               <p>No expenses recorded for this trip yet.</p>
@@ -138,7 +138,7 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-950/80 text-slate-400 uppercase tracking-wider font-bold border-b border-slate-800">
+                <thead className="bg-theme-surface-raised text-slate-400 uppercase tracking-wider font-bold border-b border-theme-subtle">
                   <tr>
                     <th className="py-3.5 px-4">Date</th>
                     <th className="py-3.5 px-4">Category</th>
@@ -149,9 +149,9 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
                     {canEdit && <th className="py-3.5 px-4 text-center">Actions</th>}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 font-medium">
+                <tbody className="divide-y divide-theme-subtle font-medium">
                   {expenses.map((exp) => (
-                    <tr key={exp.id} className="hover:bg-slate-800/40 transition-colors">
+                    <tr key={exp.id} className="hover:bg-theme-surface-raised/50 transition-colors">
                       <td className="py-3 px-4 text-slate-400">
                         {new Date(exp.expense_date).toLocaleDateString([], {
                           month: 'short',

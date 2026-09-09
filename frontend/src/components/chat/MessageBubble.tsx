@@ -43,17 +43,17 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
 
         {/* Message Bubble Body */}
         <div
-          className={`relative rounded-2xl p-3.5 text-xs leading-relaxed shadow-md ${
+          className={`relative rounded-2xl p-3.5 text-xs leading-relaxed shadow-sm ${
             isMe
-              ? 'bg-indigo-600 text-white rounded-tr-none'
-              : 'bg-slate-800 text-slate-100 rounded-tl-none border border-slate-700/60'
+              ? 'bg-theme-accent text-white rounded-tr-none'
+              : 'bg-theme-surface-raised text-slate-100 rounded-tl-none border border-theme-subtle'
           }`}
         >
           {message.message}
 
           {/* Quick Emoji Reaction Popup on Hover */}
           <div
-            className={`absolute top-0 -translate-y-1/2 hidden group-hover:flex items-center gap-0.5 p-1 rounded-full bg-slate-900 border border-slate-700 shadow-xl z-10 ${
+            className={`absolute top-0 -translate-y-1/2 hidden group-hover:flex items-center gap-0.5 p-1 rounded-full bg-theme-surface border border-theme-strong shadow-xl z-10 ${
               isMe ? 'right-0' : 'left-0'
             }`}
           >

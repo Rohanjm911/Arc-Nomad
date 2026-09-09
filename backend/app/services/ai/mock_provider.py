@@ -106,13 +106,30 @@ class MockAIProvider(BaseAIProvider):
             ("Guided Bicycle & Waterfront Eco-Tour", "Activities", 4.8, "$$", "Scenic 2-hour coastal ride through vibrant avenues, sculpture parks, and harbor boardwalks.", "Recommended for outdoor lovers and active exploration."),
             ("Historic Museum of Art & Modern Wonder", "Attractions", 4.9, "$$", "Comprehensive museum featuring both ancient artifacts and cutting-edge interactive digital art.", "Recommended for immersive cultural insights."),
             ("Boutique Heritage Villa & Spa", "Hotels", 4.9, "$$$$", "Luxurious historic lodging featuring thermal spring baths, terrace gardens, and world-class concierge.", "Recommended for premium rest and rejuvenation."),
-            ("Lantern-Lit Alley Artisan Bazaar", "Hidden Gems", 4.8, "$", "Hidden labyrinth of independent potters, leather crafters, and street food stalls after dark.", "Recommended because you enjoy hidden gems and local craftsmanship.")
+            ("Lantern-Lit Alley Artisan Bazaar", "Hidden Gems", 4.8, "$", "Hidden labyrinth of independent potters, leather crafters, and street food stalls after dark.", "Recommended because you enjoy hidden gems and local craftsmanship."),
+            ("Sunken Courtyard Vinyl Listening Bar", "Hidden Gems", 4.9, "$$", "Intimate acoustic enclave featuring vintage vacuum tube amplifiers and rare Japanese pressings.", "Curated discovery for quiet evenings and music aficionados."),
+            ("Ancient Moss Garden Shinto Sanctuary", "Hidden Gems", 4.8, "Free", "Serene secluded stone shrine shrouded in centuries-old cedar trees and bamboo pathways.", "Secret tranquil oasis completely off the main tourist trail."),
+            ("Underground Botanical Cellar & Herbal Tea Library", "Cafes", 4.9, "$$", "Subterranean stone vault serving customized botanical infusions and farm honey.", "Exclusive artisan experience with tranquil plant-draped stone booths."),
+            ("Neon-Lit Retro Arcade & Speakeasy Bar", "Nightlife", 4.7, "$$", "1980s retro Japanese arcade games combined with curated highball cocktails.", "High-energy hidden night experience loved by locals.")
         ]
-        
+
+        # Prioritize category matching if requested
+        if req.category and req.category.strip().lower() not in ("all", ""):
+            cat_query = req.category.strip().lower()
+            matched = [r for r in sample_recs if cat_query in r[1].lower() or r[1].lower() in cat_query]
+            unmatched = [r for r in sample_recs if r not in matched]
+            recs_to_use = (matched + unmatched)[:req.limit]
+        else:
+            recs_to_use = sample_recs[:req.limit]
+
+        # Factor in custom vibe interests
+        interest_vibe = ", ".join(req.interests) if req.interests else req.travel_style
+
         items: List[GeneratedRecommendationItem] = []
-        for name, cat, rating, price, desc, reason in sample_recs[:req.limit]:
+        for name, cat, rating, price, desc, reason in recs_to_use:
             offset_lat = (random.random() - 0.5) * 0.04
             offset_lng = (random.random() - 0.5) * 0.04
+            custom_reason = f"Curated for your '{interest_vibe}' focus. {reason}" if interest_vibe else reason
             items.append(
                 GeneratedRecommendationItem(
                     name=f"{name} — {dest}",
@@ -124,7 +141,7 @@ class MockAIProvider(BaseAIProvider):
                     latitude=round(base_lat + offset_lat, 5),
                     longitude=round(base_lng + offset_lng, 5),
                     image_url=None,
-                    reason=reason,
+                    reason=custom_reason,
                     tags=["Popular", "Must-Visit", cat]
                 )
             )

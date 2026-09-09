@@ -89,7 +89,7 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        <Card className="p-6 bg-slate-900 border-slate-800 space-y-5">
+        <Card className="p-6 sm:p-8 bg-theme-surface border border-theme-subtle space-y-5 shadow-2xl rounded-3xl">
           {error && (
             <div className="p-3.5 rounded-xl bg-red-950/50 border border-red-800/60 text-red-300 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
@@ -111,7 +111,8 @@ export default function RegisterPage() {
                 label="Username"
                 placeholder="alex_explorer"
                 value={username}
-                onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s+/g, '_'))}
+                onChange={(e) => setUsername(e.target.value)}
+                icon={<User className="w-4 h-4" />}
                 required
               />
             </div>
@@ -199,10 +200,10 @@ export default function RegisterPage() {
                       key={interest}
                       type="button"
                       onClick={() => toggleInterest(interest)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer border ${
                         isSelected
-                          ? 'bg-blue-600 text-white border border-blue-500'
-                          : 'bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800'
+                          ? 'bg-theme-raised border-theme-strong text-white font-semibold'
+                          : 'bg-theme-surface-raised border-theme-subtle text-slate-400 hover:text-white hover:border-theme-strong'
                       }`}
                     >
                       {interest}

@@ -23,7 +23,7 @@ export const SUPPORTED_LOCATIONS: Record<LocationTheme, LocationConfig> = {
     emblem: '🗼',
     timeZone: 'Asia/Tokyo',
     currency: 'JPY (¥)',
-    vibe: 'Cyber Obsidian & Cherry Lacquer',
+    vibe: 'Emerald Alpine & Neon Mint',
   },
   paris: {
     id: 'paris',
@@ -32,7 +32,7 @@ export const SUPPORTED_LOCATIONS: Record<LocationTheme, LocationConfig> = {
     emblem: '🥐',
     timeZone: 'Europe/Paris',
     currency: 'EUR (€)',
-    vibe: 'Haussmann Slate & Champagne Gold',
+    vibe: 'Sage Forest & Champagne Titanium',
   },
   'new-york': {
     id: 'new-york',
@@ -41,7 +41,7 @@ export const SUPPORTED_LOCATIONS: Record<LocationTheme, LocationConfig> = {
     emblem: '🗽',
     timeZone: 'America/New_York',
     currency: 'USD ($)',
-    vibe: 'Manhattan Steel & Taxi Amber',
+    vibe: 'Titanium Slate & Emerald Steel',
   },
   reykjavik: {
     id: 'reykjavik',
@@ -50,7 +50,7 @@ export const SUPPORTED_LOCATIONS: Record<LocationTheme, LocationConfig> = {
     emblem: '❄️',
     timeZone: 'Atlantic/Reykjavik',
     currency: 'ISK (kr)',
-    vibe: 'Nordic Glacial & Polar Teal',
+    vibe: 'Glacial Mint & Nordic Alpine',
   },
   rome: {
     id: 'rome',
@@ -59,7 +59,7 @@ export const SUPPORTED_LOCATIONS: Record<LocationTheme, LocationConfig> = {
     emblem: '🏛️',
     timeZone: 'Europe/Rome',
     currency: 'EUR (€)',
-    vibe: 'Travertine Stone & Terracotta',
+    vibe: 'Alpine Emerald & Matte Titanium',
   },
   default: {
     id: 'default',
@@ -68,7 +68,7 @@ export const SUPPORTED_LOCATIONS: Record<LocationTheme, LocationConfig> = {
     emblem: '🧭',
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
     currency: 'USD ($)',
-    vibe: 'Deep Sapphire Obsidian',
+    vibe: 'Emerald Alpine & Matte Titanium',
   },
 };
 
@@ -114,13 +114,12 @@ function resolveLocationFromDestination(dest: string): LocationTheme {
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [timeOfDay, setTimeOfDayState] = useState<TimeOfDay>('night');
-  const [location, setLocationState] = useState<LocationTheme>('tokyo');
-  const [isAuto, setIsAuto] = useState<boolean>(true);
+  const [location, setLocationState] = useState<LocationTheme>('rome');
   const [localTime, setLocalTime] = useState<string>('--:--');
 
   const locationConfig = useMemo(() => SUPPORTED_LOCATIONS[location] || SUPPORTED_LOCATIONS.default, [location]);
 
-  // Compute live local time at the selected location's timezone
+  // Compute live local time and automatic atmosphere phase at the destination's timezone
   const updateLocalClock = useCallback(() => {
     try {
       const now = new Date();
@@ -136,16 +135,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const hour = parseInt(hourPart || '12', 10);
       setLocalTime(`${hourPart || '12'}:${minPart || '00'}`);
 
-      if (isAuto) {
-        const computedTime = getTimeOfDayFromHour(hour);
-        setTimeOfDayState(computedTime);
-      }
+      // Always automated time of day based on destination's clock
+      const computedTime = getTimeOfDayFromHour(hour);
+      setTimeOfDayState(computedTime);
     } catch {
       setLocalTime('12:00');
     }
-  }, [locationConfig.timeZone, isAuto]);
+  }, [locationConfig.timeZone]);
 
-  // Update clock every minute
+  // Update clock periodically
   useEffect(() => {
     updateLocalClock();
     const interval = setInterval(updateLocalClock, 30000);
@@ -163,8 +161,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [timeOfDay, location]);
 
+  // Destination resolver sets the palette directly from the trip
+  const setTripDestination = useCallback((destinationString: string | null | undefined) => {
+    if (!destinationString) return;
+    const resolved = resolveLocationFromDestination(destinationString);
+    setLocationState(resolved);
+  }, []);
+
   const setTimeOfDay = useCallback((time: TimeOfDay) => {
-    setIsAuto(false);
     setTimeOfDayState(time);
   }, []);
 
@@ -173,7 +177,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   const cycleTimeOfDay = useCallback(() => {
-    setIsAuto(false);
     const times: TimeOfDay[] = ['dawn', 'day', 'sunset', 'night'];
     const nextIndex = (times.indexOf(timeOfDay) + 1) % times.length;
     setTimeOfDayState(times[nextIndex]);
@@ -185,23 +188,17 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setLocationState(locs[nextIndex]);
   }, [location]);
 
-  const setTripDestination = useCallback((destinationString: string | null | undefined) => {
-    if (!destinationString) return;
-    const resolved = resolveLocationFromDestination(destinationString);
-    setLocationState(resolved);
-  }, []);
-
   return (
     <ThemeContext.Provider
       value={{
         timeOfDay,
         location,
-        isAuto,
+        isAuto: true,
         localTime,
         locationConfig,
         setTimeOfDay,
         setLocation,
-        setIsAuto,
+        setIsAuto: () => {},
         cycleTimeOfDay,
         cycleLocation,
         setTripDestination,

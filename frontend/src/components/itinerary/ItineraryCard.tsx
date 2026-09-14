@@ -1,7 +1,9 @@
-import React from 'react';
-import { Clock, MapPin, CheckCircle2, Circle, Trash2, Edit3, Compass, Utensils, Hotel, Mountain, Footprints } from 'lucide-react';
+import React, { useState } from 'react';
+import { Clock, MapPin, CheckCircle2, Circle, Trash2, Edit3, Compass, Utensils, Hotel, Mountain, Footprints, Sparkles } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { ItineraryItem, ItineraryCategory } from '../../types';
 import { Badge } from '../ui/Badge';
+import { gamificationService } from '../../services/gamificationService';
 
 interface ItineraryCardProps {
   item: ItineraryItem;
@@ -20,6 +22,35 @@ export const ItineraryCard: React.FC<ItineraryCardProps> = ({
   onDelete,
   onSelectLocation,
 }) => {
+  const [showXpGain, setShowXpGain] = useState(false);
+
+  const handleToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!item.is_completed) {
+      // Trigger confetti celebration
+      try {
+        confetti({
+          particleCount: 45,
+          spread: 60,
+          origin: {
+            x: e.clientX / window.innerWidth,
+            y: e.clientY / window.innerHeight,
+          },
+          colors: ['#38BDF8', '#10B981', '#F59E0B', '#6366F1'],
+        });
+      } catch (err) {
+        // Fallback
+      }
+
+      // Record gamification XP
+      gamificationService.recordActivityCompleted();
+      setShowXpGain(true);
+      setTimeout(() => setShowXpGain(false), 2000);
+    }
+    if (onToggleComplete) {
+      onToggleComplete(item);
+    }
+  };
   const getCategoryIcon = (category: ItineraryCategory) => {
     switch (category) {
       case 'FOOD':
@@ -64,19 +95,26 @@ export const ItineraryCard: React.FC<ItineraryCardProps> = ({
     >
       <div className="flex items-start justify-between gap-3">
         {/* Left: Checkbox & Info */}
-        <div className="flex items-start gap-3 flex-1">
+        <div className="flex items-start gap-3 flex-1 relative">
           {canEdit && onToggleComplete && (
-            <button
-              onClick={() => onToggleComplete(item)}
-              className="mt-0.5 text-slate-500 hover:text-theme-accent transition-colors focus:outline-none cursor-pointer"
-              title={item.is_completed ? 'Mark as incomplete' : 'Mark as completed'}
-            >
-              {item.is_completed ? (
-                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-              ) : (
-                <Circle className="w-5 h-5" />
+            <div className="relative">
+              <button
+                onClick={handleToggle}
+                className="mt-0.5 text-slate-500 hover:text-theme-accent transition-colors focus:outline-none cursor-pointer"
+                title={item.is_completed ? 'Mark as incomplete' : 'Mark as completed (+25 XP)'}
+              >
+                {item.is_completed ? (
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                ) : (
+                  <Circle className="w-5 h-5" />
+                )}
+              </button>
+              {showXpGain && (
+                <span className="absolute -top-6 -left-2 px-1.5 py-0.5 rounded bg-emerald-500 text-white font-mono text-[10px] font-extrabold animate-bounce shadow-lg z-20 whitespace-nowrap">
+                  +25 XP 🎯
+                </span>
               )}
-            </button>
+            </div>
           )}
 
           <div className="flex-1">

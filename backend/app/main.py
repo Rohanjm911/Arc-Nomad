@@ -29,22 +29,22 @@ logger = logging.getLogger("arc_nomade")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Initializing ARC-NOMADE database tables...")
+    logger.info("Initializing ARC-NOMAD database tables...")
     Base.metadata.create_all(bind=engine)
     
     # Start background flight monitoring worker
     worker_task = asyncio.create_task(start_flight_worker_loop(interval_seconds=120))
-    logger.info("ARC-NOMADE backend started successfully.")
+    logger.info("ARC-NOMAD backend started successfully.")
     
     yield
     
     worker_task.cancel()
-    logger.info("ARC-NOMADE backend shut down.")
+    logger.info("ARC-NOMAD backend shut down.")
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.PROJECT_VERSION,
-    description="ARC-NOMADE — Your Journey, Perfectly Mapped. 🧭✈️ (AI-Powered Collaborative Travel Platform)",
+    description="ARC-NOMAD — Your Journey, Perfectly Mapped. 🧭✈️ (AI-Powered Collaborative Travel Platform)",
     lifespan=lifespan
 )
 

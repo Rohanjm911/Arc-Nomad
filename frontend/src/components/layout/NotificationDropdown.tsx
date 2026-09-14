@@ -6,8 +6,11 @@ import { Bell, CheckCheck, Clock, ExternalLink } from 'lucide-react';
 import { Notification } from '../../types';
 import { notificationService } from '../../services/notificationService';
 
+import { NotificationModal } from './NotificationModal';
+
 export const NotificationDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState<number>(0);
   const [loading, setLoading] = useState(false);
@@ -74,99 +77,124 @@ export const NotificationDropdown: React.FC = () => {
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      <button
-        onClick={() => {
-          setIsOpen(!isOpen);
-          if (!isOpen) fetchNotifications();
-        }}
-        className="relative p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition-colors focus:outline-none"
-        aria-label="Notifications"
-      >
-        <Bell className="w-5 h-5" />
-        {unreadCount > 0 && (
-          <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-slate-900 animate-pulse">
-            {unreadCount > 9 ? '9+' : unreadCount}
-          </span>
-        )}
-      </button>
+    <>
+      <div className="relative" ref={dropdownRef}>
+        <button
+          onClick={() => {
+            setIsOpen(!isOpen);
+            if (!isOpen) fetchNotifications();
+          }}
+          className="relative p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition-colors focus:outline-none cursor-pointer"
+          aria-label="Notifications"
+        >
+          <Bell className="w-5 h-5" />
+          {unreadCount > 0 && (
+            <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-slate-900 animate-pulse">
+              {unreadCount > 9 ? '9+' : unreadCount}
+            </span>
+          )}
+        </button>
 
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl bg-slate-900 border border-slate-700/80 shadow-2xl shadow-black/50 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150">
-          <div className="flex items-center justify-between p-3.5 border-b border-slate-800 bg-slate-900/90 backdrop-blur">
-            <div className="flex items-center gap-2">
-              <h3 className="text-sm font-bold text-slate-100">Notifications</h3>
-              {unreadCount > 0 && (
-                <span className="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-semibold">
-                  {unreadCount} new
-                </span>
+        {isOpen && (
+          <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl bg-slate-900 border border-slate-700/80 shadow-2xl shadow-black/50 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between p-3.5 border-b border-slate-800 bg-slate-900/90 backdrop-blur">
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-bold text-slate-100">Notifications</h3>
+                {unreadCount > 0 && (
+                  <span className="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-semibold">
+                    {unreadCount} new
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                {unreadCount > 0 && (
+                  <button
+                    onClick={handleMarkAllRead}
+                    className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1 font-medium transition-colors cursor-pointer"
+                  >
+                    <CheckCheck className="w-3.5 h-3.5" />
+                    Mark all read
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setIsModalOpen(true);
+                  }}
+                  className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                  title="Expand to Full Popup Modal"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+
+            <div className="max-h-80 overflow-y-auto divide-y divide-slate-800/60">
+              {notifications.length === 0 ? (
+                <div className="py-8 text-center text-xs text-slate-400">
+                  No notifications right now.
+                </div>
+              ) : (
+                notifications.map((notif) => (
+                  <Link
+                    key={notif.id}
+                    href={notif.link_url || '#'}
+                    onClick={() => handleItemClick(notif)}
+                    className={`block p-3.5 transition-colors hover:bg-slate-800/60 ${
+                      !notif.is_read ? 'bg-indigo-950/20' : ''
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <h4
+                        className={`text-xs font-semibold ${
+                          !notif.is_read ? 'text-indigo-300' : 'text-slate-200'
+                        }`}
+                      >
+                        {notif.title}
+                      </h4>
+                      {!notif.is_read && (
+                        <span className="w-2 h-2 rounded-full bg-indigo-500 shrink-0 mt-1" />
+                      )}
+                    </div>
+                    <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                      {notif.message}
+                    </p>
+                    <span className="text-[10px] text-slate-500 mt-1.5 flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {new Date(notif.created_at).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </span>
+                  </Link>
+                ))
               )}
             </div>
-            {unreadCount > 0 && (
+
+            <div className="p-2.5 border-t border-slate-800 bg-slate-900/90 text-center">
               <button
-                onClick={handleMarkAllRead}
-                className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1 font-medium transition-colors"
+                type="button"
+                onClick={() => {
+                  setIsOpen(false);
+                  setIsModalOpen(true);
+                }}
+                className="w-full text-xs font-medium text-slate-400 hover:text-white flex items-center justify-center gap-1.5 transition-colors cursor-pointer py-1"
               >
-                <CheckCheck className="w-3.5 h-3.5" />
-                Mark all read
+                <span>Open in Notification Popup Modal</span>
+                <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
               </button>
-            )}
+            </div>
           </div>
+        )}
+      </div>
 
-          <div className="max-h-80 overflow-y-auto divide-y divide-slate-800/60">
-            {notifications.length === 0 ? (
-              <div className="py-8 text-center text-xs text-slate-400">
-                No notifications right now.
-              </div>
-            ) : (
-              notifications.map((notif) => (
-                <Link
-                  key={notif.id}
-                  href={notif.link_url || '#'}
-                  onClick={() => handleItemClick(notif)}
-                  className={`block p-3.5 transition-colors hover:bg-slate-800/60 ${
-                    !notif.is_read ? 'bg-indigo-950/20' : ''
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <h4
-                      className={`text-xs font-semibold ${
-                        !notif.is_read ? 'text-indigo-300' : 'text-slate-200'
-                      }`}
-                    >
-                      {notif.title}
-                    </h4>
-                    {!notif.is_read && (
-                      <span className="w-2 h-2 rounded-full bg-indigo-500 shrink-0 mt-1" />
-                    )}
-                  </div>
-                  <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
-                    {notif.message}
-                  </p>
-                  <span className="text-[10px] text-slate-500 mt-1.5 flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
-                    {new Date(notif.created_at).toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </span>
-                </Link>
-              ))
-            )}
-          </div>
-
-          <div className="p-2.5 border-t border-slate-800 bg-slate-900/90 text-center">
-            <Link
-              href="/notifications"
-              onClick={() => setIsOpen(false)}
-              className="text-xs font-medium text-slate-400 hover:text-white flex items-center justify-center gap-1.5 transition-colors"
-            >
-              View all activity
-              <ExternalLink className="w-3 h-3" />
-            </Link>
-          </div>
-        </div>
-      )}
-    </div>
+      {/* Full Dedicated Interactive Notification Modal Popup */}
+      <NotificationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onNotificationRead={fetchNotifications}
+      />
+    </>
   );
 };

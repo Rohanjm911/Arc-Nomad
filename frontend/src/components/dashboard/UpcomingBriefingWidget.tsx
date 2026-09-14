@@ -18,8 +18,17 @@ import {
   AlertCircle,
   Users,
   Coins,
+  Copy,
+  Check,
+  Sun,
+  Cloud,
+  CloudRain,
+  Snowflake,
+  RefreshCw,
 } from 'lucide-react';
-import { TripSummary } from '../../types';
+import { TripSummary, WeatherData } from '../../types';
+import { tripService } from '../../services/tripService';
+import { useTheme } from '../../store/ThemeContext';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 
@@ -153,6 +162,7 @@ interface UpcomingBriefingWidgetProps {
 }
 
 export const UpcomingBriefingWidget: React.FC<UpcomingBriefingWidgetProps> = ({ trips }) => {
+  const { setTripDestination } = useTheme();
   const now = new Date();
 
   // Filter for active or upcoming trips
@@ -168,6 +178,17 @@ export const UpcomingBriefingWidget: React.FC<UpcomingBriefingWidgetProps> = ({ 
   const [selectedTripId, setSelectedTripId] = useState<string>(
     activeOrUpcoming.length > 0 ? activeOrUpcoming[0].id : ''
   );
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [weatherLoading, setWeatherLoading] = useState(false);
+  const [phraseCopied, setPhraseCopied] = useState(false);
+
+  // Interactive Checklist State (persisted per trip in localStorage)
+  const [checklist, setChecklist] = useState<Record<string, boolean>>({
+    flights: true,
+    timetable: true,
+    expenses: true,
+    packing: false,
+  });
 
   // Automatically reset to the current user's first trip when the trips list updates
   useEffect(() => {
@@ -179,6 +200,70 @@ export const UpcomingBriefingWidget: React.FC<UpcomingBriefingWidgetProps> = ({ 
       setSelectedTripId('');
     }
   }, [activeOrUpcoming, selectedTripId]);
+
+  // Load checklist preferences from localStorage for the active trip
+  useEffect(() => {
+    if (selectedTripId && typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(`arc_briefing_checklist_${selectedTripId}`);
+        if (saved) {
+          setChecklist(JSON.parse(saved));
+        } else {
+          setChecklist({ flights: true, timetable: true, expenses: true, packing: false });
+        }
+      } catch (e) {
+        // Fallback
+      }
+    }
+  }, [selectedTripId]);
+
+  const toggleChecklistItem = (key: string) => {
+    setChecklist((prev) => {
+      const updated = { ...prev, [key]: !prev[key] };
+      if (selectedTripId && typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(`arc_briefing_checklist_${selectedTripId}`, JSON.stringify(updated));
+        } catch (e) {
+          // ignore
+        }
+      }
+      return updated;
+    });
+  };
+
+  // Fetch weather for selected trip
+  useEffect(() => {
+    if (!selectedTripId) {
+      setWeather(null);
+      return;
+    }
+
+    let isMounted = true;
+    const fetchWeather = async () => {
+      try {
+        setWeatherLoading(true);
+        const data = await tripService.getTripWeather(selectedTripId);
+        if (isMounted) setWeather(data);
+      } catch (err) {
+        if (isMounted) setWeather(null);
+      } finally {
+        if (isMounted) setWeatherLoading(false);
+      }
+    };
+
+    fetchWeather();
+    return () => {
+      isMounted = false;
+    };
+  }, [selectedTripId]);
+
+  const handleCopyPhrase = (text: string) => {
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(text);
+      setPhraseCopied(true);
+      setTimeout(() => setPhraseCopied(false), 2000);
+    }
+  };
 
   // Keep selection synchronized if trips change
   const currentTrip = useMemo(() => {
@@ -293,7 +378,10 @@ export const UpcomingBriefingWidget: React.FC<UpcomingBriefingWidgetProps> = ({ 
               return (
                 <button
                   key={t.id}
-                  onClick={() => setSelectedTripId(t.id)}
+                  onClick={() => {
+                    setSelectedTripId(t.id);
+                    setTripDestination(t.destination);
+                  }}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 flex items-center gap-2 ${
                     isSelected
                       ? 'bg-theme-accent text-white shadow-sm font-semibold'
@@ -349,6 +437,20 @@ export const UpcomingBriefingWidget: React.FC<UpcomingBriefingWidgetProps> = ({ 
               <Users className="w-3.5 h-3.5 text-blue-400 shrink-0" />
               Crew: <strong className="text-white">{currentTrip.member_count} Explorers</strong>
             </span>
+
+            {/* Live Weather Indicator in Hero */}
+            {weather ? (
+              <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-theme-surface border border-theme-subtle text-xs text-amber-300 font-semibold">
+                <Sun className="w-3.5 h-3.5 text-amber-400" />
+                <span>{Math.round(weather.temperature)}°C</span>
+                <span className="text-slate-400 capitalize text-[11px] font-normal hidden sm:inline">({weather.condition})</span>
+              </span>
+            ) : weatherLoading ? (
+              <span className="flex items-center gap-1.5 text-[11px] text-slate-400">
+                <RefreshCw className="w-3 h-3 animate-spin text-blue-400" />
+                <span>Checking weather...</span>
+              </span>
+            ) : null}
           </p>
         </div>
 
@@ -448,14 +550,32 @@ export const UpcomingBriefingWidget: React.FC<UpcomingBriefingWidgetProps> = ({ 
             </p>
           </div>
 
-          <div className="pt-2 border-t border-theme-subtle/80">
-            <p className="text-[11px] text-slate-400 italic truncate">
-              {dossier.languagePhrase}
+          <div className="pt-2 border-t border-theme-subtle/80 flex items-center justify-between">
+            <p className="text-[11px] text-slate-300 italic truncate max-w-[190px]">
+              "{dossier.languagePhrase}"
             </p>
+            <button
+              type="button"
+              onClick={() => handleCopyPhrase(dossier.languagePhrase)}
+              title="Copy phrase to clipboard"
+              className="p-1 rounded text-slate-400 hover:text-white hover:bg-theme-surface transition-colors cursor-pointer shrink-0 flex items-center gap-1 text-[10px] font-semibold"
+            >
+              {phraseCopied ? (
+                <>
+                  <Check className="w-3 h-3 text-emerald-400" />
+                  <span className="text-emerald-400 text-[10px]">Copied</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3 h-3" />
+                  <span>Copy</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
 
-        {/* Pillar 4: Expedition Readiness Checklist */}
+        {/* Pillar 4: Expedition Readiness Checklist (Interactive Checkbox Items) */}
         <div className="p-4 rounded-2xl bg-theme-surface-raised border border-theme-subtle space-y-3 flex flex-col justify-between">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -464,31 +584,39 @@ export const UpcomingBriefingWidget: React.FC<UpcomingBriefingWidgetProps> = ({ 
                 Expedition Readiness
               </span>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-800/40 uppercase tracking-wider">
-                Checked
+                {Object.values(checklist).filter(Boolean).length}/4 Done
               </span>
             </div>
 
             <div className="space-y-1.5">
-              <div className="p-2 rounded-xl bg-theme-surface border border-theme-subtle flex items-center justify-between text-xs">
-                <span className="text-slate-300">Flights & Transit</span>
-                <span className="text-cyan-400 font-bold text-[11px] flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3" /> Tracked
-                </span>
-              </div>
-
-              <div className="p-2 rounded-xl bg-theme-surface border border-theme-subtle flex items-center justify-between text-xs">
-                <span className="text-slate-300">AI Daily Timetable</span>
-                <span className="text-cyan-400 font-bold text-[11px] flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3" /> Configured
-                </span>
-              </div>
-
-              <div className="p-2 rounded-xl bg-theme-surface border border-theme-subtle flex items-center justify-between text-xs">
-                <span className="text-slate-300">Debt Solver Ledger</span>
-                <span className="text-cyan-400 font-bold text-[11px] flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3" /> Ready
-                </span>
-              </div>
+              {[
+                { id: 'flights', label: 'Flights & Transit' },
+                { id: 'timetable', label: 'AI Daily Timetable' },
+                { id: 'expenses', label: 'Debt Solver Ledger' },
+                { id: 'packing', label: 'Gear & Passport Packed' },
+              ].map((item) => {
+                const isChecked = !!checklist[item.id];
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => toggleChecklistItem(item.id)}
+                    className="w-full p-2 rounded-xl bg-theme-surface border border-theme-subtle hover:border-theme-strong flex items-center justify-between text-xs transition-colors cursor-pointer text-left"
+                  >
+                    <span className={isChecked ? 'text-slate-300' : 'text-slate-500 line-through'}>
+                      {item.label}
+                    </span>
+                    <span
+                      className={`text-[11px] font-bold flex items-center gap-1 ${
+                        isChecked ? 'text-cyan-400' : 'text-slate-600'
+                      }`}
+                    >
+                      <CheckCircle2 className={`w-3.5 h-3.5 ${isChecked ? 'text-cyan-400' : 'text-slate-600'}`} />
+                      {isChecked ? 'Ready' : 'Pending'}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 

@@ -29,6 +29,8 @@ import { Input } from '../../components/ui/Input';
 import { Card } from '../../components/ui/Card';
 import { Avatar } from '../../components/ui/Avatar';
 import { CurrencySelect } from '../../components/ui/CurrencySelect';
+import { PassportBadgesWidget } from '../../components/gamification/PassportBadgesWidget';
+import { gamificationService } from '../../services/gamificationService';
 
 function ProfileContent() {
   const router = useRouter();
@@ -223,6 +225,70 @@ function ProfileContent() {
               Edit Profile
             </Button>
           </div>
+
+          {/* Explorer Rank & Progression Card */}
+          {(() => {
+            const stats = gamificationService.calculateStats(trips);
+            return (
+              <>
+                <div className="p-6 rounded-3xl bg-theme-surface border border-theme-subtle shadow-xl space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-blue-950/60 border border-blue-800/40 flex items-center justify-center text-2xl shadow-inner">
+                        {stats.currentRank.badgeEmblem}
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-base font-extrabold text-white">
+                            Level {stats.currentRank.level}: {stats.currentRank.title}
+                          </h3>
+                          <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-blue-950 text-blue-300 border border-blue-800/40">
+                            {stats.totalXp} Total XP
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-400 mt-0.5">
+                          {stats.currentRank.perk}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="text-right sm:text-right">
+                      <span className="text-xs font-mono text-cyan-400 font-bold block">
+                        {stats.nextRank ? `${stats.xpToNextLevel} XP to ${stats.nextRank.title}` : 'Apex Master Nomad 👑'}
+                      </span>
+                      <span className="text-[10px] text-slate-500 uppercase tracking-wider">
+                        {stats.progressPercent}% to next rank
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Visual Progress Bar */}
+                  <div className="space-y-1.5">
+                    <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden border border-slate-700/60">
+                      <div
+                        className="h-full bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full transition-all duration-700 shadow-sm"
+                        style={{ width: `${stats.progressPercent}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-between text-[10px] text-slate-400 font-mono">
+                      <span>Lvl {stats.currentRank.level} ({stats.currentRank.minXp} XP)</span>
+                      <span>
+                        {stats.nextRank
+                          ? `Lvl ${stats.nextRank.level} ${stats.nextRank.title} (${stats.nextRank.minXp} XP)`
+                          : 'MAX RANK'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Passport Badges & Collectibles Widget */}
+                <PassportBadgesWidget
+                  badges={stats.badges}
+                  unlockedCount={stats.unlockedBadgesCount}
+                />
+              </>
+            );
+          })()}
 
           {/* 4-Stat Traveler Metrics Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

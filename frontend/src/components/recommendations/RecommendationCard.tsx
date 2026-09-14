@@ -43,16 +43,22 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
     setSavedSuccess(isSavedInTrip || recommendation.is_saved);
   }, [isSavedInTrip, recommendation.is_saved]);
 
+  const [addError, setAddError] = useState<string | null>(null);
+
   const handleAdd = async () => {
     // If selectedDayId is still empty but days has items, fallback to days[0].id
     const targetDayId = selectedDayId || days[0]?.id;
     if (!targetDayId) return;
 
     setIsAdding(true);
+    setAddError(null);
     try {
       await onAddToDay(recommendation, targetDayId);
       setAddedSuccess(true);
       setTimeout(() => setAddedSuccess(false), 2500);
+    } catch (err: any) {
+      setAddError(err.message || 'Failed to add');
+      setTimeout(() => setAddError(null), 3500);
     } finally {
       setIsAdding(false);
     }
@@ -64,6 +70,9 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
     try {
       await onToggleSave(recommendation);
       setSavedSuccess(true);
+    } catch (err: any) {
+      // Don't mark saved if save failed
+      console.error(err);
     } finally {
       setIsSaving(false);
     }
@@ -205,7 +214,11 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
               onClick={handleAdd}
               loading={isAdding}
               className={`text-xs gap-1 py-1.5 px-3.5 shrink-0 font-bold transition-all ${
-                addedSuccess ? 'bg-emerald-600 border-emerald-500 text-white' : 'bg-blue-600 hover:bg-blue-500 text-white'
+                addedSuccess
+                  ? 'bg-emerald-600 border-emerald-500 text-white'
+                  : addError
+                  ? 'bg-rose-600 border-rose-500 text-white'
+                  : 'bg-blue-600 hover:bg-blue-500 text-white'
               }`}
             >
               {addedSuccess ? (
@@ -213,6 +226,8 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
                   <Check className="w-3.5 h-3.5" />
                   Added!
                 </>
+              ) : addError ? (
+                <span>Failed</span>
               ) : (
                 <>
                   <PlusCircle className="w-3.5 h-3.5" />

@@ -14,9 +14,9 @@ logger = logging.getLogger(__name__)
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 class OpenRouterAIProvider(BaseAIProvider):
-    def __init__(self, api_key: str, model_name: str = "google/gemini-2.5-flash"):
+    def __init__(self, api_key: str, model_name: str = "google/gemini-2.0-flash-exp:free"):
         self.api_key = api_key.strip()
-        self.model_name = model_name.strip() if model_name else "google/gemini-2.5-flash"
+        self.model_name = model_name.strip() if model_name else "google/gemini-2.0-flash-exp:free"
 
     def _clean_json_text(self, text: str) -> str:
         s = text.strip()
@@ -29,22 +29,30 @@ class OpenRouterAIProvider(BaseAIProvider):
             s = "\n".join(lines).strip()
         return s
 
-    async def _call_openrouter(self, prompt: str, system_prompt: str = "You are ARC-NOMADE's elite AI Travel Architect. Respond strictly with valid JSON matching the requested schema.") -> dict:
+    async def _call_openrouter(self, prompt: str, system_prompt: str = "You are ARC-NOMAD's elite AI Travel Architect. Respond strictly with valid JSON matching the requested schema.") -> dict:
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://arc-nomade.travel",
-            "X-Title": "ARC-NOMADE Travel Architect",
+            "HTTP-Referer": "https://arc-nomad.travel",
+            "X-Title": "ARC-NOMAD Travel Architect",
         }
 
-        # Fallback candidates if primary model is unavailable or rate-limited
+        # Fallback candidates prioritizing verified active OpenRouter Free-Tier models
         models_to_try = [self.model_name]
-        for fallback in ["google/gemini-2.5-flash", "openai/gpt-4o-mini", "deepseek/deepseek-chat"]:
+        free_tier_fallbacks = [
+            "google/gemma-4-26b-a4b-it:free",
+            "google/gemma-4-31b-it:free",
+            "nvidia/nemotron-3.5-lightning:free",
+            "nex-agi/nex-n2.5-pro:free",
+            "inclusionai/ling-3.0-flash-vl:free",
+            "liquid/lfm-2.5-2.6b:free"
+        ]
+        for fallback in free_tier_fallbacks:
             if fallback not in models_to_try:
                 models_to_try.append(fallback)
 
         last_error = None
-        async with httpx.AsyncClient(timeout=50.0) as client:
+        async with httpx.AsyncClient(timeout=18.0) as client:
             for model in models_to_try:
                 payload = {
                     "model": model,
@@ -53,7 +61,7 @@ class OpenRouterAIProvider(BaseAIProvider):
                         {"role": "user", "content": prompt}
                     ],
                     "response_format": {"type": "json_object"},
-                    "max_tokens": 4500
+                    "max_tokens": 4000
                 }
 
                 try:
@@ -66,7 +74,16 @@ class OpenRouterAIProvider(BaseAIProvider):
                         if choices and "message" in choices[0]:
                             content = choices[0]["message"].get("content", "")
                             cleaned = self._clean_json_text(content)
-                            return json.loads(cleaned)
+                            
+                            # Attempt parsing directly or extracting { ... } if preamble exists
+                            try:
+                                return json.loads(cleaned)
+                            except json.JSONDecodeError:
+                                first_brace = cleaned.find("{")
+                                last_brace = cleaned.rfind("}")
+                                if first_brace != -1 and last_brace != -1 and last_brace > first_brace:
+                                    return json.loads(cleaned[first_brace:last_brace + 1])
+                                raise
                     else:
                         error_detail = response.text
                         logger.warning(f"OpenRouter model {model} returned status {response.status_code}: {error_detail}")

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Sparkles, Search, Compass } from 'lucide-react';
+import { Sparkles, Search, Compass, CheckCircle2 } from 'lucide-react';
 import { Recommendation, ItineraryDay, Trip } from '../../types';
 import { recommendationService } from '../../services/recommendationService';
 import { RecommendationCard } from './RecommendationCard';
@@ -25,6 +25,12 @@ export const RecommendationList: React.FC<RecommendationListProps> = ({
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [exploreDrawerOpen, setExploreDrawerOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
 
   const categories = [
     'All',
@@ -54,9 +60,22 @@ export const RecommendationList: React.FC<RecommendationListProps> = ({
         day_id: dayId,
       });
       onRecommendationsUpdated();
-      alert(`Added "${rec.name}" to your itinerary!`);
+      const targetDay = days.find((d) => d.id === dayId);
+      const dayLabel = targetDay ? `Day ${targetDay.day_number}` : 'itinerary';
+      showToast(`Added "${rec.name}" to ${dayLabel}!`);
     } catch (err: any) {
-      alert(err.message || 'Failed to add recommendation to day.');
+      showToast(err.message || 'Failed to add recommendation to day.');
+      throw err;
+    }
+  };
+
+  const handleDeleteRecommendation = async (recId: string) => {
+    try {
+      await recommendationService.deleteRecommendation(recId);
+      onRecommendationsUpdated();
+      showToast('Spot removed from trip recommendations.');
+    } catch (err: any) {
+      showToast(err.message || 'Failed to remove spot.');
     }
   };
 
@@ -110,6 +129,16 @@ export const RecommendationList: React.FC<RecommendationListProps> = ({
         </div>
       </div>
 
+      {/* Toast Notification Banner */}
+      {toastMessage && (
+        <div className="p-3 rounded-2xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs flex items-center justify-between shadow-lg animate-in fade-in duration-200">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span className="font-semibold">{toastMessage}</span>
+          </div>
+        </div>
+      )}
+
       {/* Recommendations Cards Grid */}
       {filtered.length === 0 ? (
         <div className="text-center py-16 rounded-2xl border border-dashed border-slate-800 bg-slate-950 p-6 space-y-3">
@@ -136,6 +165,7 @@ export const RecommendationList: React.FC<RecommendationListProps> = ({
               recommendation={rec}
               days={days}
               onAddToDay={handleAddToDay}
+              onDelete={handleDeleteRecommendation}
             />
           ))}
         </div>

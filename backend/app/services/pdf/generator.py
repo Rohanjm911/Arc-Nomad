@@ -44,7 +44,7 @@ class NumberedCanvas(canvas.Canvas):
         self.setLineWidth(0.5)
         self.line(40, 40, letter[0] - 40, 40)
         # Footer text
-        footer_text = "ARC-NOMADE — Your Journey, Perfectly Mapped."
+        footer_text = "ARC-NOMAD — Your Journey, Perfectly Mapped."
         page_text = f"Page {self._pageNumber} of {page_count}"
         self.drawString(40, 26, footer_text)
         self.drawRightString(letter[0] - 40, 26, page_text)
@@ -148,7 +148,7 @@ class PDFExportService:
         elements = []
 
         # Header Block
-        elements.append(Paragraph("ARC-NOMADE 🧭", ParagraphStyle("Brand", fontName="Helvetica-Bold", fontSize=14, textColor=PRIMARY)))
+        elements.append(Paragraph("ARC-NOMAD 🧭", ParagraphStyle("Brand", fontName="Helvetica-Bold", fontSize=14, textColor=PRIMARY)))
         elements.append(Paragraph(trip.title, title_style))
         dest_dates = f"<b>Destination:</b> {trip.destination} &nbsp;|&nbsp; <b>Dates:</b> {trip.start_date.strftime('%b %d, %Y')} — {trip.end_date.strftime('%b %d, %Y')} &nbsp;|&nbsp; <b>Status:</b> {trip.status}"
         elements.append(Paragraph(dest_dates, subtitle_style))
@@ -220,7 +220,7 @@ class PDFExportService:
         # Day-by-Day Itinerary Section
         elements.append(Paragraph("📅 Day-by-Day Journey Schedule", h1_style))
         if not days:
-            elements.append(Paragraph("<i>No itinerary items planned yet. Use ARC-NOMADE AI Planner to generate.</i>", body_muted))
+            elements.append(Paragraph("<i>No itinerary items planned yet. Use ARC-NOMAD AI Planner to generate.</i>", body_muted))
         else:
             for day in days:
                 day_title = f"Day {day.day_number}"

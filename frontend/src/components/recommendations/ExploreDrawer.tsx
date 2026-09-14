@@ -114,7 +114,9 @@ export const ExploreDrawer: React.FC<ExploreDrawerProps> = ({
       onRecommendationSaved();
       showToast(`Saved "${rec.name}" to trip discoveries!`);
     } catch (err: any) {
-      setError(err.message || 'Failed to save spot.');
+      const errMsg = err.message || 'Failed to save spot.';
+      setError(errMsg);
+      throw err;
     }
   };
 
@@ -142,9 +144,13 @@ export const ExploreDrawer: React.FC<ExploreDrawerProps> = ({
       });
 
       onRecommendationSaved();
-      showToast(`Added "${rec.name}" to your itinerary!`);
+      const targetDay = days.find((d) => d.id === dayId);
+      const dayLabel = targetDay ? `Day ${targetDay.day_number}` : 'itinerary';
+      showToast(`Added "${rec.name}" to ${dayLabel}!`);
     } catch (err: any) {
-      setError(err.message || 'Failed to add item to day.');
+      const errMsg = err.message || 'Failed to add item to day.';
+      setError(errMsg);
+      throw err;
     }
   };
 

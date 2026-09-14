@@ -85,7 +85,7 @@ export default function RegisterPage() {
             Create your Explorer Profile
           </h1>
           <p className="text-xs sm:text-sm text-slate-400">
-            Set up your travel preferences so ARC-NOMADE can tailor your itineraries.
+            Set up your travel preferences so ARC-NOMAD can tailor your itineraries.
           </p>
         </div>
 

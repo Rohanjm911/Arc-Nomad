@@ -61,7 +61,7 @@ export default function LoginPage() {
             <TravelLogo size="lg" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Sign in to ARC-NOMADE
+            Sign in to ARC-NOMAD
           </h1>
           <p className="text-xs sm:text-sm text-slate-400">
             Access your collaborative itineraries, flights, and travel wallets.
@@ -189,7 +189,7 @@ export default function LoginPage() {
 
         {/* Footer Link */}
         <p className="text-center text-xs text-slate-400">
-          New to ARC-NOMADE?{' '}
+          New to ARC-NOMAD?{' '}
           <Link href="/register" className="text-blue-400 hover:text-blue-300 font-bold transition-colors">
             Create an account
           </Link>

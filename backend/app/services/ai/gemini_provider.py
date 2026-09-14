@@ -56,7 +56,7 @@ class GeminiAIProvider(BaseAIProvider):
 
     async def generate_itinerary(self, req: AIItineraryRequest) -> GeneratedItineraryResponse:
         prompt = f"""
-You are ARC-NOMADE's elite AI Travel Architect. Generate a realistic, structured, day-by-day travel itinerary.
+You are ARC-NOMAD's elite AI Travel Architect. Generate a realistic, structured, day-by-day travel itinerary.
 
 Destination: {req.destination}
 Duration: {req.days_count} days
@@ -107,7 +107,7 @@ Return ONLY valid JSON.
 
     async def generate_recommendations(self, req: AIRecommendationRequest) -> GeneratedRecommendationsResponse:
         prompt = f"""
-You are ARC-NOMADE's AI Travel Curator. Suggest {req.limit} handpicked recommendations for {req.destination}.
+You are ARC-NOMAD's AI Travel Curator. Suggest {req.limit} handpicked recommendations for {req.destination}.
 Category Filter: {req.category}
 Interests: {", ".join(req.interests) if req.interests else "General"}
 Travel Style: {req.travel_style}
@@ -142,7 +142,7 @@ Return ONLY valid JSON.
 
     async def modify_itinerary(self, req: AIModifyItineraryRequest, current_itinerary_json: dict) -> GeneratedItineraryResponse:
         prompt = f"""
-You are ARC-NOMADE's AI Travel Architect. Modify the existing itinerary according to the user's instructions.
+You are ARC-NOMAD's AI Travel Architect. Modify the existing itinerary according to the user's instructions.
 
 Current Itinerary:
 {json.dumps(current_itinerary_json, indent=2)}

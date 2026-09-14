@@ -91,7 +91,7 @@ export default function LandingPage() {
         </h1>
 
         <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
-          ARC-NOMADE unifies AI itinerary generation, synchronized spatial maps, real-time flight tracking, and automated group debt settlement into one cohesive travel workspace.
+          ARC-NOMAD unifies AI itinerary generation, synchronized spatial maps, real-time flight tracking, and automated group debt settlement into one cohesive travel workspace.
         </p>
 
         {/* Action Buttons */}
@@ -409,7 +409,7 @@ export default function LandingPage() {
       <section className="max-w-5xl mx-auto space-y-8">
         <div className="text-center space-y-2">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            How ARC-NOMADE Works
+            How ARC-NOMAD Works
           </h2>
           <p className="text-sm text-slate-400">From inception to landing, every phase is orchestrated.</p>
         </div>

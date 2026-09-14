@@ -1,4 +1,4 @@
-# ARC-NOMADE PowerShell Launcher
+# ARC-NOMAD PowerShell Launcher
 param(
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$ScriptArgs

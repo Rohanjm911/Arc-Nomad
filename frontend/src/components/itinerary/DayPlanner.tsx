@@ -127,44 +127,77 @@ export const DayPlanner: React.FC<DayPlannerProps> = ({
       </div>
 
       {/* Active Day Header Card */}
-      {activeDay && (
-        <Card className="p-4 border-theme-subtle bg-theme-surface">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-lg font-bold text-white tracking-tight">
-                  Day {activeDay.day_number} Schedule
-                </h3>
-                {activeDay.date && (
-                  <span className="text-xs text-slate-400 font-medium">
-                    ({new Date(activeDay.date).toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' })})
-                  </span>
+      {activeDay && (() => {
+        const totalSpots = activeDay.items?.length || 0;
+        const completedSpots = activeDay.items?.filter((i) => i.is_completed).length || 0;
+        const percent = totalSpots > 0 ? Math.round((completedSpots / totalSpots) * 100) : 0;
+        const isDayAllDone = totalSpots > 0 && completedSpots === totalSpots;
+
+        return (
+          <Card className="p-4 border-theme-subtle bg-theme-surface space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-white tracking-tight">
+                    Day {activeDay.day_number} Schedule
+                  </h3>
+                  {activeDay.date && (
+                    <span className="text-xs text-slate-400 font-medium">
+                      ({new Date(activeDay.date).toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' })})
+                    </span>
+                  )}
+                </div>
+                {activeDay.notes && (
+                  <p className="text-xs text-slate-300 mt-1 italic leading-relaxed">
+                    {activeDay.notes}
+                  </p>
                 )}
               </div>
-              {activeDay.notes && (
-                <p className="text-xs text-slate-300 mt-1 italic leading-relaxed">
-                  {activeDay.notes}
-                </p>
+
+              {canEdit && (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => {
+                    setEditingItem(null);
+                    setAddItemModalOpen(true);
+                  }}
+                  className="gap-1.5 shrink-0 text-xs font-bold"
+                >
+                  <PlusCircle className="w-4 h-4" />
+                  Add Activity
+                </Button>
               )}
             </div>
 
-            {canEdit && (
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => {
-                  setEditingItem(null);
-                  setAddItemModalOpen(true);
-                }}
-                className="gap-1.5 shrink-0 text-xs font-bold"
-              >
-                <PlusCircle className="w-4 h-4" />
-                Add Activity
-              </Button>
+            {/* Daily Exploration Progress Meter */}
+            {totalSpots > 0 && (
+              <div className="pt-2 border-t border-theme-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400 font-semibold">Day Progress:</span>
+                  <span className="font-mono text-white font-bold">
+                    {completedSpots}/{totalSpots} Spots Visited
+                  </span>
+                  {isDayAllDone && (
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 text-[10px] font-extrabold border border-emerald-800/40">
+                      Day Conquered! 🎯
+                    </span>
+                  )}
+                </div>
+
+                <div className="w-full sm:w-48 h-2 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ${
+                      isDayAllDone ? 'bg-emerald-500' : 'bg-blue-500'
+                    }`}
+                    style={{ width: `${percent}%` }}
+                  />
+                </div>
+              </div>
             )}
-          </div>
-        </Card>
-      )}
+          </Card>
+        );
+      })()}
 
       {/* Itinerary Items List */}
       {activeDay && (!activeDay.items || activeDay.items.length === 0) ? (

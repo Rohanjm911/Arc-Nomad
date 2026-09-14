@@ -15,7 +15,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'ARC-NOMADE — Your Journey, Perfectly Mapped',
+  title: 'ARC-NOMAD — Your Journey, Perfectly Mapped',
   description: 'AI-Powered Collaborative Travel Planning & Trip Management Platform.',
   icons: {
     icon: [

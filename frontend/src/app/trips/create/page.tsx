@@ -14,6 +14,7 @@ import {
   Navigation,
 } from 'lucide-react';
 import { useAuth } from '../../../store/AuthContext';
+import { useTheme } from '../../../store/ThemeContext';
 import { tripService } from '../../../services/tripService';
 import { itineraryService } from '../../../services/itineraryService';
 import { InteractiveMap } from '../../../components/map/InteractiveMap';
@@ -39,6 +40,7 @@ function CreateTripForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialAi = searchParams.get('ai') === 'true';
+  const { setTripDestination } = useTheme();
 
   // Multi-step state (1 to 4)
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -74,6 +76,7 @@ function CreateTripForm() {
           setDestinationLng(res[0].longitude);
           setGeocodedDisplayName(res[0].display_name);
         }
+        setTripDestination(destination);
       } catch (err) {
         console.warn('Geocoding preview failed:', err);
       } finally {
@@ -81,7 +84,7 @@ function CreateTripForm() {
       }
     }, 600);
     return () => clearTimeout(timer);
-  }, [destination]);
+  }, [destination, setTripDestination]);
 
   const selectedMapLocation = useMemo(() => {
     if (destinationLat && destinationLng) {
@@ -96,6 +99,7 @@ function CreateTripForm() {
     setDestinationLng(preset.lng);
     setGeocodedDisplayName(preset.name);
     setCoverImage(preset.image);
+    setTripDestination(preset.name);
     if (!title) {
       setTitle(`${preset.name.split(',')[0]} Expedition`);
     }
@@ -172,6 +176,11 @@ function CreateTripForm() {
         } catch (aiErr) {
           console.warn('AI generation skipped or delayed:', aiErr);
         }
+      }
+
+      // Set site atmosphere theme to new trip destination immediately
+      if (destination) {
+        setTripDestination(destination);
       }
 
       router.push(`/trips/${newTrip.id}`);

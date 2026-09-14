@@ -1,6 +1,6 @@
-# 🚀 How to Start ARC-NOMADE
+# 🚀 How to Start ARC-NOMAD
 
-Welcome to **ARC-NOMADE** (*Your Journey, Perfectly Mapped* 🧭✈️). Follow this guide to set up and run the full-stack application locally.
+Welcome to **ARC-NOMAD** (*Your Journey, Perfectly Mapped* 🧭✈️). Follow this guide to set up and run the full-stack application locally.
 
 ---
 
@@ -18,15 +18,13 @@ Before starting, ensure you have the following installed on your machine:
 
 ## ⚡ Method 1: 1-Click Fast Start (Windows)
 
-A single-click launcher script `start.bat` (also available as `start_dev.bat`) is provided in the project root to automatically spin up both the FastAPI backend and Next.js frontend in separate dedicated windows with full preflight checks.
+A single-click launcher script `start.bat` is provided in the project root to automatically spin up both the FastAPI backend and Next.js frontend in separate dedicated windows with full preflight checks.
 
 ### Option A: Using Batch Script (Recommended - Double-Click or Terminal)
 Double-click `start.bat` in File Explorer, or run in Command Prompt:
 ```cmd
 start.bat
 ```
-*(Or run `start_dev.bat`)*
-
 **What the `.bat` launcher automatically handles:**
 1. ✅ **Prerequisites Check**: Verifies Python 3.10+ and Node.js/npm are installed and in PATH.
 2. ✅ **Auto-Configures Environment Variables**: Automatically creates `backend/.env` and `frontend/.env.local` from their respective `.env.example` templates if missing.

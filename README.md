@@ -1,7 +1,7 @@
-# ARC-NOMADE 🧭✈️
+# ARC-NOMAD 🧭✈️
 ### *"Your Journey, Perfectly Mapped."*
 
-ARC-NOMADE is an AI-powered collaborative travel planning and trip-management platform designed for nomad collectives, friends, and expedition crews.
+ARC-NOMAD is an AI-powered collaborative travel planning and trip-management platform designed for nomad collectives, friends, and expedition crews.
 
 ---
 
@@ -51,11 +51,10 @@ For instant exploration and testing, the following accounts are pre-seeded:
 
 ## 🛠️ Getting Started
 
-> 📖 **Full Guide**: See [HOW_TO_START.md](file:///d:/projects%20and%20certificates/projects/web/Arc-Nomad/HOW_TO_START.md) for detailed prerequisites, step-by-step setup instructions, troubleshooting, and 1-click launcher scripts (`start.bat`, `start_dev.bat`, `start_dev.ps1`).
+> 📖 **Full Guide**: See [HOW_TO_START.md](file:///d:/projects%20and%20certificates/projects/web/Arc-Nomad/HOW_TO_START.md) for detailed prerequisites, step-by-step setup instructions, troubleshooting, and 1-click launcher scripts (`start.bat`, `start_dev.ps1`).
 
-### ⚡ 1-Click Quick Start (Windows)
-Double-click `start.bat` (or `start_dev.bat`) in the project root, or execute via terminal:
 ```cmd
+:: Double-click start.bat in the project root, or run via terminal:
 start.bat
 ```
 *(Or in PowerShell: `.\start_dev.ps1`)*

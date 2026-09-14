@@ -74,7 +74,7 @@ export const TravelLogo: React.FC<TravelLogoProps> = ({
       {showText && (
         <div className="flex flex-col">
           <span className="font-extrabold text-base tracking-tight text-white group-hover:text-blue-400 transition-colors">
-            ARC-NOMADE
+            ARC-NOMAD
           </span>
           <span className="text-[10px] text-slate-400 font-medium tracking-wide uppercase hidden sm:block">
             {subtitle || 'Your Journey, Perfectly Mapped'}

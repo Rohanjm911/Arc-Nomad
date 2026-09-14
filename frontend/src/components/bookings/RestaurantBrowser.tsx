@@ -67,12 +67,14 @@ export const RestaurantBrowser: React.FC<RestaurantBrowserProps> = ({
       const matchesCuisine =
         selectedCuisine === 'ALL' ||
         r.cuisine.toLowerCase().includes(selectedCuisine.toLowerCase());
-      const matchesQuery =
-        searchQuery === '' ||
-        r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        r.destination.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        r.neighborhood.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        r.cuisine.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const queryTrimmed = searchQuery.trim().toLowerCase();
+      if (!queryTrimmed) return matchesCuisine;
+
+      const tokens = queryTrimmed.split(/[\s,]+/).filter(Boolean);
+      const targetText = `${r.name} ${r.destination} ${r.neighborhood} ${r.cuisine}`.toLowerCase();
+      const matchesQuery = targetText.includes(queryTrimmed) || tokens.some((t) => t.length > 2 && targetText.includes(t));
+
       return matchesCuisine && matchesQuery;
     });
   }, [restaurants, selectedCuisine, searchQuery]);

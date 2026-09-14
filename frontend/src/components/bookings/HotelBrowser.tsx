@@ -66,10 +66,15 @@ export const HotelBrowser: React.FC<HotelBrowserProps> = ({
     return hotels.filter((h) => {
       const matchesTier = selectedTier === 'ALL' || h.tier.toLowerCase().includes(selectedTier.toLowerCase());
       const matchesPrice = h.price_per_night <= maxPrice;
-      const matchesQuery = searchQuery === '' || 
-        h.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        h.destination.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        h.neighborhood.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const queryTrimmed = searchQuery.trim().toLowerCase();
+      if (!queryTrimmed) return matchesTier && matchesPrice;
+
+      // Check full string or any individual words (e.g. "Rome" from "Rome, Italy")
+      const tokens = queryTrimmed.split(/[\s,]+/).filter(Boolean);
+      const targetText = `${h.name} ${h.destination} ${h.neighborhood}`.toLowerCase();
+      const matchesQuery = targetText.includes(queryTrimmed) || tokens.some((t) => t.length > 2 && targetText.includes(t));
+
       return matchesTier && matchesPrice && matchesQuery;
     });
   }, [hotels, selectedTier, maxPrice, searchQuery]);

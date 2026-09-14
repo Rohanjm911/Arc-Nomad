@@ -19,6 +19,7 @@ import { NotificationDropdown } from './NotificationDropdown';
 import { TravelLogo } from '../ui/TravelLogo';
 import { ThemeAtmosphereSwitcher } from './ThemeAtmosphereSwitcher';
 import { ProfileDossierModal } from '../profile/ProfileDossierModal';
+import { NotificationModal } from './NotificationModal';
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
@@ -26,6 +27,7 @@ export const Navbar: React.FC = () => {
   const { user, logout, demoLogin } = useAuth();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
 
   const navLinks = [
     { name: 'Dashboard', href: '/dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
@@ -57,6 +59,19 @@ export const Navbar: React.FC = () => {
                 <div className="hidden md:flex items-center gap-1">
                   {navLinks.map((link) => {
                     const isActive = pathname === link.href;
+                    if (link.name === 'Notifications') {
+                      return (
+                        <button
+                          key={link.name}
+                          type="button"
+                          onClick={() => setIsNotificationModalOpen(true)}
+                          className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-theme-raised/60 transition-colors cursor-pointer"
+                        >
+                          {link.icon}
+                          {link.name}
+                        </button>
+                      );
+                    }
                     return (
                       <Link
                         key={link.name}
@@ -127,50 +142,6 @@ export const Navbar: React.FC = () => {
                             <User className="w-3.5 h-3.5" />
                             <span>View Explorer Profile</span>
                           </button>
-                        </div>
-
-                        {/* Switch Active Explorer Account */}
-                        <div className="py-2 border-b border-theme-subtle">
-                          <span className="block px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                            Switch Active Explorer
-                          </span>
-                          <div className="space-y-1 px-1 mt-1">
-                            {[
-                              { username: 'alex_nomad', name: 'Alex Mercer', role: 'Tokyo Trip Owner', emblem: '🗼' },
-                              { username: 'sarah_voyage', name: 'Sarah Jenkins', role: 'Adventure Explorer', emblem: '🥾' },
-                              { username: 'marco_explorer', name: 'Marco Rossi', role: 'Rome Explorer', emblem: '🏛️' },
-                              { username: 'elena_wander', name: 'Elena Rostova', role: 'Tokyo Expense Lead', emblem: '🌊' },
-                            ].map((p) => {
-                              const isCurrent = user.username === p.username;
-                              return (
-                                <button
-                                  key={p.username}
-                                  onClick={async () => {
-                                    if (isCurrent) return;
-                                    await demoLogin(p.username);
-                                    setUserMenuOpen(false);
-                                    router.push('/dashboard');
-                                  }}
-                                  className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs transition-colors text-left cursor-pointer ${
-                                    isCurrent
-                                      ? 'bg-blue-600/20 text-blue-300 font-bold border border-blue-500/40'
-                                      : 'text-slate-300 hover:bg-theme-surface-raised hover:text-white'
-                                  }`}
-                                >
-                                  <div className="flex items-center gap-2 min-w-0">
-                                    <span className="text-sm">{p.emblem}</span>
-                                    <div className="min-w-0">
-                                      <p className="font-semibold text-white truncate text-[11px]">{p.name}</p>
-                                      <p className="text-[10px] text-slate-400 truncate">{p.role}</p>
-                                    </div>
-                                  </div>
-                                  {isCurrent && (
-                                    <span className="w-2 h-2 rounded-full bg-blue-400 shrink-0" />
-                                  )}
-                                </button>
-                              );
-                            })}
-                          </div>
                         </div>
 
                         <div className="py-1">
@@ -273,15 +244,14 @@ export const Navbar: React.FC = () => {
             <span>Friends</span>
           </Link>
 
-          <Link
-            href="/notifications"
-            className={`flex flex-col items-center gap-1 py-1 px-3 rounded-lg text-[10px] font-bold ${
-              pathname === '/notifications' ? 'text-theme-accent' : 'text-slate-400'
-            }`}
+          <button
+            type="button"
+            onClick={() => setIsNotificationModalOpen(true)}
+            className="flex flex-col items-center gap-1 py-1 px-3 rounded-lg text-[10px] font-bold text-slate-400 hover:text-white cursor-pointer"
           >
             <Bell className="w-4 h-4" />
             <span>Alerts</span>
-          </Link>
+          </button>
 
           <Link
             href="/profile"
@@ -299,6 +269,12 @@ export const Navbar: React.FC = () => {
       <ProfileDossierModal
         isOpen={isProfileModalOpen}
         onClose={() => setIsProfileModalOpen(false)}
+      />
+
+      {/* Dedicated Interactive Notification Modal Popup */}
+      <NotificationModal
+        isOpen={isNotificationModalOpen}
+        onClose={() => setIsNotificationModalOpen(false)}
       />
     </>
   );

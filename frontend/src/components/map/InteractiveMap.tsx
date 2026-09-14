@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   MapPin,
   PlusCircle,
@@ -15,6 +15,7 @@ import {
   Coins,
   Maximize2,
   Minimize2,
+  ChevronLeft,
   ChevronRight,
   Sparkles,
   X,
@@ -136,6 +137,50 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   const [isMapReady, setIsMapReady] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [mobileTab, setMobileTab] = useState<'map' | 'list'>('map');
+
+  // Side Scroll state & refs for Day Filter pills
+  const dayContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollDaysLeft, setCanScrollDaysLeft] = useState(false);
+  const [canScrollDaysRight, setCanScrollDaysRight] = useState(false);
+
+  const checkDayScrollability = useCallback(() => {
+    const el = dayContainerRef.current;
+    if (!el) return;
+    setCanScrollDaysLeft(el.scrollLeft > 4);
+    setCanScrollDaysRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  const scrollDaysBy = (offset: number) => {
+    if (!dayContainerRef.current) return;
+    dayContainerRef.current.scrollBy({ left: offset, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    const el = dayContainerRef.current;
+    if (!el) return;
+
+    checkDayScrollability();
+    const handleScroll = () => checkDayScrollability();
+    el.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Enable horizontal mouse wheel / trackpad shift
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      if (el.scrollWidth <= el.clientWidth) return;
+      e.preventDefault();
+      el.scrollLeft += e.deltaY;
+    };
+    el.addEventListener('wheel', handleWheel, { passive: false });
+
+    const handleResize = () => checkDayScrollability();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      el.removeEventListener('scroll', handleScroll);
+      el.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [checkDayScrollability, days]);
 
   // Consolidate all geo-locations across itinerary days and recommendations
   const allLocations: MapLocation[] = useMemo(() => {
@@ -625,47 +670,76 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
               )}
             </div>
 
-            {/* Day Selector Pills */}
-            <div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-1">
-              <button
-                onClick={() => setSelectedDayFilter('ALL')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-bold shrink-0 transition-colors cursor-pointer ${
-                  selectedDayFilter === 'ALL'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-400 hover:text-white hover:bg-theme-surface-raised'
-                }`}
-              >
-                All Days
-              </button>
-
-              {days.map((d) => (
+            {/* Day Selector Pills with Smooth Side-Scroll & Controls */}
+            <div className="relative group/daybar">
+              {canScrollDaysLeft && (
                 <button
-                  key={d.id}
-                  onClick={() => setSelectedDayFilter(d.day_number.toString())}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold shrink-0 transition-colors cursor-pointer flex items-center gap-1 ${
-                    selectedDayFilter === d.day_number.toString()
-                      ? 'bg-blue-600 text-white'
+                  type="button"
+                  onClick={() => scrollDaysBy(-150)}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-lg bg-theme-surface/95 backdrop-blur border border-theme-strong shadow-md flex items-center justify-center text-white hover:bg-blue-600 transition-all cursor-pointer"
+                  title="Scroll days left"
+                  aria-label="Scroll days left"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+              )}
+
+              {canScrollDaysRight && (
+                <button
+                  type="button"
+                  onClick={() => scrollDaysBy(150)}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-lg bg-theme-surface/95 backdrop-blur border border-theme-strong shadow-md flex items-center justify-center text-white hover:bg-blue-600 transition-all cursor-pointer"
+                  title="Scroll days right"
+                  aria-label="Scroll days right"
+                >
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              )}
+
+              <div
+                ref={dayContainerRef}
+                className="flex items-center gap-1.5 overflow-x-auto scrollbar-none scroll-smooth pb-1 px-0.5"
+              >
+                <button
+                  onClick={() => setSelectedDayFilter('ALL')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 transition-all cursor-pointer ${
+                    selectedDayFilter === 'ALL'
+                      ? 'bg-blue-600 text-white shadow-sm'
                       : 'text-slate-400 hover:text-white hover:bg-theme-surface-raised'
                   }`}
                 >
-                  <span>Day {d.day_number}</span>
-                  {d.items && d.items.length > 0 && (
-                    <span className="text-[10px] opacity-75">({d.items.length})</span>
-                  )}
+                  All Days
                 </button>
-              ))}
 
-              <button
-                onClick={() => setSelectedDayFilter('DISCOVERY')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-bold shrink-0 transition-colors cursor-pointer flex items-center gap-1 ${
-                  selectedDayFilter === 'DISCOVERY'
-                    ? 'bg-cyan-500 text-slate-950'
-                    : 'text-cyan-400 border border-cyan-800/40 bg-cyan-950/30 hover:bg-cyan-950/60'
-                }`}
-              >
-                <Sparkles className="w-3 h-3 text-cyan-400" />
-                <span>Discoveries ({recommendations.length})</span>
-              </button>
+                {days.map((d) => (
+                  <button
+                    key={d.id}
+                    onClick={() => setSelectedDayFilter(d.day_number.toString())}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
+                      selectedDayFilter === d.day_number.toString()
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'text-slate-400 hover:text-white hover:bg-theme-surface-raised'
+                    }`}
+                  >
+                    <span>Day {d.day_number}</span>
+                    {d.items && d.items.length > 0 && (
+                      <span className="text-[10px] opacity-75 font-mono">({d.items.length})</span>
+                    )}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => setSelectedDayFilter('DISCOVERY')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
+                    selectedDayFilter === 'DISCOVERY'
+                      ? 'bg-cyan-500 text-slate-950 shadow-sm font-extrabold'
+                      : 'text-cyan-400 border border-cyan-800/40 bg-cyan-950/30 hover:bg-cyan-950/60'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                  <span>Discoveries ({recommendations.length})</span>
+                </button>
+              </div>
             </div>
 
             {/* Category Filter Pills */}

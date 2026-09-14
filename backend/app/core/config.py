@@ -3,7 +3,7 @@ from typing import List, Optional
 import os
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "ARC-NOMADE API"
+    PROJECT_NAME: str = "ARC-NOMAD API"
     PROJECT_VERSION: str = "1.0.0"
     API_V1_STR: str = "/api/v1"
     
@@ -28,9 +28,9 @@ class Settings(BaseSettings):
         "*"
     ]
     
-    # OpenRouter AI
+    # OpenRouter AI (Free Tier Optimized)
     OPENROUTER_API_KEY: Optional[str] = os.getenv("OPENROUTER_API_KEY", None)
-    OPENROUTER_MODEL: str = os.getenv("OPENROUTER_MODEL", "google/gemini-2.5-flash")
+    OPENROUTER_MODEL: str = os.getenv("OPENROUTER_MODEL", "google/gemma-4-26b-a4b-it:free")
 
     # Gemini AI
     GEMINI_API_KEY: Optional[str] = os.getenv("GEMINI_API_KEY", None)

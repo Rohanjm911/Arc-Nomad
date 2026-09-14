@@ -1,9 +1,9 @@
 @echo off
 setlocal enabledelayedexpansion
-title ARC-NOMADE - Unified Full-Stack Launcher
+title ARC-NOMAD - Unified Full-Stack Launcher
 
 echo ================================================================
-echo           ARC-NOMADE - FULL-STACK DEVELOPMENT LAUNCHER
+echo           ARC-NOMAD - FULL-STACK DEVELOPMENT LAUNCHER
 echo                 "Your Journey, Perfectly Mapped"
 echo ================================================================
 echo.
@@ -61,11 +61,11 @@ if not exist "%PROJECT_ROOT%\arc_nomade.db" (
 :: 5. Launch Backend (FastAPI)
 echo.
 echo [1/2] Launching FastAPI Backend on http://localhost:8000 ...
-start "ARC-NOMADE Backend (FastAPI :8000)" cmd /k "cd /d "%PROJECT_ROOT%" && if exist "%PROJECT_ROOT%\venv\Scripts\activate.bat" (call "%PROJECT_ROOT%\venv\Scripts\activate.bat") && python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload"
+start "ARC-NOMAD Backend (FastAPI :8000)" cmd /k "cd /d "%PROJECT_ROOT%" && if exist "%PROJECT_ROOT%\venv\Scripts\activate.bat" (call "%PROJECT_ROOT%\venv\Scripts\activate.bat") && python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload"
 
 :: 6. Launch Frontend (Next.js)
 echo [2/2] Launching Next.js Frontend on http://localhost:3000 ...
-start "ARC-NOMADE Frontend (Next.js :3000)" cmd /k "cd /d "%PROJECT_ROOT%\frontend" && npm run dev"
+start "ARC-NOMAD Frontend (Next.js :3000)" cmd /k "cd /d "%PROJECT_ROOT%\frontend" && npm run dev"
 
 echo.
 echo ================================================================

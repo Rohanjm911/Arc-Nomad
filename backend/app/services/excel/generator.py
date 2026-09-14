@@ -77,7 +77,7 @@ class ExcelExportService:
         ws_overview = wb.active
         ws_overview.title = "Trip Overview"
         ws_overview.views.sheetView[0].showGridLines = True
-        apply_banner(ws_overview, "E", f"ARC-NOMADE — {trip.title.upper()} (OVERVIEW)")
+        apply_banner(ws_overview, "E", f"ARC-NOMAD — {trip.title.upper()} (OVERVIEW)")
 
         # Trip Key Information Card
         info_items = [
@@ -141,7 +141,7 @@ class ExcelExportService:
         # ----------------------------------------------------
         ws_itin = wb.create_sheet(title="Itinerary Schedule")
         ws_itin.views.sheetView[0].showGridLines = True
-        apply_banner(ws_itin, "I", f"ARC-NOMADE — {trip.title.upper()} (ITINERARY SCHEDULE)")
+        apply_banner(ws_itin, "I", f"ARC-NOMAD — {trip.title.upper()} (ITINERARY SCHEDULE)")
 
         itin_headers = ["Day #", "Day Theme / Focus", "Time Window", "Category", "Activity / Stop", "Location / Neighborhood", "Estimated Cost", "Currency", "Notes"]
         apply_headers(ws_itin, itin_headers, row_num=3)
@@ -195,7 +195,7 @@ class ExcelExportService:
         # ----------------------------------------------------
         ws_flights = wb.create_sheet(title="Flights & Logistics")
         ws_flights.views.sheetView[0].showGridLines = True
-        apply_banner(ws_flights, "I", f"ARC-NOMADE — {trip.title.upper()} (FLIGHTS & LOGISTICS)")
+        apply_banner(ws_flights, "I", f"ARC-NOMAD — {trip.title.upper()} (FLIGHTS & LOGISTICS)")
 
         flight_headers = ["Airline", "Flight #", "Departure Airport", "Arrival Airport", "Departure Time", "Arrival Time", "Terminal / Gate", "Seat", "Status"]
         apply_headers(ws_flights, flight_headers, row_num=3)
@@ -232,7 +232,7 @@ class ExcelExportService:
         # ----------------------------------------------------
         ws_exp = wb.create_sheet(title="Expense Ledger")
         ws_exp.views.sheetView[0].showGridLines = True
-        apply_banner(ws_exp, "G", f"ARC-NOMADE — {trip.title.upper()} (EXPENSE LEDGER)")
+        apply_banner(ws_exp, "G", f"ARC-NOMAD — {trip.title.upper()} (EXPENSE LEDGER)")
 
         headers_exp = ["Date", "Category", "Description", "Paid By", "Amount", "Currency", "Split Type"]
         apply_headers(ws_exp, headers_exp, row_num=3)

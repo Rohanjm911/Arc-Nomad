@@ -40,9 +40,8 @@ def save_recommendation(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    require_trip_roles([TripRole.OWNER.value, TripRole.EDITOR.value])(
-        trip_id=rec_in.trip_id, db=db, current_user=current_user
-    )
+    # Any trip member can save spots to their group discoveries
+    check_trip_member(trip_id=rec_in.trip_id, db=db, current_user=current_user)
 
     # Check for existing duplicate recommendation by name & trip_id
     existing = db.query(Recommendation).filter(
@@ -89,7 +88,8 @@ def add_recommendation_to_itinerary(
     if not day:
         raise HTTPException(status_code=404, detail="Itinerary day not found")
 
-    require_trip_roles([TripRole.OWNER.value, TripRole.EDITOR.value])(
+    # Trip owners, editors, and expense managers can collaborate on adding spots to the itinerary
+    require_trip_roles([TripRole.OWNER.value, TripRole.EDITOR.value, TripRole.EXPENSE_MANAGER.value])(
         trip_id=day.trip_id, db=db, current_user=current_user
     )
 
@@ -143,7 +143,7 @@ def delete_recommendation(
     if not rec:
         raise HTTPException(status_code=404, detail="Recommendation not found")
 
-    require_trip_roles([TripRole.OWNER.value, TripRole.EDITOR.value])(
+    require_trip_roles([TripRole.OWNER.value, TripRole.EDITOR.value, TripRole.EXPENSE_MANAGER.value])(
         trip_id=rec.trip_id, db=db, current_user=current_user
     )
 

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { ChatMessage } from '../types';
 import { getAuthToken } from '../services/api';
+import { chatService } from '../services/chatService';
 import { getWebSocketUrl } from '../config/api';
 
 interface TypingUser {
@@ -42,15 +43,17 @@ export function useWebSocketChat(tripId: string) {
       ws.onmessage = (event) => {
         try {
           const payload = JSON.parse(event.data);
+          const eventType = payload.event || payload.type;
+          const data = payload.data || payload;
 
-          if (payload.type === 'message' || payload.type === 'chat_message') {
-            const newMsg: ChatMessage = payload.data || payload;
+          if (eventType === 'new_message' || eventType === 'message' || eventType === 'chat_message') {
+            const newMsg: ChatMessage = data;
             setMessages((prev) => {
               if (prev.some((m) => m.id === newMsg.id)) return prev;
               return [...prev, newMsg];
             });
-          } else if (payload.type === 'typing') {
-            const { user_id, user_name, is_typing } = payload.data;
+          } else if (eventType === 'user_typing' || eventType === 'typing') {
+            const { user_id, user_name, is_typing } = data;
             setTypingUsers((prev) => {
               const filtered = prev.filter((u) => u.userId !== user_id);
               if (is_typing) {
@@ -58,8 +61,18 @@ export function useWebSocketChat(tripId: string) {
               }
               return filtered;
             });
-          } else if (payload.type === 'presence') {
-            setOnlineUsers(payload.data?.online_users || []);
+          } else if (eventType === 'user_status' || eventType === 'presence') {
+            setOnlineUsers(data?.online_users || []);
+          } else if (eventType === 'reaction_updated' || eventType === 'reaction') {
+            const messageId = data?.message_id;
+            const updatedReactions = data?.reactions;
+            if (messageId && updatedReactions !== undefined) {
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === messageId ? { ...m, reactions: updatedReactions } : m
+                )
+              );
+            }
           }
         } catch (e) {
           console.error('Failed to parse WebSocket message:', e);
@@ -127,16 +140,75 @@ export function useWebSocketChat(tripId: string) {
   }, []);
 
   const sendReaction = useCallback((messageId: string, emoji: string) => {
-    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-      socketRef.current.send(
-        JSON.stringify({
-          action: 'reaction',
-          message_id: messageId,
-          emoji,
+    // 0. Optimistic update so UI reflects immediately
+    const token = getAuthToken();
+    let currentUserId: string | null = null;
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        currentUserId = payload.sub || payload.user_id || payload.id;
+      } catch {
+        // ignore token parse error
+      }
+    }
+
+    if (currentUserId) {
+      setMessages((prev) =>
+        prev.map((m) => {
+          if (m.id !== messageId) return m;
+          const reactions = { ...(m.reactions || {}) };
+          const userList = [...(reactions[emoji] || [])];
+          const userIdx = userList.indexOf(currentUserId!);
+          if (userIdx > -1) {
+            userList.splice(userIdx, 1);
+            if (userList.length === 0) {
+              delete reactions[emoji];
+            } else {
+              reactions[emoji] = userList;
+            }
+          } else {
+            userList.push(currentUserId!);
+            reactions[emoji] = userList;
+          }
+          return { ...m, reactions };
         })
       );
     }
-  }, []);
+
+    // 1. Send via WebSocket if open
+    let sentWs = false;
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      try {
+        socketRef.current.send(
+          JSON.stringify({
+            action: 'reaction',
+            message_id: messageId,
+            emoji,
+          })
+        );
+        sentWs = true;
+      } catch (err) {
+        console.warn('WebSocket reaction send failed, falling back to HTTP:', err);
+      }
+    }
+
+    // 2. Always also call or fallback to REST API if WebSocket is not open
+    if (!sentWs && tripId) {
+      chatService.toggleReaction(tripId, messageId, emoji)
+        .then((res) => {
+          if (res?.message_id && res?.reactions !== undefined) {
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === res.message_id ? { ...m, reactions: res.reactions } : m
+              )
+            );
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to toggle reaction via HTTP fallback:', err);
+        });
+    }
+  }, [tripId]);
 
   return {
     messages,

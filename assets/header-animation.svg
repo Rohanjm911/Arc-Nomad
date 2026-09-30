@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 220" width="100%" height="220" fill="none">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="40%" r="75%">
+      <stop offset="0%" stop-color="#181822"/>
+      <stop offset="60%" stop-color="#101015"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </radialGradient>
+
+    <!-- Moving Border Gradient -->
+    <linearGradient id="borderGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8">
+        <animate attributeName="stop-color" values="#38bdf8;#818cf8;#e2e8f0;#38bdf8" dur="8s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" stop-color="#71717a" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.8">
+        <animate attributeName="stop-color" values="#38bdf8;#e2e8f0;#818cf8;#38bdf8" dur="8s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+
+    <!-- Radar Pulse Rings -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <linearGradient id="radarSweepGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    @keyframes rotateAnim {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes reverseRotate {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+    @keyframes pulseRing {
+      0% { r: 18px; opacity: 0.8; }
+      50% { r: 52px; opacity: 0.15; }
+      100% { r: 68px; opacity: 0; }
+    }
+    @keyframes pingDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+    @keyframes slideText1 {
+      0%, 20% { opacity: 1; transform: translateY(0); }
+      25%, 95% { opacity: 0; transform: translateY(-12px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideText2 {
+      0%, 22% { opacity: 0; transform: translateY(12px); }
+      27%, 47% { opacity: 1; transform: translateY(0); }
+      52%, 100% { opacity: 0; transform: translateY(-12px); }
+    }
+    @keyframes slideText3 {
+      0%, 48% { opacity: 0; transform: translateY(12px); }
+      53%, 73% { opacity: 1; transform: translateY(0); }
+      78%, 100% { opacity: 0; transform: translateY(-12px); }
+    }
+    @keyframes slideText4 {
+      0%, 74% { opacity: 0; transform: translateY(12px); }
+      79%, 96% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-12px); }
+    }
+    .radar-rotator {
+      transform-origin: 105px 110px;
+      animation: rotateAnim 12s linear infinite;
+    }
+    .satellite-rotator {
+      transform-origin: 105px 110px;
+      animation: reverseRotate 20s linear infinite;
+    }
+    .pulse-circle {
+      transform-origin: 105px 110px;
+      animation: pulseRing 3.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+    }
+    .pulse-circle-2 {
+      transform-origin: 105px 110px;
+      animation: pulseRing 3.5s cubic-bezier(0.2, 0.8, 0.2, 1) 1.75s infinite;
+    }
+    .live-dot {
+      transform-origin: 752px 35px;
+      animation: pingDot 2s ease-in-out infinite;
+    }
+    .carousel-item-1 { animation: slideText1 14s ease-in-out infinite; }
+    .carousel-item-2 { animation: slideText2 14s ease-in-out infinite; }
+    .carousel-item-3 { animation: slideText3 14s ease-in-out infinite; }
+    .carousel-item-4 { animation: slideText4 14s ease-in-out infinite; }
+  </style>
+
+  <!-- Card Background -->
+  <rect x="2" y="2" width="846" height="216" rx="20" fill="url(#bgGrad)" stroke="url(#borderGlow)" stroke-width="1.5"/>
+
+  <!-- Subtle Grid Lines -->
+  <g stroke="#ffffff" stroke-opacity="0.04" stroke-width="1">
+    <line x1="20" y1="55" x2="830" y2="55"/>
+    <line x1="20" y1="165" x2="830" y2="165"/>
+    <line x1="210" y1="15" x2="210" y2="205"/>
+  </g>
+
+  <!-- LEFT: Compass & Flight Radar Widget -->
+  <g>
+    <!-- Background Target Rings -->
+    <circle cx="105" cy="110" r="70" stroke="#38bdf8" stroke-opacity="0.12" stroke-width="1" stroke-dasharray="3 4"/>
+    <circle cx="105" cy="110" r="48" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1"/>
+    <circle cx="105" cy="110" r="28" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1"/>
+
+    <!-- Pulsing Radar Echoes -->
+    <circle class="pulse-circle" cx="105" cy="110" r="20" stroke="#38bdf8" stroke-width="1.5" fill="none"/>
+    <circle class="pulse-circle-2" cx="105" cy="110" r="20" stroke="#818cf8" stroke-width="1" fill="none"/>
+
+    <!-- Crosshairs -->
+    <line x1="30" y1="110" x2="180" y2="110" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1"/>
+    <line x1="105" y1="35" x2="105" y2="185" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1"/>
+
+    <!-- Rotating Radar Scanner Line & Cone -->
+    <g class="radar-rotator">
+      <path d="M105,110 L175,90 A70,70 0 0,0 105,40 Z" fill="url(#radarSweepGrad)" opacity="0.4"/>
+      <line x1="105" y1="110" x2="175" y2="90" stroke="#38bdf8" stroke-width="1.8" filter="url(#glow)"/>
+    </g>
+
+    <!-- Satellite Orbit with Plane -->
+    <g class="satellite-rotator">
+      <circle cx="105" cy="110" r="58" stroke="#38bdf8" stroke-opacity="0.25" stroke-dasharray="4 6" fill="none"/>
+      <!-- Plane Icon at Top of Orbit -->
+      <g transform="translate(105, 52) rotate(45) scale(0.7)">
+        <path d="M0 -12 L3 -3 L12 0 L3 3 L0 12 L-3 3 L-12 0 L-3 -3 Z" fill="#ffffff" filter="url(#glow)"/>
+      </g>
+    </g>
+
+    <!-- Center Compass Core -->
+    <circle cx="105" cy="110" r="8" fill="#181822" stroke="#38bdf8" stroke-width="2"/>
+    <circle cx="105" cy="110" r="3" fill="#38bdf8"/>
+    
+    <!-- Cardinal Directions -->
+    <text x="105" y="30" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" font-weight="700" fill="#94a3b8" letter-spacing="1">N</text>
+    <text x="105" y="198" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" font-weight="700" fill="#64748b" letter-spacing="1">S</text>
+  </g>
+
+  <!-- TOP RIGHT: Live Status Pill -->
+  <g transform="translate(630, 24)">
+    <rect x="0" y="0" width="185" height="24" rx="12" fill="#181822" stroke="#27272a" stroke-width="1"/>
+    <circle class="live-dot" cx="16" cy="12" r="4.5" fill="#34d399"/>
+    <text x="28" y="16" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" font-weight="700" fill="#e2e8f0" letter-spacing="0.8">SYSTEM ACTIVE • v2.4</text>
+  </g>
+
+  <!-- CENTER / MAIN CONTENT -->
+  <g transform="translate(235, 45)">
+    <!-- Subtitle / Tagline Badge -->
+    <rect x="0" y="0" width="190" height="20" rx="10" fill="#27272a" fill-opacity="0.6"/>
+    <text x="10" y="14" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" font-weight="600" fill="#94a3b8" letter-spacing="1.2">✦ EXPEDITION OPERATING SYSTEM</text>
+
+    <!-- Brand Title -->
+    <text x="0" y="54" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="800" fill="#f8fafc" letter-spacing="-0.5">
+      ARC<tspan fill="#71717a">—</tspan><tspan fill="#e2e8f0">NOMAD</tspan>
+    </text>
+
+    <!-- Primary Tagline -->
+    <text x="0" y="78" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5" font-weight="500" fill="#cbd5e1" font-style="italic">
+      "Your Journey, Perfectly Mapped."
+    </text>
+
+    <!-- Animated Feature Carousel (Rotating Text) -->
+    <g transform="translate(0, 108)">
+      <rect x="0" y="-18" width="460" height="32" rx="8" fill="#181822" stroke="#27272a" stroke-width="1"/>
+
+      <!-- Slide 1 -->
+      <g class="carousel-item-1">
+        <text x="14" y="2" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" font-weight="500" fill="#38bdf8">
+          ✦ Google Gemini AI
+          <tspan fill="#94a3b8"> — Curated itineraries, vibes &amp; live weather</tspan>
+        </text>
+      </g>
+
+      <!-- Slide 2 -->
+      <g class="carousel-item-2">
+        <text x="14" y="2" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" font-weight="500" fill="#34d399">
+          ✦ Real-Time Radar
+          <tspan fill="#94a3b8"> — Live flight status, boarding passes &amp; sync</tspan>
+        </text>
+      </g>
+
+      <!-- Slide 3 -->
+      <g class="carousel-item-3">
+        <text x="14" y="2" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" font-weight="500" fill="#a78bfa">
+          ✦ Split Wallet
+          <tspan fill="#94a3b8"> — Minimum Cash Flow Greedy debt optimizer</tspan>
+        </text>
+      </g>
+
+      <!-- Slide 4 -->
+      <g class="carousel-item-4">
+        <text x="14" y="2" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" font-weight="500" fill="#f43f5e">
+          ✦ Apple Titanium Design
+          <tspan fill="#94a3b8"> — Space obsidian &amp; interactive UI</tspan>
+        </text>
+      </g>
+    </g>
+
+    <!-- Bottom Tech Pills -->
+    <g transform="translate(0, 142)">
+      <text font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="600" fill="#64748b">
+        <tspan fill="#e2e8f0">Next.js 16</tspan> • <tspan fill="#e2e8f0">FastAPI</tspan> • <tspan fill="#e2e8f0">WebSockets</tspan> • <tspan fill="#e2e8f0">SQLAlchemy</tspan> • <tspan fill="#e2e8f0">ReportLab PDF</tspan>
+      </text>
+    </g>
+  </g>
+</svg>

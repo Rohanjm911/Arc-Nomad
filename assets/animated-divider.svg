@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 20" width="100%" height="20" fill="none">
+  <defs>
+    <linearGradient id="laserBeam" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#38bdf8" stop-opacity="0.3"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="80%" stop-color="#818cf8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0"/>
+    </linearGradient>
+
+    <filter id="laserGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    @keyframes sweep {
+      0% { transform: translateX(-350px); }
+      100% { transform: translateX(850px); }
+    }
+    @keyframes spinStar {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(180deg); }
+    }
+    .laser-line {
+      animation: sweep 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    .center-star {
+      transform-origin: 425px 10px;
+      animation: spinStar 8s linear infinite;
+    }
+  </style>
+
+  <!-- Base Subtle Line -->
+  <line x1="20" y1="10" x2="830" y2="10" stroke="#27272a" stroke-width="1"/>
+
+  <!-- Moving Laser Beam -->
+  <g class="laser-line">
+    <rect x="0" y="9" width="300" height="2" rx="1" fill="url(#laserBeam)" filter="url(#laserGlow)"/>
+  </g>
+
+  <!-- Center Diamond Star -->
+  <g class="center-star">
+    <path d="M425 4 L428 10 L434 10 L429 13 L431 19 L425 15 L419 19 L421 13 L416 10 L422 10 Z" fill="#38bdf8" filter="url(#laserGlow)"/>
+    <circle cx="425" cy="10" r="1.5" fill="#ffffff"/>
+  </g>
+</svg>

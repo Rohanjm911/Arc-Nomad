@@ -1,15 +1,10 @@
 <p align="center">
-  <img src="assets/logo.png" alt="ARC-NOMAD Logo" width="240" />
+  <img src="assets/logo.png" alt="ARC-NOMAD Logo" width="220" />
 </p>
 
-<h1 align="center">ARC-NOMAD</h1>
-
+<!-- Animated System Hero Banner -->
 <p align="center">
-  <strong><em>"Your Journey, Perfectly Mapped."</em></strong>
-</p>
-
-<p align="center">
-  <strong>The Intelligent Operating System for Collaborative Travel &amp; Expedition Management</strong>
+  <img src="assets/header-animation.svg" alt="ARC-NOMAD System Animation" width="100%" />
 </p>
 
 <p align="center">
@@ -17,23 +12,37 @@
   <img src="https://img.shields.io/badge/FastAPI-0.115+-009688?style=flat&logo=fastapi" alt="FastAPI" />
   <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=flat&logo=python" alt="Python" />
   <img src="https://img.shields.io/badge/Design-Apple_Matte_Titanium-181820?style=flat" alt="Apple Matte Titanium" />
+  <img src="https://img.shields.io/badge/Status-Expeditions_Online-34d399?style=flat" alt="Expeditions Online" />
+</p>
+
+<p align="center">
+  <img src="assets/animated-divider.svg" alt="Divider" width="100%" />
 </p>
 
 ARC-NOMAD is an AI-powered collaborative travel planning and trip-management platform designed for nomad collectives, friends, and expedition crews. Built with Apple-inspired Matte Titanium aesthetics, real-time WebSockets synchronization, and Google Gemini AI itinerary generation.
 
----
+<p align="center">
+  <img src="assets/animated-divider.svg" alt="Divider" width="100%" />
+</p>
 
 ## 🌟 Core Flow: Discover → Plan → Collaborate → Travel → Track → Manage → Export
 
 1. **Discover**: Gemini AI Curated Recommendations with category filters, vibes, and 1-click addition to your itinerary.
 2. **Plan**: Multi-day itinerary timetables, activity drag-and-drop sequencing, interactive coordinates, and live Open-Meteo weather forecasts.
 3. **Collaborate**: Real-time group chat via WebSockets with typing indicators, online member roster, and emoji reactions.
-4. **Travel**: Live flight status tracking (Boarding, Departed, Delayed, Cancelled) with automated in-app notifications.
+4. **Travel**: Live flight status tracking (Boarding, Departed, Delayed, Cancelled) with automated in-app notifications and real-time cockpit radar.
 5. **Track**: Interactive spatial maps plotting all itinerary stops, hotels, and recommendations with category filters and popup cards.
 6. **Manage**: Authoritative expense split calculations (Equal, Percentage, Exact) and optimized debt reduction (Minimum Cash Flow Greedy settlement optimizer).
 7. **Export**: Executive multi-page ReportLab PDF travel dossier and multi-sheet openpyxl Excel financial workbooks.
 
----
+<!-- Animated Flight Radar & Telemetry Display -->
+<p align="center">
+  <img src="assets/flight-radar.svg" alt="Live Flight Radar Telemetry" width="100%" />
+</p>
+
+<p align="center">
+  <img src="assets/animated-divider.svg" alt="Divider" width="100%" />
+</p>
 
 ## 🚀 Architecture & Tech Stack
 
@@ -52,7 +61,9 @@ ARC-NOMAD is an AI-powered collaborative travel planning and trip-management pla
 - **Export Engines**: ReportLab for custom executive PDF dossiers & openpyxl for Excel financial workbooks
 - **Testing**: Pytest & automated full-stack verification suites
 
----
+<p align="center">
+  <img src="assets/animated-divider.svg" alt="Divider" width="100%" />
+</p>
 
 ## 🔑 Pre-Seeded Demo Accounts (1-Click Login)
 
@@ -65,7 +76,9 @@ For instant exploration and testing, the following Indian explorer accounts are 
 | <img src="frontend/public/avatars/kabir.jpg" width="36" height="36" style="border-radius:50%;object-fit:cover" /> | **Kabir Mehta** | `marco_explorer` / `kabir_explorer` | `marco@arcnomad.com` | `password123` | **EDITOR** |
 | <img src="frontend/public/avatars/ananya.jpg" width="36" height="36" style="border-radius:50%;object-fit:cover" /> | **Ananya Roy** | `elena_wander` / `ananya_roy` | `elena@arcnomad.com` | `password123` | **EXPENSE_MANAGER** |
 
----
+<p align="center">
+  <img src="assets/animated-divider.svg" alt="Divider" width="100%" />
+</p>
 
 ## 🛠️ Getting Started
 
@@ -82,7 +95,6 @@ This script automatically verifies prerequisites, initializes environment config
 ### 🛠️ Manual Step-by-Step Setup
 
 #### 1. Backend Setup (FastAPI Python)
-
 
 ```bash
 # In project root
@@ -112,7 +124,9 @@ npm run dev
 
 Frontend application will be live at: `http://localhost:3000`
 
----
+<p align="center">
+  <img src="assets/animated-divider.svg" alt="Divider" width="100%" />
+</p>
 
 ## 🧪 Testing
 

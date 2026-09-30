@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 130" width="100%" height="130" fill="none">
+  <defs>
+    <radialGradient id="cardGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#181822"/>
+      <stop offset="100%" stop-color="#0e0e13"/>
+    </radialGradient>
+    <filter id="cyanGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    @keyframes pulseNode {
+      0% { r: 4px; opacity: 1; }
+      50% { r: 14px; opacity: 0.2; }
+      100% { r: 20px; opacity: 0; }
+    }
+    @keyframes dashMove {
+      to { stroke-dashoffset: -40; }
+    }
+    @keyframes blinkBadge {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .pulsing-wave {
+      animation: pulseNode 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+    }
+    .pulsing-wave-delay {
+      animation: pulseNode 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) 1.25s infinite;
+    }
+    .trajectory-line {
+      stroke-dasharray: 6 6;
+      animation: dashMove 2s linear infinite;
+    }
+    .live-indicator {
+      animation: blinkBadge 1.5s ease-in-out infinite;
+    }
+  </style>
+
+  <!-- Card Frame -->
+  <rect x="2" y="2" width="846" height="126" rx="14" fill="url(#cardGrad)" stroke="#27272a" stroke-width="1.2"/>
+
+  <!-- Left Airport (DEL) -->
+  <g transform="translate(60, 65)">
+    <circle class="pulsing-wave" cx="0" cy="0" r="4" stroke="#38bdf8" stroke-width="1.5" fill="none"/>
+    <circle class="pulsing-wave-delay" cx="0" cy="0" r="4" stroke="#38bdf8" stroke-width="1" fill="none"/>
+    <circle cx="0" cy="0" r="6" fill="#09090b" stroke="#38bdf8" stroke-width="2"/>
+    <circle cx="0" cy="0" r="2.5" fill="#38bdf8"/>
+    <text x="0" y="-18" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="800" fill="#f8fafc">DEL</text>
+    <text x="0" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="#94a3b8">NEW DELHI</text>
+  </g>
+
+  <!-- Right Airport (HND) -->
+  <g transform="translate(480, 65)">
+    <circle class="pulsing-wave" cx="0" cy="0" r="4" stroke="#34d399" stroke-width="1.5" fill="none"/>
+    <circle class="pulsing-wave-delay" cx="0" cy="0" r="4" stroke="#34d399" stroke-width="1" fill="none"/>
+    <circle cx="0" cy="0" r="6" fill="#09090b" stroke="#34d399" stroke-width="2"/>
+    <circle cx="0" cy="0" r="2.5" fill="#34d399"/>
+    <text x="0" y="-18" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="800" fill="#f8fafc">HND</text>
+    <text x="0" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="#94a3b8">TOKYO HANEDA</text>
+  </g>
+
+  <!-- Arc Trajectory Path -->
+  <path id="flightRoute" d="M 60,65 Q 270,10 480,65" fill="none" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.3"/>
+  <path d="M 60,65 Q 270,10 480,65" fill="none" stroke="#38bdf8" stroke-width="2" class="trajectory-line" filter="url(#cyanGlow)"/>
+
+  <!-- Moving Airplane along path -->
+  <g>
+    <path d="M 0,-8 L 3,-2 L 9,-1 L 9,2 L 3,1 L 2,6 L 5,8 L 5,9 L 0,8 L -5,9 L -5,8 L -2,6 L -3,1 L -9,2 L -9,-1 L -3,-2 Z" fill="#ffffff" filter="url(#cyanGlow)"/>
+    <animateMotion dur="6s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#flightRoute"/>
+    </animateMotion>
+  </g>
+
+  <!-- Right Side: Flight Telemetry Panel -->
+  <g transform="translate(560, 20)">
+    <!-- Panel Separator -->
+    <line x1="-30" y1="5" x2="-30" y2="85" stroke="#27272a" stroke-width="1"/>
+
+    <!-- Flight ID & Status -->
+    <g transform="translate(0, 15)">
+      <text font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="700" fill="#f8fafc">JL-750</text>
+      <text x="65" y="-1" font-family="ui-monospace, monospace" font-size="9" fill="#94a3b8">B787-9 DREAMLINER</text>
+    </g>
+
+    <!-- Status Badge -->
+    <g transform="translate(0, 32)">
+      <rect x="0" y="0" width="112" height="20" rx="10" fill="#064e3b" fill-opacity="0.5" stroke="#059669" stroke-width="1"/>
+      <circle class="live-indicator" cx="12" cy="10" r="3.5" fill="#34d399"/>
+      <text x="22" y="14" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" fill="#6ee7b7" letter-spacing="0.5">EN ROUTE</text>
+    </g>
+
+    <!-- Telemetry Stats -->
+    <g transform="translate(0, 72)" font-family="ui-monospace, monospace" font-size="9" fill="#94a3b8">
+      <text>ALT: <tspan fill="#e2e8f0" font-weight="600">36,000 FT</tspan></text>
+      <text x="95">SPD: <tspan fill="#e2e8f0" font-weight="600">540 KTS</tspan></text>
+      <text x="185">ETA: <tspan fill="#38bdf8" font-weight="700">06:45 JST</tspan></text>
+    </g>
+  </g>
+</svg>

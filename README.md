@@ -12,6 +12,7 @@
   <img src="https://img.shields.io/badge/FastAPI-0.115+-009688?style=flat&logo=fastapi" alt="FastAPI" />
   <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=flat&logo=python" alt="Python" />
   <img src="https://img.shields.io/badge/Design-Apple_Matte_Titanium-181820?style=flat" alt="Apple Matte Titanium" />
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=flat" alt="MIT License" />
   <img src="https://img.shields.io/badge/Status-Expeditions_Online-34d399?style=flat" alt="Expeditions Online" />
 </p>
 
@@ -137,3 +138,12 @@ python -m pytest backend/tests -v
 # Run full-stack 12-point end-to-end verification
 python backend/tests/verify_full_stack.py
 ```
+
+<p align="center">
+  <img src="assets/animated-divider.svg" alt="Divider" width="100%" />
+</p>
+
+## 📄 License
+
+Distributed under the **MIT License**. See the [LICENSE](LICENSE) file for complete rights and permissions.
+

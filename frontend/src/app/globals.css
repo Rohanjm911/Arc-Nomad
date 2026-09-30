@@ -1,387 +1,216 @@
 @import "tailwindcss";
 
 :root {
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Plus Jakarta Sans', system-ui, sans-serif;
   
-  /* Baseline Atmosphere Tokens: Emerald Alpine & Matte Titanium */
-  --bg-primary: #07100D;
-  --bg-surface: #0E1A16;
-  --bg-surface-raised: #15241F;
-  --bg-surface-hover: #1C302A;
+  /* Apple Matte Titanium & Minimalist Ice Tokens */
+  --bg-primary: #09090b;
+  --bg-surface: #111116;
+  --bg-surface-raised: #181820;
+  --bg-surface-hover: #22222b;
   
-  --border-subtle: #1C2E27;
-  --border-strong: #2A4239;
-  --border-active: #34D399;
+  --border-subtle: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.20);
+  --border-active: #ffffff;
   
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #34D399;
-  --accent-muted: #064E3B;
+  --accent-primary: #ffffff;
+  --accent-primary-hover: #e2e8f0;
+  --accent-secondary: #94a3b8;
+  --accent-muted: #27272a;
   
-  /* Dual-Tone Core Tokens (Tone 1: Emerald Primary, Tone 2: Mint/Titanium Highlight) */
+  /* Dual-Tone Core Tokens (Tone 1: Pure Ice Titanium, Tone 2: Matte Platinum Silver) */
   --duotone-primary: var(--accent-primary);
   --duotone-primary-hover: var(--accent-primary-hover);
   --duotone-secondary: var(--accent-secondary);
   --duotone-muted: var(--accent-muted);
   
-  --text-primary: #F0FDF4;
-  --text-secondary: #CBD5E1;
-  --text-muted: #94A3B8;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
   
-  --tag-bg: #0C231B;
-  --tag-border: #164334;
-  --tag-text: #34D399;
+  --tag-bg: rgba(255, 255, 255, 0.08);
+  --tag-border: rgba(255, 255, 255, 0.16);
+  --tag-text: #f1f5f9;
 }
+
+/* Apple Design System Glass & Specular Utilities */
+.apple-glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+.apple-glass-card {
+  background: rgba(18, 18, 22, 0.65);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 20px 50px rgba(0, 0, 0, 0.4);
+  border-radius: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12), 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.apple-headline {
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.apple-text-gradient {
+  background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 60%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.apple-pill {
+  border-radius: 9999px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-pill:active {
+  transform: scale(0.97);
+}
+
 
 /* ==========================================================================
-   LOCATION & TIME-OF-DAY ATMOSPHERIC MATRIX (STRICT ZERO-GRADIENT PALETTES)
+   MATTE TITANIUM & MINIMALIST ICE ATMOSPHERIC MATRIX
    ========================================================================== */
 
-/* 🌲 EMERALD ALPINE & MATTE TITANIUM ATMOSPHERES */
-
-/* 🗼 TOKYO ATMOSPHERES (Alpine Nightfall & Neon Mint) */
-[data-location="tokyo"][data-time="dawn"] {
-  --bg-primary: #06120E;
-  --bg-surface: #0C1E17;
-  --bg-surface-raised: #132A21;
-  --bg-surface-hover: #1A382C;
-  --border-subtle: #193B2E;
-  --border-strong: #275644;
-  --border-active: #34D399;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #6EE7B7;
-  --accent-muted: #064E3B;
-  --tag-bg: #0B241B;
-  --tag-border: #164635;
-  --tag-text: #6EE7B7;
+/* Universal Time-of-Day Overrides (Apple Matte Titanium Standards) */
+[data-time="night"] {
+  --bg-primary: #050507;
+  --bg-surface: #0d0d12;
+  --bg-surface-raised: #14141c;
+  --bg-surface-hover: #1c1c26;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --border-active: #ffffff;
+  --accent-primary: #ffffff;
+  --accent-primary-hover: #e2e8f0;
+  --accent-secondary: #94a3b8;
+  --accent-muted: #1e1e24;
+  --tag-bg: rgba(255, 255, 255, 0.06);
+  --tag-border: rgba(255, 255, 255, 0.14);
+  --tag-text: #f8fafc;
 }
 
-[data-location="tokyo"][data-time="day"] {
-  --bg-primary: #07130F;
-  --bg-surface: #0E2019;
-  --bg-surface-raised: #152C23;
-  --bg-surface-hover: #1D3B2F;
-  --border-subtle: #1A3C2F;
-  --border-strong: #2A5A46;
-  --border-active: #10B981;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #34D399;
-  --accent-muted: #064E3B;
-  --tag-bg: #0C261C;
-  --tag-border: #174735;
-  --tag-text: #34D399;
+[data-time="day"] {
+  --bg-primary: #09090d;
+  --bg-surface: #111117;
+  --bg-surface-raised: #181822;
+  --bg-surface-hover: #22222e;
+  --border-subtle: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.20);
+  --border-active: #ffffff;
+  --accent-primary: #ffffff;
+  --accent-primary-hover: #e2e8f0;
+  --accent-secondary: #cbd5e1;
+  --accent-muted: #27272a;
+  --tag-bg: rgba(255, 255, 255, 0.08);
+  --tag-border: rgba(255, 255, 255, 0.18);
+  --tag-text: #ffffff;
 }
 
-[data-location="tokyo"][data-time="sunset"] {
-  --bg-primary: #0B1410;
-  --bg-surface: #12201A;
-  --bg-surface-raised: #192D25;
-  --bg-surface-hover: #223B31;
-  --border-subtle: #1F3F34;
-  --border-strong: #2F5C4D;
-  --border-active: #A7F3D0;
-  --accent-primary: #047857;
-  --accent-primary-hover: #065F46;
-  --accent-secondary: #A7F3D0;
-  --accent-muted: #064E3B;
-  --tag-bg: #11281F;
-  --tag-border: #1F4C3B;
-  --tag-text: #A7F3D0;
+[data-time="dawn"] {
+  --bg-primary: #0a0b10;
+  --bg-surface: #13141d;
+  --bg-surface-raised: #1b1c26;
+  --bg-surface-hover: #242532;
+  --border-subtle: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.20);
+  --border-active: #ffffff;
+  --accent-primary: #ffffff;
+  --accent-primary-hover: #e2e8f0;
+  --accent-secondary: #94a3b8;
+  --accent-muted: #27272a;
+  --tag-bg: rgba(255, 255, 255, 0.08);
+  --tag-border: rgba(255, 255, 255, 0.16);
+  --tag-text: #f1f5f9;
 }
 
-[data-location="tokyo"][data-time="night"] {
-  --bg-primary: #040A08;
-  --bg-surface: #081510;
-  --bg-surface-raised: #0E211A;
-  --bg-surface-hover: #152E24;
-  --border-subtle: #143327;
-  --border-strong: #204C3B;
-  --border-active: #10B981;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #34D399;
-  --accent-muted: #064E3B;
-  --tag-bg: #0A2118;
-  --tag-border: #143F2F;
-  --tag-text: #34D399;
+[data-time="sunset"] {
+  --bg-primary: #0c0b11;
+  --bg-surface: #15141f;
+  --bg-surface-raised: #1d1c28;
+  --bg-surface-hover: #262534;
+  --border-subtle: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.20);
+  --border-active: #ffffff;
+  --accent-primary: #ffffff;
+  --accent-primary-hover: #e2e8f0;
+  --accent-secondary: #a1a1aa;
+  --accent-muted: #27272a;
+  --tag-bg: rgba(255, 255, 255, 0.08);
+  --tag-border: rgba(255, 255, 255, 0.16);
+  --tag-text: #f4f4f5;
 }
 
-/* 🥐 PARIS ATMOSPHERES (Sage Alpine & Champagne Titanium) */
-[data-location="paris"][data-time="dawn"] {
-  --bg-primary: #07120F;
-  --bg-surface: #0E1E19;
-  --bg-surface-raised: #152A23;
-  --bg-surface-hover: #1C382F;
-  --border-subtle: #1B3C32;
-  --border-strong: #2A5849;
-  --border-active: #6EE7B7;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #A7F3D0;
-  --accent-muted: #064E3B;
-  --tag-bg: #0D261F;
-  --tag-border: #194639;
-  --tag-text: #A7F3D0;
+/* 🗼 TOKYO (Graphite Titanium & Cyber Ice) */
+[data-location="tokyo"] {
+  --bg-primary: #07070a;
+  --bg-surface: #0f0f14;
+  --bg-surface-raised: #17171e;
+  --border-active: #ffffff;
+  --accent-primary: #ffffff;
+  --accent-secondary: #94a3b8;
 }
 
-[data-location="paris"][data-time="day"] {
-  --bg-primary: #06110D;
-  --bg-surface: #0D1C17;
-  --bg-surface-raised: #142821;
-  --bg-surface-hover: #1C362D;
-  --border-subtle: #1B3B30;
-  --border-strong: #2B5748;
-  --border-active: #34D399;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #34D399;
-  --accent-muted: #064E3B;
-  --tag-bg: #0C251D;
-  --tag-border: #174536;
-  --tag-text: #34D399;
+/* 🥐 PARIS (Champagne Ice & Matte Platinum) */
+[data-location="paris"] {
+  --bg-primary: #09090c;
+  --bg-surface: #121217;
+  --bg-surface-raised: #1a1a21;
+  --border-active: #ffffff;
+  --accent-primary: #ffffff;
+  --accent-secondary: #e2e8f0;
 }
 
-[data-location="paris"][data-time="sunset"] {
-  --bg-primary: #09130F;
-  --bg-surface: #10211B;
-  --bg-surface-raised: #172D25;
-  --bg-surface-hover: #203B31;
-  --border-subtle: #1F3F34;
-  --border-strong: #2F5C4D;
-  --border-active: #6EE7B7;
-  --accent-primary: #047857;
-  --accent-primary-hover: #065F46;
-  --accent-secondary: #6EE7B7;
-  --accent-muted: #064E3B;
-  --tag-bg: #0F271E;
-  --tag-border: #1C4839;
-  --tag-text: #6EE7B7;
+/* 🗽 NEW YORK (Slate Titanium & Pure Monochrome) */
+[data-location="new-york"] {
+  --bg-primary: #08080b;
+  --bg-surface: #101015;
+  --bg-surface-raised: #18181f;
+  --border-active: #ffffff;
+  --accent-primary: #ffffff;
+  --accent-secondary: #cbd5e1;
 }
 
-[data-location="paris"][data-time="night"] {
-  --bg-primary: #050B09;
-  --bg-surface: #091712;
-  --bg-surface-raised: #10231C;
-  --bg-surface-hover: #173127;
-  --border-subtle: #16362B;
-  --border-strong: #235141;
-  --border-active: #10B981;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #34D399;
-  --accent-muted: #064E3B;
-  --tag-bg: #0A2218;
-  --tag-border: #154131;
-  --tag-text: #34D399;
+/* ❄️ REYKJAVIK (Arctic Ice & Glacial Silver) */
+[data-location="reykjavik"] {
+  --bg-primary: #06080d;
+  --bg-surface: #0e1119;
+  --bg-surface-raised: #161a25;
+  --border-active: #ffffff;
+  --accent-primary: #ffffff;
+  --accent-secondary: #bae6fd;
 }
 
-/* 🗽 NEW YORK ATMOSPHERES (Titanium Slate & Emerald Steel) */
-[data-location="new-york"][data-time="dawn"] {
-  --bg-primary: #06110E;
-  --bg-surface: #0C1D18;
-  --bg-surface-raised: #132A22;
-  --bg-surface-hover: #1A382E;
-  --border-subtle: #193A2F;
-  --border-strong: #285646;
-  --border-active: #34D399;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #34D399;
-  --accent-muted: #064E3B;
-  --tag-bg: #0C241C;
-  --tag-border: #164435;
-  --tag-text: #34D399;
+/* 🏛️ ROME (Carrara Marble & Matte Titanium) */
+[data-location="rome"] {
+  --bg-primary: #08080a;
+  --bg-surface: #111116;
+  --bg-surface-raised: #191920;
+  --border-active: #ffffff;
+  --accent-primary: #ffffff;
+  --accent-secondary: #e2e8f0;
 }
 
-[data-location="new-york"][data-time="day"] {
-  --bg-primary: #07120F;
-  --bg-surface: #0E1F1A;
-  --bg-surface-raised: #152B24;
-  --bg-surface-hover: #1D3A31;
-  --border-subtle: #1B3C33;
-  --border-strong: #2B594B;
-  --border-active: #10B981;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #6EE7B7;
-  --accent-muted: #064E3B;
-  --tag-bg: #0D261F;
-  --tag-border: #18473A;
-  --tag-text: #6EE7B7;
-}
-
-[data-location="new-york"][data-time="sunset"] {
-  --bg-primary: #0A1310;
-  --bg-surface: #11211C;
-  --bg-surface-raised: #182E27;
-  --bg-surface-hover: #213C33;
-  --border-subtle: #1F4036;
-  --border-strong: #2F5E50;
-  --border-active: #A7F3D0;
-  --accent-primary: #047857;
-  --accent-primary-hover: #065F46;
-  --accent-secondary: #A7F3D0;
-  --accent-muted: #064E3B;
-  --tag-bg: #102920;
-  --tag-border: #1D4C3D;
-  --tag-text: #A7F3D0;
-}
-
-[data-location="new-york"][data-time="night"] {
-  --bg-primary: #040A08;
-  --bg-surface: #081611;
-  --bg-surface-raised: #0F221B;
-  --bg-surface-hover: #162F26;
-  --border-subtle: #14352A;
-  --border-strong: #21503F;
-  --border-active: #10B981;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #34D399;
-  --accent-muted: #064E3B;
-  --tag-bg: #0A2219;
-  --tag-border: #144031;
-  --tag-text: #34D399;
-}
-
-/* ❄️ REYKJAVIK (NORDIC) ATMOSPHERES (Glacial Mint & Deep Alpine Obsidian) */
-[data-location="reykjavik"][data-time="dawn"] {
-  --bg-primary: #05120F;
-  --bg-surface: #0B1F1A;
-  --bg-surface-raised: #122C25;
-  --bg-surface-hover: #193B32;
-  --border-subtle: #183C33;
-  --border-strong: #265B4E;
-  --border-active: #6EE7B7;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #6EE7B7;
-  --accent-muted: #064E3B;
-  --tag-bg: #0B251F;
-  --tag-border: #15453A;
-  --tag-text: #6EE7B7;
-}
-
-[data-location="reykjavik"][data-time="day"] {
-  --bg-primary: #04100D;
-  --bg-surface: #0A1C17;
-  --bg-surface-raised: #112822;
-  --bg-surface-hover: #18372F;
-  --border-subtle: #17382F;
-  --border-strong: #255447;
-  --border-active: #10B981;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #34D399;
-  --accent-muted: #064E3B;
-  --tag-bg: #0A231C;
-  --tag-border: #134235;
-  --tag-text: #34D399;
-}
-
-[data-location="reykjavik"][data-time="sunset"] {
-  --bg-primary: #081310;
-  --bg-surface: #0E201B;
-  --bg-surface-raised: #152D26;
-  --bg-surface-hover: #1E3C33;
-  --border-subtle: #1D3F36;
-  --border-strong: #2C5D50;
-  --border-active: #A7F3D0;
-  --accent-primary: #047857;
-  --accent-primary-hover: #065F46;
-  --accent-secondary: #A7F3D0;
-  --accent-muted: #064E3B;
-  --tag-bg: #0E2820;
-  --tag-border: #1B4B3D;
-  --tag-text: #A7F3D0;
-}
-
-[data-location="reykjavik"][data-time="night"] {
-  --bg-primary: #030806;
-  --bg-surface: #07130F;
-  --bg-surface-raised: #0D1E18;
-  --bg-surface-hover: #132A22;
-  --border-subtle: #123026;
-  --border-strong: #1E4A3B;
-  --border-active: #10B981;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #34D399;
-  --accent-muted: #064E3B;
-  --tag-bg: #081E17;
-  --tag-border: #113B2E;
-  --tag-text: #34D399;
-}
-
-/* 🏛️ ROME ATMOSPHERES (Alpine Forest & Matte Titanium) */
-[data-location="rome"][data-time="dawn"] {
-  --bg-primary: #07110E;
-  --bg-surface: #0E1D19;
-  --bg-surface-raised: #152923;
-  --bg-surface-hover: #1D362F;
-  --border-subtle: #1C3B33;
-  --border-strong: #2B574B;
-  --border-active: #6EE7B7;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #A7F3D0;
-  --accent-muted: #064E3B;
-  --tag-bg: #0D251F;
-  --tag-border: #184439;
-  --tag-text: #A7F3D0;
-}
-
-[data-location="rome"][data-time="day"] {
-  --bg-primary: #07100D;
-  --bg-surface: #0E1A16;
-  --bg-surface-raised: #15241F;
-  --bg-surface-hover: #1C302A;
-  --border-subtle: #1C2E27;
-  --border-strong: #2A4239;
-  --border-active: #34D399;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #34D399;
-  --accent-muted: #064E3B;
-  --tag-bg: #0C231B;
-  --tag-border: #164334;
-  --tag-text: #34D399;
-}
-
-[data-location="rome"][data-time="sunset"] {
-  --bg-primary: #0A1410;
-  --bg-surface: #11221C;
-  --bg-surface-raised: #182F27;
-  --bg-surface-hover: #213E34;
-  --border-subtle: #204137;
-  --border-strong: #306052;
-  --border-active: #6EE7B7;
-  --accent-primary: #047857;
-  --accent-primary-hover: #065F46;
-  --accent-secondary: #6EE7B7;
-  --accent-muted: #064E3B;
-  --tag-bg: #102A21;
-  --tag-border: #1D4E3E;
-  --tag-text: #6EE7B7;
-}
-
-[data-location="rome"][data-time="night"] {
-  --bg-primary: #040907;
-  --bg-surface: #081410;
-  --bg-surface-raised: #0E1F19;
-  --bg-surface-hover: #152B23;
-  --border-subtle: #133128;
-  --border-strong: #1F4C3F;
-  --border-active: #10B981;
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #34D399;
-  --accent-muted: #064E3B;
-  --tag-bg: #092019;
-  --tag-border: #133E30;
-  --tag-text: #34D399;
+/* 🧭 DEFAULT GLOBAL NOMAD */
+[data-location="default"] {
+  --bg-primary: #09090b;
+  --bg-surface: #111116;
+  --bg-surface-raised: #181820;
+  --border-active: #ffffff;
+  --accent-primary: #ffffff;
+  --accent-secondary: #94a3b8;
 }
 
 /* Base Body Styling */
@@ -680,7 +509,8 @@ textarea::placeholder {
 
 .bg-theme-accent {
   background-color: var(--accent-primary);
-  color: #FFFFFF;
+  color: #000000;
+  font-weight: 600;
   transition: background-color 0.2s ease;
 }
 
@@ -709,12 +539,14 @@ textarea::placeholder {
 
 .bg-duotone-1 {
   background-color: var(--accent-primary);
-  color: #FFFFFF;
+  color: #000000;
+  font-weight: 600;
 }
 
 .bg-duotone-2 {
   background-color: var(--accent-secondary);
-  color: #0B0F19;
+  color: #000000;
+  font-weight: 600;
 }
 
 .border-duotone-1 {
@@ -744,4 +576,17 @@ textarea::placeholder {
   border: 1px solid var(--border-subtle);
   background-color: var(--bg-surface-raised);
 }
+
+/* Hide Next.js dev indicators and build badges */
+nextjs-portal,
+[data-nextjs-toast],
+[data-nextjs-toast-wrapper],
+[data-nextjs-dev-indicator],
+#__next-build-watcher {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 

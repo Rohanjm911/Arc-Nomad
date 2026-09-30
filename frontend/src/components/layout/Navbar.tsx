@@ -45,7 +45,7 @@ export const Navbar: React.FC = () => {
   return (
     <>
       {/* Desktop & Tablet Top Navigation Header */}
-      <nav className="sticky top-0 z-40 w-full border-b border-theme-subtle bg-theme-surface/95 backdrop-blur transition-colors">
+      <nav className="sticky top-0 z-40 w-full border-b border-white/[0.08] bg-black/65 backdrop-blur-2xl transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo & Brand */}
@@ -56,7 +56,7 @@ export const Navbar: React.FC = () => {
 
               {/* Desktop Navigation Links */}
               {user && (
-                <div className="hidden md:flex items-center gap-1">
+                <div className="hidden md:flex items-center gap-1.5 p-1 rounded-full bg-white/[0.04] border border-white/[0.06] backdrop-blur-md">
                   {navLinks.map((link) => {
                     const isActive = pathname === link.href;
                     if (link.name === 'Notifications') {
@@ -65,7 +65,7 @@ export const Navbar: React.FC = () => {
                           key={link.name}
                           type="button"
                           onClick={() => setIsNotificationModalOpen(true)}
-                          className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-theme-raised/60 transition-colors cursor-pointer"
+                          className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/[0.06] transition-all cursor-pointer"
                         >
                           {link.icon}
                           {link.name}
@@ -76,10 +76,10 @@ export const Navbar: React.FC = () => {
                       <Link
                         key={link.name}
                         href={link.href}
-                        className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                        className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                           isActive
-                            ? 'bg-theme-raised text-theme-accent border border-theme-strong'
-                            : 'text-slate-300 hover:text-white hover:bg-theme-raised/60'
+                            ? 'bg-white/[0.12] text-white border border-white/[0.15] shadow-sm'
+                            : 'text-zinc-400 hover:text-white hover:bg-white/[0.06]'
                         }`}
                       >
                         {link.icon}
@@ -99,7 +99,7 @@ export const Navbar: React.FC = () => {
               {user ? (
                 <>
                   <Link href="/trips/create" className="hidden sm:block">
-                    <Button variant="primary" size="sm" className="gap-1.5 bg-theme-accent">
+                    <Button variant="accent" size="sm" className="gap-1.5 shadow-[0_4px_14px_0_rgba(0,113,227,0.35)]">
                       <PlusCircle className="w-4 h-4" />
                       Plan Journey
                     </Button>
@@ -111,24 +111,24 @@ export const Navbar: React.FC = () => {
                   <div className="relative">
                     <button
                       onClick={() => setUserMenuOpen(!userMenuOpen)}
-                      className="flex items-center gap-2.5 p-1 rounded-full hover:bg-theme-raised transition-colors focus:outline-none"
+                      className="flex items-center gap-2 p-1 pl-1.5 pr-2.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] transition-all focus:outline-none cursor-pointer"
                     >
                       <Avatar src={user.avatar_url} name={user.full_name} size="sm" />
-                      <span className="text-xs font-semibold text-theme-primary hidden lg:block">
+                      <span className="text-xs font-medium text-zinc-200 hidden lg:block tracking-tight">
                         {user.full_name.split(' ')[0]}
                       </span>
                     </button>
 
                     {userMenuOpen && (
                       <div
-                        className="absolute right-0 mt-2 w-64 rounded-2xl bg-theme-surface border border-theme-strong p-2 shadow-2xl z-50 animate-in fade-in zoom-in-95"
+                        className="absolute right-0 mt-2 w-64 rounded-3xl bg-[#141419]/95 backdrop-blur-2xl border border-white/[0.12] p-3 shadow-2xl z-50 animate-in fade-in zoom-in-95"
                         onMouseLeave={() => setUserMenuOpen(false)}
                       >
-                        <div className="px-3 py-2 border-b border-theme-subtle">
-                          <p className="text-xs font-bold text-white">{user.full_name}</p>
-                          <p className="text-[11px] text-slate-400 truncate">@{user.username}</p>
+                        <div className="px-3 py-2 border-b border-white/[0.08]">
+                          <p className="text-xs font-bold text-white tracking-tight">{user.full_name}</p>
+                          <p className="text-[11px] text-zinc-400 truncate">@{user.username}</p>
                           {user.travel_style && (
-                            <span className="inline-block mt-1 px-1.5 py-0.2 rounded text-[10px] font-semibold bg-theme-surface-raised border border-theme-subtle text-slate-300">
+                            <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/[0.06] border border-white/[0.1] text-zinc-300">
                               Persona: {user.travel_style}
                             </span>
                           )}
@@ -137,7 +137,7 @@ export const Navbar: React.FC = () => {
                               setUserMenuOpen(false);
                               setIsProfileModalOpen(true);
                             }}
-                            className="w-full mt-2 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 text-white hover:bg-blue-500 text-xs font-bold transition-all shadow-sm cursor-pointer"
+                            className="w-full mt-2 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-black hover:bg-zinc-200 text-xs font-semibold transition-all shadow-sm cursor-pointer"
                           >
                             <User className="w-3.5 h-3.5" />
                             <span>View Explorer Profile</span>
@@ -148,33 +148,33 @@ export const Navbar: React.FC = () => {
                           <Link
                             href="/dashboard"
                             onClick={() => setUserMenuOpen(false)}
-                            className="flex items-center gap-2 px-3 py-2 text-xs text-slate-300 hover:bg-theme-surface-raised hover:text-white rounded-lg transition-colors"
+                            className="flex items-center gap-2 px-3 py-2 text-xs text-zinc-300 hover:bg-white/[0.06] hover:text-white rounded-2xl transition-colors"
                           >
-                            <LayoutDashboard className="w-3.5 h-3.5 text-sky-400" />
+                            <LayoutDashboard className="w-3.5 h-3.5 text-[#2997ff]" />
                             Dashboard
                           </Link>
                           <Link
                             href="/profile"
                             onClick={() => setUserMenuOpen(false)}
-                            className="flex items-center gap-2 px-3 py-2 text-xs text-slate-300 hover:bg-theme-surface-raised hover:text-white rounded-lg transition-colors"
+                            className="flex items-center gap-2 px-3 py-2 text-xs text-zinc-300 hover:bg-white/[0.06] hover:text-white rounded-2xl transition-colors"
                           >
-                            <User className="w-3.5 h-3.5 text-amber-400" />
+                            <User className="w-3.5 h-3.5 text-[#ff9f0a]" />
                             Travel Persona &amp; Settings
                           </Link>
                           <Link
                             href="/friends"
                             onClick={() => setUserMenuOpen(false)}
-                            className="flex items-center gap-2 px-3 py-2 text-xs text-slate-300 hover:bg-theme-surface-raised hover:text-white rounded-lg transition-colors"
+                            className="flex items-center gap-2 px-3 py-2 text-xs text-zinc-300 hover:bg-white/[0.06] hover:text-white rounded-2xl transition-colors"
                           >
-                            <Users className="w-3.5 h-3.5 text-teal-400" />
+                            <Users className="w-3.5 h-3.5 text-[#30d158]" />
                             Travel Friends
                           </Link>
                         </div>
 
-                        <div className="pt-1 border-t border-theme-subtle">
+                        <div className="pt-1 border-t border-white/[0.08]">
                           <button
                             onClick={handleLogout}
-                            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-red-950/40 hover:text-red-300 rounded-lg transition-colors cursor-pointer"
+                            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-[#ff453a] hover:bg-[#ff453a]/10 hover:text-red-300 rounded-2xl transition-colors cursor-pointer"
                           >
                             <LogOut className="w-3.5 h-3.5" />
                             Sign Out
@@ -187,10 +187,10 @@ export const Navbar: React.FC = () => {
               ) : (
                 <div className="flex items-center gap-2">
                   <Button
-                    variant="outline"
+                    variant="secondary"
                     size="sm"
                     onClick={() => demoLogin('alex_nomad')}
-                    className="hidden sm:inline-flex text-xs border-theme-subtle hover:bg-theme-raised"
+                    className="hidden sm:inline-flex text-xs"
                   >
                     Demo Mode
                   </Button>
@@ -200,7 +200,7 @@ export const Navbar: React.FC = () => {
                     </Button>
                   </Link>
                   <Link href="/register">
-                    <Button variant="primary" size="sm" className="text-xs bg-theme-accent">
+                    <Button variant="primary" size="sm" className="text-xs">
                       Get Started
                     </Button>
                   </Link>
@@ -211,13 +211,13 @@ export const Navbar: React.FC = () => {
         </div>
       </nav>
 
-      {/* Mobile Bottom Navigation Bar */}
+      {/* Mobile Bottom Navigation Bar (Apple Floating Capsule) */}
       {user && (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-theme-surface border-t border-theme-subtle px-3 py-2 flex items-center justify-around">
+        <div className="md:hidden fixed bottom-4 left-4 right-4 z-40 rounded-full bg-[#121217]/90 backdrop-blur-2xl border border-white/[0.12] px-3 py-2 flex items-center justify-around shadow-[0_12px_36px_rgba(0,0,0,0.7)]">
           <Link
             href="/dashboard"
-            className={`flex flex-col items-center gap-1 py-1 px-3 rounded-lg text-[10px] font-bold ${
-              pathname === '/dashboard' ? 'text-theme-accent' : 'text-slate-400'
+            className={`flex flex-col items-center gap-1 py-1 px-3 rounded-full text-[10px] font-medium transition-all ${
+              pathname === '/dashboard' ? 'text-white font-semibold' : 'text-zinc-400'
             }`}
           >
             <LayoutDashboard className="w-4 h-4" />
@@ -226,18 +226,16 @@ export const Navbar: React.FC = () => {
 
           <Link
             href="/trips/create"
-            className="flex flex-col items-center gap-1 py-1 px-3 rounded-lg text-[10px] font-bold text-slate-300 hover:text-white"
+            className="flex flex-col items-center gap-1 py-1 px-3 rounded-full text-[10px] font-semibold text-black bg-white shadow-[0_2px_12px_rgba(255,255,255,0.25)] -my-1"
           >
-            <div className="w-7 h-7 rounded-lg bg-theme-accent flex items-center justify-center text-white -mt-3 shadow-md shadow-black">
-              <PlusCircle className="w-4 h-4" />
-            </div>
+            <PlusCircle className="w-4 h-4" />
             <span>Plan</span>
           </Link>
 
           <Link
             href="/friends"
-            className={`flex flex-col items-center gap-1 py-1 px-3 rounded-lg text-[10px] font-bold ${
-              pathname === '/friends' ? 'text-theme-accent' : 'text-slate-400'
+            className={`flex flex-col items-center gap-1 py-1 px-3 rounded-full text-[10px] font-medium transition-all ${
+              pathname === '/friends' ? 'text-white font-semibold' : 'text-zinc-400'
             }`}
           >
             <Users className="w-4 h-4" />
@@ -247,7 +245,7 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsNotificationModalOpen(true)}
-            className="flex flex-col items-center gap-1 py-1 px-3 rounded-lg text-[10px] font-bold text-slate-400 hover:text-white cursor-pointer"
+            className="flex flex-col items-center gap-1 py-1 px-3 rounded-full text-[10px] font-medium text-zinc-400 hover:text-white cursor-pointer"
           >
             <Bell className="w-4 h-4" />
             <span>Alerts</span>
@@ -255,8 +253,8 @@ export const Navbar: React.FC = () => {
 
           <Link
             href="/profile"
-            className={`flex flex-col items-center gap-1 py-1 px-3 rounded-lg text-[10px] font-bold ${
-              pathname === '/profile' ? 'text-theme-accent' : 'text-slate-400'
+            className={`flex flex-col items-center gap-1 py-1 px-3 rounded-full text-[10px] font-medium transition-all ${
+              pathname === '/profile' ? 'text-[#2997ff]' : 'text-zinc-400'
             }`}
           >
             <User className="w-4 h-4" />

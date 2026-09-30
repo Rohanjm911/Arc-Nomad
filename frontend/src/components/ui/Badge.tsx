@@ -28,23 +28,22 @@ export const Badge: React.FC<BadgeProps> = ({
   className,
   icon,
 }) => {
-  // Solid color badges with subtle matching solid background tint and crisp border
   const variants: Record<BadgeVariant, string> = {
-    primary: 'bg-blue-950/80 text-blue-300 border border-blue-600/40',
-    success: 'bg-emerald-950/80 text-emerald-300 border border-emerald-600/40',
-    teal: 'bg-teal-950/80 text-teal-300 border border-teal-600/40',
-    warning: 'bg-amber-950/80 text-amber-300 border border-amber-600/40',
-    amber: 'bg-amber-950/80 text-amber-300 border border-amber-600/40',
-    danger: 'bg-red-950/80 text-red-300 border border-red-600/40',
-    info: 'bg-sky-950/80 text-sky-300 border border-sky-600/40',
-    purple: 'bg-purple-950/80 text-purple-300 border border-purple-600/40',
-    neutral: 'bg-slate-800 text-slate-300 border border-slate-700',
+    primary: 'bg-white/[0.12] text-white border border-white/[0.22] backdrop-blur-md shadow-sm',
+    success: 'bg-[#30d158]/15 text-[#30d158] border border-[#30d158]/30 backdrop-blur-md',
+    teal: 'bg-zinc-200/15 text-zinc-200 border border-zinc-300/30 backdrop-blur-md',
+    warning: 'bg-[#ff9f0a]/15 text-[#ff9f0a] border border-[#ff9f0a]/30 backdrop-blur-md',
+    amber: 'bg-[#ff9f0a]/15 text-[#ff9f0a] border border-[#ff9f0a]/30 backdrop-blur-md',
+    danger: 'bg-[#ff453a]/15 text-[#ff453a] border border-[#ff453a]/30 backdrop-blur-md',
+    info: 'bg-slate-200/15 text-slate-200 border border-slate-300/30 backdrop-blur-md',
+    purple: 'bg-[#bf5af2]/15 text-[#bf5af2] border border-[#bf5af2]/30 backdrop-blur-md',
+    neutral: 'bg-white/[0.06] text-zinc-300 border border-white/[0.1] backdrop-blur-md',
   };
 
   const sizes = {
-    xs: 'px-1.5 py-0.5 text-[10px] font-semibold tracking-wider uppercase rounded',
-    sm: 'px-2 py-0.5 text-[11px] font-semibold tracking-wide rounded-md',
-    md: 'px-2.5 py-1 text-xs font-semibold rounded-lg',
+    xs: 'px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase rounded-full',
+    sm: 'px-2.5 py-0.5 text-[11px] font-medium tracking-tight rounded-full',
+    md: 'px-3 py-1 text-xs font-medium tracking-tight rounded-full',
   };
 
   return (

@@ -53,25 +53,28 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center py-8 px-4">
-      <div className="w-full max-w-md space-y-6">
-        {/* Header (Travel Logo, Clean Title) */}
-        <div className="text-center space-y-3">
+    <div className="min-h-[82vh] flex items-center justify-center py-10 px-4 relative">
+      {/* Apple Ambient Specular Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/[0.06] blur-3xl pointer-events-none -z-10" />
+
+      <div className="w-full max-w-md space-y-7">
+        {/* Header (Travel Logo, Clean Apple Title) */}
+        <div className="text-center space-y-3.5">
           <div className="flex justify-center">
-            <TravelLogo size="lg" />
+            <TravelLogo size="xl" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Sign in to ARC-NOMAD
+          <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+            Sign in to <span className="apple-text-gradient">ARC-NOMAD</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400">
+          <p className="text-xs sm:text-sm text-zinc-400 font-normal">
             Access your collaborative itineraries, flights, and travel wallets.
           </p>
         </div>
 
-        {/* Form Card */}
-        <Card className="p-6 sm:p-8 bg-theme-surface border border-theme-subtle space-y-5 shadow-2xl rounded-3xl">
+        {/* Apple Glass Form Card */}
+        <div className="apple-glass-card p-7 sm:p-9 space-y-6 rounded-[32px] shadow-2xl">
           {error && (
-            <div className="p-3.5 rounded-xl bg-red-950/50 border border-red-800/60 text-red-300 text-xs flex items-center gap-2">
+            <div className="p-3.5 rounded-2xl bg-[#ff453a]/15 border border-[#ff453a]/30 text-[#ff453a] text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
@@ -81,21 +84,21 @@ export default function LoginPage() {
             <Input
               label="Email or Username"
               type="text"
-              placeholder="alex@example.com or alex_explorer"
+              placeholder="aarav@example.com or alex_nomad"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              icon={<Mail className="w-4 h-4" />}
+              icon={<Mail className="w-4 h-4 text-zinc-400" />}
               required
             />
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400">
                   Password
                 </label>
               </div>
               <div className="relative flex items-center">
-                <div className="absolute left-3 text-slate-400 pointer-events-none flex items-center justify-center">
+                <div className="absolute left-3.5 text-zinc-400 pointer-events-none flex items-center justify-center">
                   <Lock className="w-4 h-4" />
                 </div>
                 <input
@@ -103,95 +106,107 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-xl bg-slate-950 border border-slate-700 pl-10 pr-10 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-2xl bg-white/[0.05] border border-white/[0.1] pl-11 pr-11 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-white focus:ring-2 focus:ring-white/20 backdrop-blur-md transition-all"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 text-slate-400 hover:text-slate-200"
+                  className="absolute right-3.5 text-zinc-400 hover:text-white transition-colors cursor-pointer"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            <Button type="submit" variant="primary" size="md" loading={loading} className="w-full mt-2 font-bold">
+            <Button type="submit" variant="primary" size="md" loading={loading} className="w-full mt-3 font-semibold rounded-full shadow-[0_2px_16px_rgba(255,255,255,0.2)]">
               Sign In
               <ArrowRight className="w-4 h-4 ml-1.5" />
             </Button>
           </form>
 
           {/* 1-Click Demo Accounts */}
-          <div className="pt-4 border-t border-theme-subtle space-y-2.5">
-            <span className="block text-center text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-              Quick Test Demo Explorer Accounts
+          <div className="pt-4 border-t border-white/[0.08] space-y-3">
+            <span className="block text-center text-[10px] font-semibold text-zinc-400 uppercase tracking-widest">
+              Quick Test Demo Accounts
             </span>
-            <div className="grid grid-cols-2 gap-2">
-              <Button
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <button
                 type="button"
-                variant="secondary"
-                size="sm"
                 onClick={() => handleDemo('alex_nomad')}
                 disabled={loading}
-                className="text-xs justify-start px-3 py-2 bg-theme-surface-raised border-theme-subtle hover:border-theme-strong text-left"
+                className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.22] hover:bg-white/[0.08] text-left transition-all cursor-pointer flex items-center gap-3 group"
               >
-                <div className="truncate">
-                  <p className="font-bold text-white truncate">🗼 Alex (Owner)</p>
-                  <p className="text-[10px] text-slate-400 truncate">Tokyo &amp; Rome</p>
+                <img
+                  src="/avatars/aarav.jpg"
+                  alt="Aarav Sharma"
+                  className="w-10 h-10 rounded-full object-cover border border-white/20 shadow-sm shrink-0 group-hover:scale-105 transition-transform"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-xs text-white truncate">Aarav (Owner)</p>
+                  <p className="text-[10px] text-zinc-400 truncate">Tokyo &amp; Rome</p>
                 </div>
-              </Button>
+              </button>
 
-              <Button
+              <button
                 type="button"
-                variant="secondary"
-                size="sm"
                 onClick={() => handleDemo('sarah_voyage')}
                 disabled={loading}
-                className="text-xs justify-start px-3 py-2 bg-theme-surface-raised border-theme-subtle hover:border-theme-strong text-left"
+                className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.22] hover:bg-white/[0.08] text-left transition-all cursor-pointer flex items-center gap-3 group"
               >
-                <div className="truncate">
-                  <p className="font-bold text-white truncate">🥾 Sarah (Editor)</p>
-                  <p className="text-[10px] text-slate-400 truncate">Adventure Traveler</p>
+                <img
+                  src="/avatars/priya.jpg"
+                  alt="Priya Patel"
+                  className="w-10 h-10 rounded-full object-cover border border-white/20 shadow-sm shrink-0 group-hover:scale-105 transition-transform"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-xs text-white truncate">Priya (Editor)</p>
+                  <p className="text-[10px] text-zinc-400 truncate">Adventure Traveler</p>
                 </div>
-              </Button>
+              </button>
 
-              <Button
+              <button
                 type="button"
-                variant="secondary"
-                size="sm"
                 onClick={() => handleDemo('marco_explorer')}
                 disabled={loading}
-                className="text-xs justify-start px-3 py-2 bg-theme-surface-raised border-theme-subtle hover:border-theme-strong text-left"
+                className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.22] hover:bg-white/[0.08] text-left transition-all cursor-pointer flex items-center gap-3 group"
               >
-                <div className="truncate">
-                  <p className="font-bold text-white truncate">🏛️ Marco (Explorer)</p>
-                  <p className="text-[10px] text-slate-400 truncate">Rome Renaissance</p>
+                <img
+                  src="/avatars/kabir.jpg"
+                  alt="Kabir Mehta"
+                  className="w-10 h-10 rounded-full object-cover border border-white/20 shadow-sm shrink-0 group-hover:scale-105 transition-transform"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-xs text-white truncate">Kabir (Editor)</p>
+                  <p className="text-[10px] text-zinc-400 truncate">Rome Renaissance</p>
                 </div>
-              </Button>
+              </button>
 
-              <Button
+              <button
                 type="button"
-                variant="secondary"
-                size="sm"
                 onClick={() => handleDemo('elena_wander')}
                 disabled={loading}
-                className="text-xs justify-start px-3 py-2 bg-theme-surface-raised border-theme-subtle hover:border-theme-strong text-left"
+                className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.22] hover:bg-white/[0.08] text-left transition-all cursor-pointer flex items-center gap-3 group"
               >
-                <div className="truncate">
-                  <p className="font-bold text-white truncate">🌊 Elena (Nomad)</p>
-                  <p className="text-[10px] text-slate-400 truncate">Tokyo Expense Lead</p>
+                <img
+                  src="/avatars/ananya.jpg"
+                  alt="Ananya Roy"
+                  className="w-10 h-10 rounded-full object-cover border border-white/20 shadow-sm shrink-0 group-hover:scale-105 transition-transform"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-xs text-white truncate">Ananya (Lead)</p>
+                  <p className="text-[10px] text-zinc-400 truncate">Expense Manager</p>
                 </div>
-              </Button>
+              </button>
             </div>
           </div>
-        </Card>
+        </div>
 
         {/* Footer Link */}
-        <p className="text-center text-xs text-slate-400">
+        <p className="text-center text-xs text-zinc-400">
           New to ARC-NOMAD?{' '}
-          <Link href="/register" className="text-blue-400 hover:text-blue-300 font-bold transition-colors">
-            Create an account
+          <Link href="/register" className="text-white hover:text-zinc-300 font-semibold underline underline-offset-4 transition-colors">
+            Create an explorer profile
           </Link>
         </p>
       </div>

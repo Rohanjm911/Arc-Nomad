@@ -74,24 +74,28 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-10 px-4">
-      <div className="w-full max-w-xl space-y-6">
-        {/* Header (Travel Logo, Crisp Title) */}
-        <div className="text-center space-y-3">
+    <div className="min-h-[85vh] flex items-center justify-center py-10 px-4 relative">
+      {/* Apple Ambient Specular Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/[0.06] blur-3xl pointer-events-none -z-10" />
+
+      <div className="w-full max-w-xl space-y-7">
+        {/* Header (Travel Logo, Apple Title) */}
+        <div className="text-center space-y-3.5">
           <div className="flex justify-center">
-            <TravelLogo size="lg" />
+            <TravelLogo size="xl" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Create your Explorer Profile
+          <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+            Create your <span className="apple-text-gradient">Explorer Profile</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400">
+          <p className="text-xs sm:text-sm text-zinc-400 font-normal">
             Set up your travel preferences so ARC-NOMAD can tailor your itineraries.
           </p>
         </div>
 
-        <Card className="p-6 sm:p-8 bg-theme-surface border border-theme-subtle space-y-5 shadow-2xl rounded-3xl">
+        {/* Apple Glass Card */}
+        <div className="apple-glass-card p-7 sm:p-9 space-y-6 rounded-[32px] shadow-2xl">
           {error && (
-            <div className="p-3.5 rounded-xl bg-red-950/50 border border-red-800/60 text-red-300 text-xs flex items-center gap-2">
+            <div className="p-3.5 rounded-2xl bg-[#ff453a]/15 border border-[#ff453a]/30 text-[#ff453a] text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
@@ -101,18 +105,18 @@ export default function RegisterPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Input
                 label="Full Name"
-                placeholder="Alex Morgan"
+                placeholder="Aarav Sharma"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                icon={<User className="w-4 h-4" />}
+                icon={<User className="w-4 h-4 text-zinc-400" />}
                 required
               />
               <Input
                 label="Username"
-                placeholder="alex_explorer"
+                placeholder="aarav_explorer"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                icon={<User className="w-4 h-4" />}
+                icon={<User className="w-4 h-4 text-zinc-400" />}
                 required
               />
             </div>
@@ -120,19 +124,19 @@ export default function RegisterPage() {
             <Input
               label="Email Address"
               type="email"
-              placeholder="alex@example.com"
+              placeholder="aarav@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              icon={<Mail className="w-4 h-4" />}
+              icon={<Mail className="w-4 h-4 text-zinc-400" />}
               required
             />
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
                 Password
               </label>
               <div className="relative flex items-center">
-                <div className="absolute left-3 text-slate-400 pointer-events-none flex items-center justify-center">
+                <div className="absolute left-3.5 text-zinc-400 pointer-events-none flex items-center justify-center">
                   <Lock className="w-4 h-4" />
                 </div>
                 <input
@@ -140,13 +144,13 @@ export default function RegisterPage() {
                   placeholder="At least 6 characters"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-xl bg-slate-950 border border-slate-700 pl-10 pr-10 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-2xl bg-white/[0.05] border border-white/[0.1] pl-11 pr-11 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-white focus:ring-2 focus:ring-white/20 backdrop-blur-md transition-all"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 text-slate-400 hover:text-slate-200"
+                  className="absolute right-3.5 text-zinc-400 hover:text-white transition-colors cursor-pointer"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -155,13 +159,13 @@ export default function RegisterPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
                   Travel Persona
                 </label>
                 <select
                   value={travelStyle}
                   onChange={(e) => setTravelStyle(e.target.value)}
-                  className="w-full rounded-xl bg-slate-950 border border-slate-700 px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-blue-500 cursor-pointer"
+                  className="w-full rounded-2xl bg-[#141419] border border-white/[0.1] px-4 py-2.5 text-sm text-white focus:outline-none focus:border-white focus:ring-2 focus:ring-white/20 cursor-pointer transition-all"
                 >
                   <option value="Balanced Explorer">Balanced Explorer</option>
                   <option value="Luxury Traveler">Luxury & Comfort</option>
@@ -172,13 +176,13 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
                   Budget Level
                 </label>
                 <select
                   value={budgetPref}
                   onChange={(e) => setBudgetPref(e.target.value)}
-                  className="w-full rounded-xl bg-slate-950 border border-slate-700 px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-blue-500 cursor-pointer"
+                  className="w-full rounded-2xl bg-[#141419] border border-white/[0.1] px-4 py-2.5 text-sm text-white focus:outline-none focus:border-white focus:ring-2 focus:ring-white/20 cursor-pointer transition-all"
                 >
                   <option value="Budget">$ Budget Conscious</option>
                   <option value="Moderate">$$ Moderate & Balanced</option>
@@ -187,12 +191,12 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {/* Interests Chips */}
-            <div className="pt-1">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
+            {/* Interests Chips (Apple Pills) */}
+            <div className="pt-2">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
                 Travel Interests
               </label>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-2">
                 {interestOptions.map((interest) => {
                   const isSelected = selectedInterests.includes(interest);
                   return (
@@ -200,10 +204,10 @@ export default function RegisterPage() {
                       key={interest}
                       type="button"
                       onClick={() => toggleInterest(interest)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer border ${
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer border ${
                         isSelected
-                          ? 'bg-theme-raised border-theme-strong text-white font-semibold'
-                          : 'bg-theme-surface-raised border-theme-subtle text-slate-400 hover:text-white hover:border-theme-strong'
+                          ? 'bg-white text-black font-semibold border-white shadow-md'
+                          : 'bg-white/[0.04] border-white/[0.1] text-zinc-400 hover:text-white hover:border-white/[0.2]'
                       }`}
                     >
                       {interest}
@@ -213,16 +217,16 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            <Button type="submit" variant="primary" size="md" loading={loading} className="w-full mt-4 font-bold">
+            <Button type="submit" variant="primary" size="md" loading={loading} className="w-full mt-4 font-semibold rounded-full shadow-[0_2px_18px_rgba(255,255,255,0.2)]">
               Complete Registration
               <ArrowRight className="w-4 h-4 ml-1.5" />
             </Button>
           </form>
-        </Card>
+        </div>
 
-        <p className="text-center text-xs text-slate-400">
+        <p className="text-center text-xs text-zinc-400">
           Already have an account?{' '}
-          <Link href="/login" className="text-blue-400 hover:text-blue-300 font-bold transition-colors">
+          <Link href="/login" className="text-white hover:text-zinc-300 font-semibold underline underline-offset-4 transition-colors">
             Sign in
           </Link>
         </p>

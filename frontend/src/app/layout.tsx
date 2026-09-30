@@ -19,11 +19,13 @@ export const metadata: Metadata = {
   description: 'AI-Powered Collaborative Travel Planning & Trip Management Platform.',
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/logo.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico?v=2' },
+      { url: '/icon.png?v=2', type: 'image/png' },
+      { url: '/favicon.png?v=2', type: 'image/png' },
+      { url: '/favicon.svg?v=2', type: 'image/svg+xml' },
     ],
-    shortcut: '/favicon.svg',
-    apple: '/logo.svg',
+    shortcut: '/favicon.ico?v=2',
+    apple: '/apple-icon.png?v=2',
   },
 };
 

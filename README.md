@@ -1,7 +1,25 @@
-# ARC-NOMAD 🧭✈️
-### *"Your Journey, Perfectly Mapped."*
+<p align="center">
+  <img src="assets/logo.png" alt="ARC-NOMAD Logo" width="240" />
+</p>
 
-ARC-NOMAD is an AI-powered collaborative travel planning and trip-management platform designed for nomad collectives, friends, and expedition crews.
+<h1 align="center">ARC-NOMAD</h1>
+
+<p align="center">
+  <strong><em>"Your Journey, Perfectly Mapped."</em></strong>
+</p>
+
+<p align="center">
+  <strong>The Intelligent Operating System for Collaborative Travel &amp; Expedition Management</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16_Turbopack-black?style=flat&logo=next.js" alt="Next.js" />
+  <img src="https://img.shields.io/badge/FastAPI-0.115+-009688?style=flat&logo=fastapi" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=flat&logo=python" alt="Python" />
+  <img src="https://img.shields.io/badge/Design-Apple_Matte_Titanium-181820?style=flat" alt="Apple Matte Titanium" />
+</p>
+
+ARC-NOMAD is an AI-powered collaborative travel planning and trip-management platform designed for nomad collectives, friends, and expedition crews. Built with Apple-inspired Matte Titanium aesthetics, real-time WebSockets synchronization, and Google Gemini AI itinerary generation.
 
 ---
 
@@ -20,8 +38,8 @@ ARC-NOMAD is an AI-powered collaborative travel planning and trip-management pla
 ## 🚀 Architecture & Tech Stack
 
 ### Frontend
-- **Framework**: Next.js 15+ (App Router), React 19, TypeScript
-- **Styling & UI**: Tailwind CSS, Dark Mode Obsidian theme, Custom Glassmorphism, Micro-animations
+- **Framework**: Next.js 16 (App Router), React 19, TypeScript
+- **Styling & UI**: Tailwind CSS v4, Apple Matte Titanium & Minimalist Ice design system, Frosted Glassmorphism, Micro-animations
 - **Visuals & Maps**: Recharts (Interactive category & member spending breakdown charts), Mapbox / OpenStreetMap canvas
 - **Icons**: Lucide React
 
@@ -38,14 +56,14 @@ ARC-NOMAD is an AI-powered collaborative travel planning and trip-management pla
 
 ## 🔑 Pre-Seeded Demo Accounts (1-Click Login)
 
-For instant exploration and testing, the following accounts are pre-seeded:
+For instant exploration and testing, the following Indian explorer accounts are pre-seeded with custom profiles:
 
-| Name | Username | Email | Password | Role in Tokyo Trip |
-| :--- | :--- | :--- | :--- | :--- |
-| **Alex Mercer** | `alex_nomad` | `alex@arcnomad.com` | `password123` | **OWNER** |
-| **Sarah Jenkins** | `sarah_voyage` | `sarah@arcnomad.com` | `password123` | **EDITOR** |
-| **Marco Rossi** | `marco_explorer` | `marco@arcnomad.com` | `password123` | **EDITOR** |
-| **Elena Vance** | `elena_wander` | `elena@arcnomad.com` | `password123` | **EXPENSE_MANAGER** |
+| Avatar | Name | Username | Email | Password | Role in Tokyo Trip |
+| :---: | :--- | :--- | :--- | :--- | :--- |
+| <img src="frontend/public/avatars/aarav.jpg" width="36" height="36" style="border-radius:50%;object-fit:cover" /> | **Aarav Sharma** | `alex_nomad` / `aarav_nomad` | `alex@arcnomad.com` | `password123` | **OWNER** |
+| <img src="frontend/public/avatars/priya.jpg" width="36" height="36" style="border-radius:50%;object-fit:cover" /> | **Priya Patel** | `sarah_voyage` / `priya_voyage` | `sarah@arcnomad.com` | `password123` | **EDITOR** |
+| <img src="frontend/public/avatars/kabir.jpg" width="36" height="36" style="border-radius:50%;object-fit:cover" /> | **Kabir Mehta** | `marco_explorer` / `kabir_explorer` | `marco@arcnomad.com` | `password123` | **EDITOR** |
+| <img src="frontend/public/avatars/ananya.jpg" width="36" height="36" style="border-radius:50%;object-fit:cover" /> | **Ananya Roy** | `elena_wander` / `ananya_roy` | `elena@arcnomad.com` | `password123` | **EXPENSE_MANAGER** |
 
 ---
 

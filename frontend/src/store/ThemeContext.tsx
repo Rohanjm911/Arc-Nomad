@@ -23,7 +23,7 @@ export const SUPPORTED_LOCATIONS: Record<LocationTheme, LocationConfig> = {
     emblem: '🗼',
     timeZone: 'Asia/Tokyo',
     currency: 'JPY (¥)',
-    vibe: 'Emerald Alpine & Neon Mint',
+    vibe: 'Graphite Titanium & Cyber Ice',
   },
   paris: {
     id: 'paris',
@@ -32,7 +32,7 @@ export const SUPPORTED_LOCATIONS: Record<LocationTheme, LocationConfig> = {
     emblem: '🥐',
     timeZone: 'Europe/Paris',
     currency: 'EUR (€)',
-    vibe: 'Sage Forest & Champagne Titanium',
+    vibe: 'Champagne Ice & Matte Platinum',
   },
   'new-york': {
     id: 'new-york',
@@ -41,7 +41,7 @@ export const SUPPORTED_LOCATIONS: Record<LocationTheme, LocationConfig> = {
     emblem: '🗽',
     timeZone: 'America/New_York',
     currency: 'USD ($)',
-    vibe: 'Titanium Slate & Emerald Steel',
+    vibe: 'Slate Titanium & Pure Monochrome',
   },
   reykjavik: {
     id: 'reykjavik',
@@ -50,7 +50,7 @@ export const SUPPORTED_LOCATIONS: Record<LocationTheme, LocationConfig> = {
     emblem: '❄️',
     timeZone: 'Atlantic/Reykjavik',
     currency: 'ISK (kr)',
-    vibe: 'Glacial Mint & Nordic Alpine',
+    vibe: 'Arctic Ice & Glacial Silver',
   },
   rome: {
     id: 'rome',
@@ -59,7 +59,7 @@ export const SUPPORTED_LOCATIONS: Record<LocationTheme, LocationConfig> = {
     emblem: '🏛️',
     timeZone: 'Europe/Rome',
     currency: 'EUR (€)',
-    vibe: 'Alpine Emerald & Matte Titanium',
+    vibe: 'Carrara Marble & Matte Titanium',
   },
   default: {
     id: 'default',
@@ -68,7 +68,7 @@ export const SUPPORTED_LOCATIONS: Record<LocationTheme, LocationConfig> = {
     emblem: '🧭',
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
     currency: 'USD ($)',
-    vibe: 'Emerald Alpine & Matte Titanium',
+    vibe: 'Matte Titanium & Minimalist Ice',
   },
 };
 

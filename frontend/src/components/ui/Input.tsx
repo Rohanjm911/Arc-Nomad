@@ -31,9 +31,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             className={twMerge(
               clsx(
-                'w-full rounded-2xl bg-theme-surface-raised border border-theme-subtle px-4 py-2.5 text-sm text-theme-primary placeholder:text-theme-muted transition-colors duration-150 focus:outline-none focus:border-theme-strong focus:ring-1 focus:ring-theme-accent/50 disabled:opacity-50 disabled:bg-theme-surface',
+                'w-full rounded-2xl bg-white/[0.05] border border-white/[0.1] px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 transition-all duration-200 focus:outline-none focus:border-white focus:ring-2 focus:ring-white/20 disabled:opacity-40 disabled:bg-white/[0.02] backdrop-blur-md',
                 icon && 'pl-11',
-                error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
+                error && 'border-[#ff453a] focus:border-[#ff453a] focus:ring-[#ff453a]/30',
                 className
               )
             )}
